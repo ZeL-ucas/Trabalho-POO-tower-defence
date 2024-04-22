@@ -1,0 +1,14 @@
+Padronizaçao de alguns aspectos do codigo 
+
+nome de variaveis do codigo : lowerCamelCase , ou seja variaveis no estilo : guardaChuva , portaLapis
+nome de variaveis de classe :variveis que pertencem dentro de uma classe devem seguir snake case e possuir um _ No final
+Exemplo: porta_lapis_ , vida_maxima_ , dano_ .
+
+nome de funçoes : funçoes sejam de classe devem seguir o padrao UpperCamelCase : CalculaMedia , Somar;
+
+
+pastas: td arquivo deve começar com letra minuscula, e td pasta deve começar com letra maiuscula
+arquivos externos : td arquivo externo , sprite sons etc deve estar com SnakeCase e td minusculo :
+sprite_inimigo_andar.
+    
+
