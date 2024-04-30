@@ -1,1 +1,3 @@
-#pasta para guardar valores constantes utilizados no codigo td
+
+fps = 60;
+window = (1280, 720);

@@ -1,52 +1,23 @@
-import pygame 
-#from enemy import Enemy
-#import constants as c
 
-#initialise pygame  
-pygame.init()
+import pygame
+from Utils import constants
 
-#create clock 
-Clock = pygame.time.Clock()
-SCREEN_WIDTH = 500
-SCREEN_HEIGHT = 500
-FPS = 60
+class Game():
+    def __init__(self):
+        pygame.init()
+        self.clock = pygame.time.Clock()
+        self.screen = pygame.display.set_mode(constants.window)
+        pygame.display.set_caption("defesa blaster ")
 
-#create game window  
-#sreen.pg.display.set_mode((width 500 pixels, height 500 pixels ))
-screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
-pygame.display.set_caption("TOWER DEFENCE")
 
-#load image
-#enemy_image = pygame.image.load()
+    def Run(self):
+        run = True
+        while (run):
+            self.clock.tick(constants.fps)
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    run = False
+                    self.Quit()
 
-#create group:
-#enemy_group = pygame.sprite.Group()
-
-#enemy = Enemy((200,300), enemy_image)
-#enemy_group.add(enemy)
-
-#game loop
-run = True
-while run: 
-    
-  Clock.tick(FPS)
-
-  #without a trace
-  screen.fill("gray100")
-
-  #update groups
-  #enemy_group.update()
-
-  #draw groups
-  #enemy_group.draw(screen)
-
-  #event handler
-  for event in pygame.event.get():
-    #quit program
-    if event.type == pygame.QUIT:
-      run = False
-
-#upgrade display
-#pygame.display.flip()
-      
-pygame.quit()
+    def Quit(self):
+        pygame.quit()
