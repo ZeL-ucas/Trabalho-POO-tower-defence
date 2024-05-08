@@ -1,44 +1,57 @@
 import pygame 
-#from enemy import Enemy
-#import constants as c
+from Entities.enemy import Enemy
+import Entities.constants as c
+ 
 
 #initialise pygame  
 pygame.init()
 
 #create clock 
-Clock = pygame.time.Clock()
-SCREEN_WIDTH = 500
-SCREEN_HEIGHT = 500
-FPS = 60
+clock = pygame.time.Clock()
 
 #create game window  
 #sreen.pg.display.set_mode((width 500 pixels, height 500 pixels ))
-screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
+screen = pygame.display.set_mode((c.SCREEN_WIDTH,c.SCREEN_HEIGHT))
 pygame.display.set_caption("TOWER DEFENCE")
 
 #load image
-#enemy_image = pygame.image.load()
+#map
+#map_image = pygame.image.load('Src/Levels/mapa_TD.png').convert_alpha()
+#enemies
+enemy_image = pygame.image.load('assets/sprites/enemys/enemy_1.png').convert_alpha()
 
 #create group:
-#enemy_group = pygame.sprite.Group()
+enemy_group = pygame.sprite.Group()
 
-#enemy = Enemy((200,300), enemy_image)
-#enemy_group.add(enemy)
+waypoints = [
+  (100,100),
+  (400,200),
+  (400,100),
+  (200,300)
+]
+enemy = Enemy(waypoints, enemy_image)
+enemy_group.add(enemy)
 
 #game loop
 run = True
 while run: 
     
-  Clock.tick(FPS)
+  clock.tick(c.FPS)
 
   #without a trace
   screen.fill("gray100")
 
+  #draw enemy path
+  pygame.draw.lines(screen, "gray0", False, waypoints)
+
   #update groups
-  #enemy_group.update()
+  enemy_group.update()
+
+  for enemy in enemy_group:
+    enemy.move()
 
   #draw groups
-  #enemy_group.draw(screen)
+  enemy_group.draw(screen)
 
   #event handler
   for event in pygame.event.get():
@@ -46,7 +59,7 @@ while run:
     if event.type == pygame.QUIT:
       run = False
 
-#upgrade display
-#pygame.display.flip()
+  #upgrade display
+  pygame.display.flip()
       
 pygame.quit()
