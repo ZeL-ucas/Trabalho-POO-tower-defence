@@ -1,3 +1,4 @@
+
 import pygame
 
 
@@ -12,3 +13,4 @@ class Tower(pygame.sprite.Sprite):
         self.image_ = image
         self.rect_ = self.image_.get_rect()
         self.rect_.center = (posX,posY)
+
