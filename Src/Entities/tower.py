@@ -10,7 +10,7 @@ class Tower(pygame.sprite.Sprite):
         self.price = 500
         #self.X_ = (self.PosX_ + 0.5) * constats.tileSize
         #self.Y_ = (self.PosY_ + 0.5) * constats.tileSize
-        self.image_ = image
-        self.rect_ = self.image_.get_rect()
-        self.rect_.center = (posX,posY)
+        self.image = image
+        self.rect = self.image.get_rect()
+        self.rect.center = (posX,posY)
 

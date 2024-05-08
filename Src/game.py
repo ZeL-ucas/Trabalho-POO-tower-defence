@@ -3,6 +3,7 @@
 import pygame
 from Utils import constants
 from Entities.tower import Tower
+from Entities.enemy import Enemy
 class Game():
     def __init__(self):
         pygame.init()
@@ -16,7 +17,7 @@ class Game():
         self.tower_ = pygame.image.load("Assets/Sprites/Towers/cursor_turret.png").convert_alpha()
         
         self.towerGroup_ = pygame.sprite.Group()
-        self.enemyImage_ = pygame.image.load('assets/sprites/enemys/enemy_1.png').convert_alpha()
+        self.enemyImage_ = pygame.image.load("Assets/Sprites/Enemys/enemy_1.png").convert_alpha()
         self.enemyGroup_ = pygame.sprite.Group()
         waypoints = [
           (100,100),
@@ -24,16 +25,17 @@ class Game():
           (400,100),
           (200,300)
         ]
-        enemy = Enemy(waypoints, enemy_image)
-        enemy_group.add(enemy)
+        enemy = Enemy(waypoints, self.enemyImage_)
+        self.enemyGroup_.add(enemy)
 
     def Run(self):
         run = True
         while (run):
+
             self.clock_.tick(constants.fps)
 
             self.Draw()
-            enemy_group.update()
+            self.enemyGroup_.update()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
@@ -49,9 +51,9 @@ class Game():
         pygame.quit()
 
     def Draw(self):
-        for tower in self.towerGroup_:
-            self.screen_.blit(tower.image_, tower.rect_)
-            
+        self.towerGroup_.draw(self.screen_)
+        self.enemyGroup_.draw(self.screen_)
+        
     def CreateTurret(self,pos):
         mousePosX = pos[0] #/ constante.tileSize
         mousePosY = pos[1] #/ constante.tileSize
