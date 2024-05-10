@@ -1,9 +1,9 @@
-
-
 import pygame
+import json
 from Utils import constants
 from Entities.tower import Tower
 from Entities.enemy import Enemy
+from Levels.levelLoader import Level
 class Game():
     def __init__(self):
         pygame.init()
@@ -14,18 +14,17 @@ class Game():
         self.screen_ = pygame.display.set_mode(constants.window)
         pygame.display.set_caption("defesa blaster ")
 
+        with open('Assets/Waypoints/mapa1.tmj') as file:
+            self.level_data_ = json.load(file)
         self.tower_ = pygame.image.load("Assets/Sprites/Towers/cursor_turret.png").convert_alpha()
         self.mapa_ = pygame.image.load("Assets/Backgrounds/mapa.png").convert_alpha()
+        self.level_ = Level(self.level_data_, self.mapa_)
         self.towerGroup_ = pygame.sprite.Group()
         self.enemyImage_ = pygame.image.load("Assets/Sprites/Enemys/enemy_1.png").convert_alpha()
         self.enemyGroup_ = pygame.sprite.Group()
-        waypoints = [
-          (100,100),
-          (400,200),
-          (400,100),
-          (200,300)
-        ]
-        enemy = Enemy(waypoints, self.enemyImage_)
+        self.level_.ProcessData()
+
+        enemy = Enemy(self.level_.waypoints_, self.enemyImage_)
         self.enemyGroup_.add(enemy)
 
     def Run(self):
@@ -51,6 +50,7 @@ class Game():
         pygame.quit()
 
     def Draw(self):
+        self.level_.draw(self.screen_)
         self.towerGroup_.draw(self.screen_)
         self.enemyGroup_.draw(self.screen_)
         
@@ -68,5 +68,6 @@ class Game():
             tower = Tower(self.tower_,mousePosX,mousePosY )#,mousePosX,mousePosY )
             self.towerGroup_.add(tower)
             self.gold_ -=100
+        
 
 
