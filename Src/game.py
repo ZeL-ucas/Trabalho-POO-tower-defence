@@ -15,7 +15,7 @@ class Game():
         pygame.display.set_caption("defesa blaster ")
 
         self.tower_ = pygame.image.load("Assets/Sprites/Towers/cursor_turret.png").convert_alpha()
-        
+        self.mapa_ = pygame.image.load("Assets/Backgrounds/mapa.png").convert_alpha()
         self.towerGroup_ = pygame.sprite.Group()
         self.enemyImage_ = pygame.image.load("Assets/Sprites/Enemys/enemy_1.png").convert_alpha()
         self.enemyGroup_ = pygame.sprite.Group()
