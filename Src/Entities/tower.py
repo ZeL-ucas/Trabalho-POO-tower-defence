@@ -1,4 +1,4 @@
-
+from Utils import constants
 import pygame
 
 
@@ -8,9 +8,9 @@ class Tower(pygame.sprite.Sprite):
         self.posX_ = posX
         self.posY_ = posY
         self.price = 500
-        #self.X_ = (self.PosX_ + 0.5) * constats.tileSize
-        #self.Y_ = (self.PosY_ + 0.5) * constats.tileSize
+        self.X_ = (self.posX_ + 0.5) * constants.tileSize
+        self.Y_ = (self.posY_ + 0.2) * constants.tileSize #valor diferente para a torre atual não ficar em cima dos blocos
         self.image = image
         self.rect = self.image.get_rect()
-        self.rect.center = (posX,posY)
+        self.rect.center = (self.X_, self.Y_)
 
