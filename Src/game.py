@@ -67,12 +67,11 @@ class Game():
         if self.gold_< 100:
             hasGold = False
         #checar se é grama
-        if self.level_.tilemap_[self.mouse_tile_num] == 7:
+        if self.level_.tilemap_[self.mouse_tile_num] == 7:# ainda não esta 100% funcional, precisa verificar os valores do mapa
             if spaceIsFree and hasGold: 
                 tower = Tower(self.tower_,mousePosX,mousePosY )#,mousePosX,mousePosY )
                 self.towerGroup_.add(tower)
                 self.gold_ -=100
-                print(self.towerGroup_)
 
             
 
