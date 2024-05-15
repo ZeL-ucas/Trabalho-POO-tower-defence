@@ -8,7 +8,7 @@ class Game():
     def __init__(self):
         pygame.init()
 
-        self.gold_ = 500
+        self.gold_ = 1000
         
         self.clock_ = pygame.time.Clock()
         self.screen_ = pygame.display.set_mode(constants.window)
@@ -16,7 +16,8 @@ class Game():
 
         with open('Assets/Waypoints/mapa1.tmj') as file:
             self.level_data_ = json.load(file)
-        self.tower_ = pygame.image.load("Assets/Sprites/Towers/cursor_turret.png").convert_alpha()
+        self.tower_ = pygame.image.load("Assets/Sprites/Towers/towerTest.png").convert_alpha()
+        self.tower_ = pygame.transform.scale(self.tower_, (48, 80)) #serve para mudar o tamanho da imagem (largura, altura)
         self.mapa_ = pygame.image.load("Assets/Backgrounds/mapa.png").convert_alpha()
         self.level_ = Level(self.level_data_, self.mapa_)
         self.towerGroup_ = pygame.sprite.Group()
@@ -55,19 +56,26 @@ class Game():
         self.enemyGroup_.draw(self.screen_)
         
     def CreateTurret(self,pos):
-        mousePosX = pos[0] #/ constante.tileSize
-        mousePosY = pos[1] #/ constante.tileSize
+        mousePosX = pos[0] // constants.tileSize
+        mousePosY = pos[1] // constants.tileSize
         spaceIsFree = True
         hasGold = True
+        self.mouse_tile_num = (mousePosY * constants.cols) + mousePosX
         for tower in self.towerGroup_:
             if(mousePosX,mousePosY) == (tower.posX_,tower.posY_):
                 spaceIsFree = False
         if self.gold_< 100:
             hasGold = False
-        if spaceIsFree and hasGold: 
-            tower = Tower(self.tower_,mousePosX,mousePosY )#,mousePosX,mousePosY )
-            self.towerGroup_.add(tower)
-            self.gold_ -=100
+        #checar se é grama
+        if self.level_.tilemap_[self.mouse_tile_num] == 7:
+            if spaceIsFree and hasGold: 
+                tower = Tower(self.tower_,mousePosX,mousePosY )#,mousePosX,mousePosY )
+                self.towerGroup_.add(tower)
+                self.gold_ -=100
+                print(self.towerGroup_)
+
+            
+
         
 
 
