@@ -1,6 +1,7 @@
 import pygame
 from pygame.math import Vector2
 import math
+from Utils import constants
 
 #pygame sprit class
 
@@ -10,7 +11,7 @@ class Enemy(pygame.sprite.Sprite):          #A classe Enemy herdará as propried
         self.waypoints = waypoints
         self.position = Vector2(self.waypoints[0])
         self.target_waypoint = 1 
-        self.speed = 1
+        self.speed = constants.enemySpeed
         self.angle = 0
         self.original_image = image
         self.image = pygame.transform.rotate(self.original_image, self.angle) 

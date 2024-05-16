@@ -59,6 +59,7 @@ class Game():
         mousePosX = pos[0] // constants.tileSize
         mousePosY = pos[1] // constants.tileSize
         spaceIsFree = True
+        print(self.towerGroup_)
         hasGold = True
         self.mouse_tile_num = (mousePosY * constants.cols) + mousePosX
         for tower in self.towerGroup_:
@@ -67,12 +68,14 @@ class Game():
         if self.gold_< 100:
             hasGold = False
         #checar se é grama
-        if self.level_.tilemap_[self.mouse_tile_num] == 7:
+        print(len(self.level_.tilemap_))
+        print(self.mouse_tile_num)
+        if self.level_.tilemap_[self.mouse_tile_num] == 7 or self.level_.tilemap_[self.mouse_tile_num] == 4:
+            print(self.level_.tilemap_[self.mouse_tile_num])
             if spaceIsFree and hasGold: 
                 tower = Tower(self.tower_,mousePosX,mousePosY )#,mousePosX,mousePosY )
                 self.towerGroup_.add(tower)
                 self.gold_ -=100
-                print(self.towerGroup_)
 
             
 
