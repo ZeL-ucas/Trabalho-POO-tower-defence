@@ -43,7 +43,10 @@ class Game():
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     mousePos = pygame.mouse.get_pos()
                     if mousePos[0] <constants.window[0] and mousePos[1] <constants.window[1]:
-                        self.CreateTurret(mousePos)
+                        action = self.CheckSpace(mousePos)
+                        if action == 2:
+                            self.CreateTurret(mousePos)
+            
               
             pygame.display.flip()
 
@@ -58,20 +61,27 @@ class Game():
     def CreateTurret(self,pos):
         mousePosX = pos[0] // constants.tileSize
         mousePosY = pos[1] // constants.tileSize
-        spaceIsFree = True
+
         hasGold = True
-        self.mouse_tile_num = (mousePosY * constants.cols) + mousePosX
-        for tower in self.towerGroup_:
-            if(mousePosX,mousePosY) == (tower.posX_,tower.posY_):
-                spaceIsFree = False
-        if self.gold_< 100:
+        if self.gold_ <100:
             hasGold = False
-        #checar se é grama
-        if self.level_.tilemap_[self.mouse_tile_num] == 7:# ainda não esta 100% funcional, precisa verificar os valores do mapa
-            if spaceIsFree and hasGold: 
-                tower = Tower(self.tower_,mousePosX,mousePosY )#,mousePosX,mousePosY )
-                self.towerGroup_.add(tower)
-                self.gold_ -=100
+        if hasGold: 
+            tower = Tower(self.tower_,mousePosX,mousePosY )#,mousePosX,mousePosY )
+            self.towerGroup_.add(tower)
+            self.gold_ -=100
+
+    def CheckSpace(self,pos)-> int: #Retorna 1 caso exista uma torre ,2 se o espaço é livre e 0 se esta na estrada
+        mousePosX = pos[0] // constants.tileSize
+        mousePosY = pos[1] // constants.tileSize
+        self.mouse_tile_num = (mousePosY * constants.cols) + mousePosX
+        for tower in self.towerGroup_: #tower é a torre especifica que foi clicada , sendo possivel retorna-la para upgrades
+            if(mousePosX,mousePosY) == (tower.posX_,tower.posY_): #1 se já tem uma torre
+                return 1 
+        if self.level_.tilemap_[self.mouse_tile_num]  < 16: #2 se o espaço esta livre
+            return 2
+        else:
+            return 0#0 se é rua
+
 
             
 
