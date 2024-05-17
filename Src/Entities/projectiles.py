@@ -15,7 +15,6 @@ class Projectile(pygame.sprite.Sprite):
         direction = pygame.math.Vector2(self.target.rect.center) - pygame.math.Vector2(self.rect.center)
         distance = direction.length()
         if distance <= self.speed:
-            print("bateu")
             self.target.take_damage(self.damage)
             self.kill()
 
