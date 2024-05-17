@@ -13,6 +13,7 @@ class Enemy(pygame.sprite.Sprite):          #A classe Enemy herdará as propried
         self.target_waypoint = 1 
         self.speed = constants.enemySpeed
         self.angle = 0
+        self.health = 100
         self.original_image = image
         self.image = pygame.transform.rotate(self.original_image, self.angle) 
         self.rect = self.image.get_rect()   #self.rect é derivado da image. E, get_rect() é um método
@@ -53,3 +54,7 @@ class Enemy(pygame.sprite.Sprite):          #A classe Enemy herdará as propried
         self.rect = self.image.get_rect()   
         self.rect.center = self.position
 
+    def take_damage(self, damage):
+        self.health -= damage
+        if self.health <= 0:
+            self.kill()

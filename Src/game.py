@@ -36,6 +36,7 @@ class Game():
 
             self.Draw()
             self.enemyGroup_.update()
+            self.towerGroup_.update(self.enemyGroup_) 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
@@ -55,7 +56,8 @@ class Game():
 
     def Draw(self):
         self.level_.draw(self.screen_)
-        self.towerGroup_.draw(self.screen_)
+        for tower in self.towerGroup_:
+            tower.draw(self.screen_)
         self.enemyGroup_.draw(self.screen_)
         
     def CreateTurret(self,pos):
