@@ -1,6 +1,8 @@
 from Utils import constants
+
 import pygame
 import math
+from .projectiles import Projectile
 
 class Tower(pygame.sprite.Sprite):
     def __init__(self,image,posX, posY) -> None : # colocar no construtor depois mousePosX,mousePosY
@@ -17,41 +19,59 @@ class Tower(pygame.sprite.Sprite):
         self.damage_ = 10
         self.attackCD_ = 30
         self.cdCounter_ = 0
+        projectile_image = pygame.image.load("Assets/Sprites/Projectiles/Arrow.png").convert_alpha()
 
-    def update(self, enemyGroup):
+        self.projectile_image_ = pygame.transform.scale(projectile_image,(20,40))
+ 
+
+    def update(self, enemyGroup,projectileGroup):
         if self.cdCounter_ > 0:
             self.cdCounter_ -= 1
         
-        closest_enemy = self.get_closest_enemy(enemyGroup)
-        if closest_enemy and self.cdCounter_ == 0:
-            self.attack(closest_enemy)
+        targetEnemy = self.getTargetEnemy(enemyGroup)
+        if targetEnemy and self.cdCounter_ == 0:
+            self.attack(targetEnemy,projectileGroup)
             self.cdCounter_ = self.attackCD_
     
 
-    def get_closest_enemy(self, enemyGroup):
-        closest_enemy = None
-        closest_distance = self.range_
+    def getTargetEnemy(self, enemyGroup):
+        targetEnemy = None
+        furthest_progress = -1
 
         for enemy in enemyGroup:
-            distance = self.calculate_distance(enemy)
-            if distance < closest_distance:
-                closest_enemy = enemy
-                closest_distance = distance
-    
+            if self.isWithinRange(enemy):
+                progress = enemy.target_waypoint
+                if progress > furthest_progress:
+                    furthest_progress = progress
+                    targetEnemy = enemy
 
-        return closest_enemy
+        return targetEnemy
     
-    def calculate_distance(self, enemy):
+    def isWithinRange(self, enemy):
+        distance = self.calculateDistance(enemy)
+        return distance <= self.range_
+    
+    
+    def calculateDistance(self, enemy):
         enemy_pos = enemy.rect.center
         tower_pos = self.rect.center
         return math.hypot(enemy_pos[0] - tower_pos[0], enemy_pos[1] - tower_pos[1])
     
-    def attack(self,enemy):
-        enemy.take_damage(self.damage_)
-        print(self,"atirou")
+    
+    def attack(self,enemy,projectileGroup):
+        direction = pygame.math.Vector2(enemy.rect.center) - pygame.math.Vector2(self.rect.center)
+        angle_rad = math.atan2(direction.y, direction.x)
+        angle_deg = math.degrees(angle_rad) + 180
+        rotated_projectile = pygame.transform.rotate(self.projectile_image_, -angle_deg)
+
+        adjusted_pos = (self.rect.centerx - rotated_projectile.get_width() / 2, self.rect.centery - rotated_projectile.get_height())
+        projectile = Projectile(rotated_projectile, adjusted_pos, enemy, self.damage_)
+        projectileGroup.add(projectile)
 
     def draw(self, surface):
         surface.blit(self.image, self.rect)
         pygame.draw.circle(surface, (0, 255, 0), (int(self.X_), int(self.Y_)), self.range_, 1)
+
+    
 
 

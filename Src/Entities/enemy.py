@@ -5,23 +5,30 @@ from Utils import constants
 
 #pygame sprit class
 
-class Enemy(pygame.sprite.Sprite):          #A classe Enemy herdará as propriedades da classe Sprite
-    def __init__(self, waypoints, image):
+class Enemy(pygame.sprite.Sprite ):          #A classe Enemy herdará as propriedades da classe Sprite
+    def __init__(self, waypoints, image,death_callback=None):
         pygame.sprite.Sprite.__init__(self)
         self.waypoints = waypoints
         self.position = Vector2(self.waypoints[0])
         self.target_waypoint = 1 
-        self.speed = constants.enemySpeed
+        self.speed = constants.classicEnemySpeed
         self.angle = 0
-        self.health = 100
+        self.health_ = constants.classicEnemyHealth
         self.original_image = image
         self.image = pygame.transform.rotate(self.original_image, self.angle) 
         self.rect = self.image.get_rect()   #self.rect é derivado da image. E, get_rect() é um método
         self.rect.center = self.position         #posiciona os retângulos center na variável position
+        self.flash_time = 0 
+        self.death_callback = death_callback
+        self.bounty = 50 #valor de ouro pra quando o inimigo morrer 
 
     def update(self):
         self.move()
         self.rotate()
+        if self.flash_time > 0:
+            self.flash_time -= 1
+            if self.flash_time == 0:
+                self.image = pygame.transform.rotate(self.original_image, self.angle)
     def move(self):
         #target waypoint:
         if self.target_waypoint < len(self.waypoints):
@@ -55,6 +62,16 @@ class Enemy(pygame.sprite.Sprite):          #A classe Enemy herdará as propried
         self.rect.center = self.position
 
     def take_damage(self, damage):
-        self.health -= damage
-        if self.health <= 0:
+        self.health_ -= damage
+        print(self.health_)
+        self.flash_time = 1  # Configurar o tempo de flash para um frame
+        self.image = pygame.transform.rotate(self.original_image.copy(), self.angle)  # Cópia da imagem original
+        self.image.fill((255, 0, 0), special_flags=pygame.BLEND_MULT)  # Aplicar efeito de flash vermelho
+        if self.health_ <= 0:
             self.kill()
+
+    def kill(self):
+        if self.death_callback:
+            self.death_callback(self.bounty)  # Passar o valor de ouro para o callback de morte
+        super().kill()
+  
