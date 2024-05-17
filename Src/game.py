@@ -3,6 +3,7 @@ import json
 from Utils import constants
 from Entities.tower import Tower
 from Entities.enemy import Enemy
+
 from Levels.levelLoader import Level
 class Game():
     def __init__(self):
@@ -24,18 +25,25 @@ class Game():
         self.enemyImage_ = pygame.image.load("Assets/Sprites/Enemys/enemy_1.png").convert_alpha()
         self.enemyGroup_ = pygame.sprite.Group()
         self.level_.ProcessData()
-
-        enemy = Enemy(self.level_.waypoints_, self.enemyImage_)
+        enemy = Enemy(self.level_.waypoints_, self.enemyImage_,self.enemyDied)
         self.enemyGroup_.add(enemy)
+        self.enemyCounter_ = 50
+        self.projectileGroup_ = pygame.sprite.Group()
 
     def Run(self):
         run = True
         while (run):
-
+            if self.enemyCounter_ == 0:
+                self.spawnEnemy()
+                self.enemyCounter_=50
             self.clock_.tick(constants.fps)
 
             self.Draw()
             self.enemyGroup_.update()
+            self.projectileGroup_.update()
+            self.towerGroup_.update(self.enemyGroup_,self.projectileGroup_) 
+            self.enemyCounter_-=1
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
@@ -55,8 +63,10 @@ class Game():
 
     def Draw(self):
         self.level_.draw(self.screen_)
-        self.towerGroup_.draw(self.screen_)
+        for tower in self.towerGroup_:
+            tower.draw(self.screen_)
         self.enemyGroup_.draw(self.screen_)
+        self.projectileGroup_.draw(self.screen_)
         
     def CreateTurret(self,pos):
         mousePosX = pos[0] // constants.tileSize
@@ -81,7 +91,14 @@ class Game():
             return 2
         else:
             return 0#0 se é rua
+        
+    def enemyDied(self, bounty):
+        self.gold_ += bounty
 
+
+    def spawnEnemy(self):
+        enemy = Enemy(self.level_.waypoints_, self.enemyImage_,self.enemyDied)
+        self.enemyGroup_.add(enemy)
 
             
 

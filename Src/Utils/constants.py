@@ -3,5 +3,5 @@ cols = 20
 tileSize = 48
 fps = 60
 window = ((cols*tileSize), (rows*tileSize))
-enemySpeed = 2
-
+classicEnemySpeed = 2
+classicEnemyHealth = 100
