@@ -1,5 +1,6 @@
 import pygame
 import json
+import sys
 from Utils import constants
 from Entities.tower import Tower
 from Entities.enemy import Enemy
@@ -12,7 +13,7 @@ class Game():
         
         self.clock_ = pygame.time.Clock()
         self.screen_ = pygame.display.set_mode(constants.window)
-        pygame.display.set_caption("defesa blaster ")
+        pygame.display.set_caption("Defesa Blaster ")
 
         with open('Assets/Waypoints/mapa1.tmj') as file:
             self.level_data_ = json.load(file)
@@ -40,6 +41,7 @@ class Game():
                 if event.type == pygame.QUIT:
                     run = False
                     self.Quit()
+                    sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     mousePos = pygame.mouse.get_pos()
                     if mousePos[0] <constants.window[0] and mousePos[1] <constants.window[1]:
