@@ -29,8 +29,8 @@ class Game():
         self.level_.ProcessData()
         self.buy_tower_Image_ = pygame.image.load("Assets/Sprites/Side_Menu/buy_turret.png").convert_alpha()
         self.cancelImage_ = pygame.image.load("Assets/Sprites/Side_Menu/cancel.png").convert_alpha()
-        self.towerButton_ = SideMenu(constants.tileSize + 30, 120 , self.buy_tower_Image_, True)
-        self.cancelButton_ = SideMenu(constants.tileSize + 50, 180, self.cancelImage_, True)
+        self.towerButton_ = SideMenu(constants.tileSize + 960, 120 , self.buy_tower_Image_, True)
+        self.cancelButton_ = SideMenu(constants.tileSize + 960, 180, self.cancelImage_, True)
         
 
         enemy = Enemy(self.level_.waypoints_, self.enemyImage_)
