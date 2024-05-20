@@ -62,7 +62,7 @@ class Game():
                     sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     mousePos = pygame.mouse.get_pos()
-                    if mousePos[0] <constants.window[0] and mousePos[1] < constants.window[1]:
+                    if mousePos[0] <constants.window_width:
                         if self.placing_tower == True:
                             action = self.CheckSpace(mousePos)
                             if action == 2:
