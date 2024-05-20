@@ -2,10 +2,12 @@ import pygame
 import json
 import sys
 from Utils import constants
+from Utils.side_menu import SideMenu
 from Entities.tower import Tower
 from Entities.enemy import Enemy
 
 from Levels.levelLoader import Level
+
 class Game():
     def __init__(self):
         pygame.init()
@@ -16,6 +18,8 @@ class Game():
         self.screen_ = pygame.display.set_mode(constants.window)
         pygame.display.set_caption("Defesa Blaster ")
 
+        self.placing_tower = False
+        
         with open('Assets/Waypoints/mapa1.tmj') as file:
             self.level_data_ = json.load(file)
         self.tower_ = pygame.image.load("Assets/Sprites/Towers/towerTest.png").convert_alpha()
@@ -26,6 +30,12 @@ class Game():
         self.enemyImage_ = pygame.image.load("Assets/Sprites/Enemys/enemy_1.png").convert_alpha()
         self.enemyGroup_ = pygame.sprite.Group()
         self.level_.ProcessData()
+        self.buy_tower_Image_ = pygame.image.load("Assets/Sprites/Side_Menu/buy_turret.png").convert_alpha()
+        self.cancelImage_ = pygame.image.load("Assets/Sprites/Side_Menu/cancel.png").convert_alpha()
+        self.towerButton_ = SideMenu(constants.tileSize + 960, 120 , self.buy_tower_Image_, True)
+        self.cancelButton_ = SideMenu(constants.tileSize + 960, 180, self.cancelImage_, True)
+        
+
         enemy = Enemy(self.level_.waypoints_, self.enemyImage_,self.enemyDied)
         self.enemyGroup_.add(enemy)
         self.enemyCounter_ = 50
@@ -52,12 +62,21 @@ class Game():
                     sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     mousePos = pygame.mouse.get_pos()
-                    if mousePos[0] <constants.window[0] and mousePos[1] <constants.window[1]:
-                        action = self.CheckSpace(mousePos)
-                        if action == 2:
-                            self.CreateTurret(mousePos)
-            
-              
+                    if mousePos[0] <constants.window_width:
+                        if self.placing_tower == True:
+                            action = self.CheckSpace(mousePos)
+                            if action == 2:
+                                self.CreateTurret(mousePos)
+            if self.towerButton_.draw(self.screen_):
+                self.placing_tower = True
+            if self.placing_tower == True:
+                self.cursor_rect = self.tower_.get_rect()
+                self.cursor_pos = pygame.mouse.get_pos()
+                self.cursor_rect.center = self.cursor_pos
+                if self.cursor_pos[0] <= constants.tileSize:
+                    self.screen_.blit(self.tower_, self.cursor_rect)
+                if self.cancelButton_.draw(self.screen_):
+                    self.placing_tower = False
             pygame.display.flip()
 
     def Quit(self):

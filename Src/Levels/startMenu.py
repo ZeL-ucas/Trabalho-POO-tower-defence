@@ -57,10 +57,10 @@ class StartMenu():
                     if self.easy_button_rect_.collidepoint(event.pos):
                         difficulty = 'easy'
                         run = False
-                    elif self.medium_button_rect.collidepoint(event.pos):
+                    elif self.medium_button_rect_.collidepoint(event.pos):
                         difficulty = 'medium'
                         run = False
-                    elif self.hard_button_rect.collidepoint(event.pos):
+                    elif self.hard_button_rect_.collidepoint(event.pos):
                         difficulty = 'hard'
                         run = False
 

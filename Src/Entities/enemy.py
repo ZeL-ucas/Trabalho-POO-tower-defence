@@ -63,7 +63,6 @@ class Enemy(pygame.sprite.Sprite ):          #A classe Enemy herdará as proprie
 
     def take_damage(self, damage):
         self.health_ -= damage
-        print(self.health_)
         self.flash_time = 1  # Configurar o tempo de flash para um frame
         self.image = pygame.transform.rotate(self.original_image.copy(), self.angle)  # Cópia da imagem original
         self.image.fill((255, 0, 0), special_flags=pygame.BLEND_MULT)  # Aplicar efeito de flash vermelho

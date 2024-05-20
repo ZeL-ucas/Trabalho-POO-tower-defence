@@ -2,7 +2,9 @@ rows = 15
 cols = 20
 tileSize = 48
 fps = 60
-window = ((cols*tileSize), (rows*tileSize))
+PainelSize = 240
+window_width = cols*tileSize
+window = (((cols*tileSize)+ PainelSize), (rows*tileSize))
 classicEnemySpeed = 2
 classicEnemyHealth = 100
 
