@@ -5,7 +5,7 @@ from Utils import constants
 from Utils.side_menu import SideMenu
 from Entities.tower import Tower
 from Entities.enemy import Enemy
-
+from Entities.Enemys.healer import Healer
 from Levels.levelLoader import Level
 
 class Game():
@@ -118,10 +118,10 @@ class Game():
 
 
     def spawnEnemy(self):
-        enemy = Enemy(self.level_.waypoints_, self.enemyImage_,self.enemyDied)
+        enemy = Healer(self.level_.waypoints_,self.enemyGroup_,self.enemyDied)
         self.enemyGroup_.add(enemy)
 
-            
+
 
         
 

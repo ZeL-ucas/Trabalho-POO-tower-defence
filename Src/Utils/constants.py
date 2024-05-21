@@ -7,6 +7,8 @@ window_width = cols*tileSize
 window = (((cols*tileSize)+ PainelSize), (rows*tileSize))
 classicEnemySpeed = 2
 classicEnemyHealth = 100
+healerSpeed = 0.7
+healerHealth = 150
 
 #cores
 GREEN = (87, 128, 24)

@@ -14,7 +14,8 @@ class Enemy(pygame.sprite.Sprite ):          #A classe Enemy herdará as proprie
         self.speed = constants.classicEnemySpeed
         self.angle = 0
         self.health_ = constants.classicEnemyHealth
-        self.original_image = image
+        self.max_health_ = self.health_
+        self.original_image = image 
         self.image = pygame.transform.rotate(self.original_image, self.angle) 
         self.rect = self.image.get_rect()   #self.rect é derivado da image. E, get_rect() é um método
         self.rect.center = self.position         #posiciona os retângulos center na variável position
@@ -73,4 +74,6 @@ class Enemy(pygame.sprite.Sprite ):          #A classe Enemy herdará as proprie
         if self.death_callback:
             self.death_callback(self.bounty)  # Passar o valor de ouro para o callback de morte
         super().kill()
-  
+
+    def get_max_health(self)->int:
+        return self.max_health_
