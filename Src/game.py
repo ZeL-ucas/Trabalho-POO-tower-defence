@@ -118,7 +118,7 @@ class Game():
 
 
     def spawnEnemy(self):
-        enemy = Healer(self.level_.waypoints_,self.enemyGroup_,self.enemyDied)
+        enemy = Healer(self.level_.waypoints_,self.enemyGroup_,self.screen_,self.enemyDied)
         self.enemyGroup_.add(enemy)
 
 

@@ -6,10 +6,10 @@ from Src.Utils import constants
 from Src.Entities.enemy import Enemy
 
 class Healer(Enemy):
-    def __init__(self, waypoints,enemy_group, death_callback=None)->None:
+    def __init__(self, waypoints,enemy_group, surface ,death_callback=None )->None:
         image = "Assets/Sprites/Enemys/Wisp - Animations.png"
         sprites = functions.load_sprite_sheet(image,6,9)
-
+        self.surface = surface
         self.static = sprites[0][0]
         super().__init__(waypoints, self.static, death_callback)
         self.health_ = constants.healerHealth
@@ -38,6 +38,8 @@ class Healer(Enemy):
     def apply_heal(self, enemy:Enemy)->None:
         max_health = enemy.get_max_health()  
         enemy.health_ += self.heal_amount
+        self.surface.blit(self.image, self.rect)
+        pygame.draw.circle(self.surface, (0, 255, 0), (int(self.position[0]), int(self.position[1])), self.heal_radius, 1)
 
         if enemy.health_ > max_health:
             enemy.health_ = max_health
