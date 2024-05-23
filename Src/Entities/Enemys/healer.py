@@ -19,7 +19,7 @@ class Healer(Enemy):
         self.heal_radius = 100
         self.heal_amount = 20
         self.last_heal_time = time.time()
-        self.heal_interval = 10  # 10 segundos
+        self.heal_interval = 5
     #realiza o update padrao dos inimigos mas a cada alguns segundos ele cura um pouco 
     def update(self)->None:
         super().update()
@@ -30,6 +30,9 @@ class Healer(Enemy):
     
     #checa os inimigos proximos
     def heal_nearby_enemies(self)->None:
+        self.health_ += self.heal_amount
+        if self.health_ > self.max_health_:
+            self.health_ = self.max_health_
         for enemy in self.enemy_group:
             if enemy != self and self.position.distance_to(enemy.position) <= self.heal_radius:
                 self.apply_heal(enemy)
@@ -40,6 +43,5 @@ class Healer(Enemy):
         enemy.health_ += self.heal_amount
         self.surface.blit(self.image, self.rect)
         pygame.draw.circle(self.surface, (0, 255, 0), (int(self.position[0]), int(self.position[1])), self.heal_radius, 1)
-
         if enemy.health_ > max_health:
             enemy.health_ = max_health
