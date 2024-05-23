@@ -68,10 +68,9 @@ class Tower(pygame.sprite.Sprite):
         projectile = Projectile(rotated_projectile, adjusted_pos, enemy, self.damage_)
         projectileGroup.add(projectile)
 
-    def draw(self, surface):
+    def drawRange(self,surface):
         surface.blit(self.image, self.rect)
-        # pygame.draw.circle(surface, (0, 255, 0), (int(self.X_), int(self.Y_)), self.range_, 1)
-        #removi o range por enquanto
+        pygame.draw.circle(surface, (0, 255, 0), (int(self.X_), int(self.Y_)), self.range_, 1)
 
     
 

@@ -19,7 +19,7 @@ class Game():
         pygame.display.set_caption("Defesa Blaster ")
 
         self.placing_tower = False
-        
+        self.is_select_ = False
         with open('Assets/Waypoints/mapa1.tmj') as file:
             self.level_data_ = json.load(file)
         self.tower_ = pygame.image.load("Assets/Sprites/Towers/towerTest.png").convert_alpha()
@@ -63,10 +63,9 @@ class Game():
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     mousePos = pygame.mouse.get_pos()
                     if mousePos[0] <constants.map_width:
-                        if self.placing_tower == True:
-                            action = self.CheckSpace(mousePos)
-                            if action == 2:
-                                self.CreateTurret(mousePos)
+                        action = self.CheckSpace(mousePos)
+                        if self.placing_tower == True and action == 2:
+                            self.CreateTurret(mousePos)
             if self.towerButton_.draw(self.screen_):
                 self.placing_tower = True
             if self.placing_tower == True:
@@ -84,8 +83,7 @@ class Game():
 
     def Draw(self):
         self.level_.draw(self.screen_)
-        for tower in self.towerGroup_:
-            tower.draw(self.screen_)
+        self.towerGroup_.draw(self.screen_)
         self.enemyGroup_.draw(self.screen_)
         self.projectileGroup_.draw(self.screen_)
         
@@ -107,20 +105,24 @@ class Game():
         self.mouse_tile_num = (mousePosY * constants.cols) + mousePosX
         for tower in self.towerGroup_: #tower é a torre especifica que foi clicada , sendo possivel retorna-la para upgrades
             if(mousePosX,mousePosY) == (tower.posX_,tower.posY_): #1 se já tem uma torre
-                return 1 
+                self.menuTower(tower)
+                self.is_select_ = True
+                return 1
         if self.level_.tilemap_[self.mouse_tile_num]  < 16: #2 se o espaço esta livre
             return 2
         else:
             return 0#0 se é rua
         
+        
     def enemyDied(self, bounty):
         self.gold_ += bounty
-
 
     def spawnEnemy(self):
         enemy = Enemy(self.level_.waypoints_, self.enemyImage_,self.enemyDied)
         self.enemyGroup_.add(enemy)
 
+    def menuTower(self, tower: Tower):
+        tower.drawRange(self.screen_)
             
 
         
