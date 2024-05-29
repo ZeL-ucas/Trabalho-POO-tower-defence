@@ -1,12 +1,14 @@
 import pygame
-from pygame.math import Vector2
+
 import time
 from Src.Utils import functions
 from Src.Utils import constants
 from Src.Entities.enemy import Enemy
+from .healerInterface import InterfaceHealer
+class Healer(Enemy,InterfaceHealer):
 
-class Healer(Enemy):
     def __init__(self, waypoints,enemy_group, surface ,death_callback=None )->None:
+
         image = "Assets/Sprites/Enemys/Wisp - Animations.png"
         sprites = functions.load_sprite_sheet(image,6,9)
         self.surface = surface
@@ -20,6 +22,8 @@ class Healer(Enemy):
         self.heal_amount = 20
         self.last_heal_time = time.time()
         self.heal_interval = 5
+        self.lifes = constants.healerLifes
+        self.bounty = 80
     #realiza o update padrao dos inimigos mas a cada alguns segundos ele cura um pouco 
     def update(self)->None:
         super().update()

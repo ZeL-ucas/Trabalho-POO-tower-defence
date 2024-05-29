@@ -6,6 +6,8 @@ from Utils.side_menu import SideMenu
 from Entities.tower import Tower
 from Entities.enemy import Enemy
 from Entities.Enemys.healer import Healer
+from Entities.Enemys.tank import Tank
+from Entities.Enemys.frezzer import Frezzer
 from Levels.levelLoader import Level
 
 class Game():
@@ -13,11 +15,12 @@ class Game():
         pygame.init()
 
         self.gold_ = 1000
-        
+        self.font = pygame.font.SysFont(None, 36)
         self.clock_ = pygame.time.Clock()
         self.screen_ = pygame.display.set_mode(constants.window)
         pygame.display.set_caption("Defesa Blaster ")
-
+        self.heart_image = pygame.image.load("Assets/Sprites/Icons/heart.png").convert_alpha()
+        self.heart_image = pygame.transform.scale(self.heart_image, (24, 24))
         self.placing_tower = False
         
         with open('Assets/Waypoints/mapa1.tmj') as file:
@@ -35,7 +38,7 @@ class Game():
         self.towerButton_ = SideMenu(constants.tileSize + 960, 120 , self.buy_tower_Image_, True)
         self.cancelButton_ = SideMenu(constants.tileSize + 960, 180, self.cancelImage_, True)
         
-
+        self.remainingLifes = 10
         enemy = Enemy(self.level_.waypoints_, self.enemyImage_,self.enemyDied)
         self.enemyGroup_.add(enemy)
         self.enemyCounter_ = 50
@@ -44,6 +47,7 @@ class Game():
     def Run(self):
         run = True
         while (run):
+
             if self.enemyCounter_ == 0:
                 self.spawnEnemy()
                 self.enemyCounter_=50
@@ -54,12 +58,15 @@ class Game():
             self.projectileGroup_.update()
             self.towerGroup_.update(self.enemyGroup_,self.projectileGroup_) 
             self.enemyCounter_-=1
-
+            if self.remainingLifes <=0:
+                run = False
+                self.Quit()
+ 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
                     self.Quit()
-                    sys.exit()
+
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     mousePos = pygame.mouse.get_pos()
                     if mousePos[0] <constants.window_width:
@@ -81,6 +88,7 @@ class Game():
 
     def Quit(self):
         pygame.quit()
+        sys.exit()
 
     def Draw(self):
         self.level_.draw(self.screen_)
@@ -88,6 +96,13 @@ class Game():
             tower.draw(self.screen_)
         self.enemyGroup_.draw(self.screen_)
         self.projectileGroup_.draw(self.screen_)
+
+        gold_text = self.font.render(f"${self.gold_}", True, constants.YELLOW)  
+        life_text = self.font.render(f"{self.remainingLifes}", True, constants.RED)
+
+        self.screen_.blit(gold_text, (10, 10))
+        self.screen_.blit(self.heart_image, (10, 50)) 
+        self.screen_.blit(life_text, (40, 50))
         
     def CreateTurret(self,pos):
         mousePosX = pos[0] // constants.tileSize
@@ -113,13 +128,19 @@ class Game():
         else:
             return 0#0 se é rua
         
-    def enemyDied(self, bounty):
+    def enemyDied(self, bounty,killed,lifes):
+        if not killed:
+            self.remainingLifes-= lifes 
         self.gold_ += bounty
 
 
     def spawnEnemy(self):
         enemy = Healer(self.level_.waypoints_,self.enemyGroup_,self.screen_,self.enemyDied)
+        enemy2 = Frezzer(self.level_.waypoints_, self.towerGroup_, self.enemyDied)
+        
         self.enemyGroup_.add(enemy)
+        self.enemyGroup_.add(enemy2)
+        pass
 
 
 

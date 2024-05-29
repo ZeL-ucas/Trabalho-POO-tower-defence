@@ -5,14 +5,29 @@ fps = 60
 PainelSize = 240
 window_width = cols*tileSize
 window = (((cols*tileSize)+ PainelSize), (rows*tileSize))
+#classic
 classicEnemySpeed = 2
 classicEnemyHealth = 100
-healerSpeed = 0.7
+classicEnemyLifes = 1
+#healer
+healerSpeed = 0.75
 healerHealth = 150
+healerLifes = 1 
+#tank
+tankSpeed = 1.3
+tankHealth = 500
+tankLifes= 1 
+#frezzer
+frezzerSpeed = 4
+frezzerHealth = 40
+frezzerLifes= 2
+freezeDuration = 5
 
 #cores
 GREEN = (87, 128, 24)
 BLACK = (0, 0, 0)
 BROWN_CHOC = (123, 63, 0)
 BROWN_COFFEE = (75, 54, 33)
+YELLOW = (255, 255, 0)
+RED = (255, 0, 0)
 

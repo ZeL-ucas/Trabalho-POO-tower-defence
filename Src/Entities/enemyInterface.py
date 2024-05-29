@@ -1,6 +1,6 @@
 from abc import ABC,abstractmethod
 
-def InterfaceEnemy(ABC):
+class InterfaceEnemy(ABC):
     @abstractmethod
     def update(self)->None:
         pass
