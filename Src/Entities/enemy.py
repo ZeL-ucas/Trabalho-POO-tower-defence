@@ -72,11 +72,9 @@ class Enemy(pygame.sprite.Sprite,InterfaceEnemy ):          #A classe Enemy herd
             self.kill(True)
 
     def kill(self,killed:bool)->None:
-        
         if self.alive:
             self.alive = False
             if self.death_callback:
-                print("chamou")
                 self.death_callback(self.bounty, killed, self.lifes)
             super().kill()
 
