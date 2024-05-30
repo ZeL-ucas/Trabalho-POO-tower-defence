@@ -3,7 +3,7 @@ cols = 20
 tileSize = 48
 fps = 60
 PainelSize = 240
-window_width = cols*tileSize
+map_width = cols*tileSize
 window = (((cols*tileSize)+ PainelSize), (rows*tileSize))
 #classic
 classicEnemySpeed = 2
@@ -24,10 +24,11 @@ frezzerLifes= 2
 freezeDuration = 5
 
 #cores
-GREEN = (87, 128, 24)
 BLACK = (0, 0, 0)
 BROWN_CHOC = (123, 63, 0)
 BROWN_COFFEE = (75, 54, 33)
 YELLOW = (255, 255, 0)
 RED = (255, 0, 0)
+GREEN = (87, 128, 24)
+GRAPHITE = (54, 69, 79)
 

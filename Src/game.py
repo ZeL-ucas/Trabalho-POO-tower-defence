@@ -59,6 +59,7 @@ class Game():
 
         while (run):
             self.clock_.tick(constants.fps)
+            self.screen_.fill(constants.GRAPHITE)
             self.Draw()
             self.Update()
             if self.remainingLifes <=0:
@@ -71,7 +72,7 @@ class Game():
 
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     mousePos = pygame.mouse.get_pos()
-                    if mousePos[0] <constants.window_width:
+                    if mousePos[0] <constants.map_width:
                         if self.placing_tower == True:
                             action = self.CheckSpace(mousePos)
                             if action == 2:
@@ -82,7 +83,7 @@ class Game():
                 self.cursor_rect = self.tower_.get_rect()
                 self.cursor_pos = pygame.mouse.get_pos()
                 self.cursor_rect.center = self.cursor_pos
-                if self.cursor_pos[0] <= constants.tileSize:
+                if self.cursor_pos[0] <= constants.map_width:
                     self.screen_.blit(self.tower_, self.cursor_rect)
                 if self.cancelButton_.draw(self.screen_):
                     self.placing_tower = False
