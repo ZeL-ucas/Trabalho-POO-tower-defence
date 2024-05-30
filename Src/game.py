@@ -9,9 +9,9 @@ from Entities.Enemys.healer import Healer
 from Entities.Enemys.tank import Tank
 from Entities.Enemys.frezzer import Frezzer
 from Levels.levelLoader import Level
-
+import time
 class Game():
-    def __init__(self):
+    def __init__(self)->None:
         pygame.init()
 
         self.gold_ = 1000
@@ -22,7 +22,6 @@ class Game():
         self.heart_image = pygame.image.load("Assets/Sprites/Icons/heart.png").convert_alpha()
         self.heart_image = pygame.transform.scale(self.heart_image, (24, 24))
         self.placing_tower = False
-        
         with open('Assets/Waypoints/mapa1.tmj') as file:
             self.level_data_ = json.load(file)
         self.tower_ = pygame.image.load("Assets/Sprites/Towers/towerTest.png").convert_alpha()
@@ -37,31 +36,34 @@ class Game():
         self.cancelImage_ = pygame.image.load("Assets/Sprites/Side_Menu/cancel.png").convert_alpha()
         self.towerButton_ = SideMenu(constants.tileSize + 960, 120 , self.buy_tower_Image_, True)
         self.cancelButton_ = SideMenu(constants.tileSize + 960, 180, self.cancelImage_, True)
-        
+    
         self.remainingLifes = 10
-        enemy = Enemy(self.level_.waypoints_, self.enemyImage_,self.enemyDied)
-        self.enemyGroup_.add(enemy)
-        self.enemyCounter_ = 50
+
         self.projectileGroup_ = pygame.sprite.Group()
+        self.waves = self.level_.loadWaves('Src/Utils/waves.txt')
 
-    def Run(self):
+        self.currentWaveIndex = 0
+
+        self.currentWave = self.waves[self.currentWaveIndex] if self.waves else []
+        self.enemyList = []
+        self.lastSpawnTime = time.time()
+        self.enemyTypes = {
+            "Classic": self.createClassicEnemy,
+            "Healer": self.createHealerEnemy,
+            "Tank": self.createTankEnemy,
+            "Frezzer": self.createFrezzerEnemy
+        }
+
+    def Run(self)->None:
         run = True
+
         while (run):
-
-            if self.enemyCounter_ == 0:
-                self.spawnEnemy()
-                self.enemyCounter_=50
             self.clock_.tick(constants.fps)
-
             self.Draw()
-            self.enemyGroup_.update()
-            self.projectileGroup_.update()
-            self.towerGroup_.update(self.enemyGroup_,self.projectileGroup_) 
-            self.enemyCounter_-=1
+            self.Update()
             if self.remainingLifes <=0:
                 run = False
                 self.Quit()
- 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
@@ -86,11 +88,11 @@ class Game():
                     self.placing_tower = False
             pygame.display.flip()
 
-    def Quit(self):
+    def Quit(self)->None:
         pygame.quit()
         sys.exit()
 
-    def Draw(self):
+    def Draw(self)->None:
         self.level_.draw(self.screen_)
         for tower in self.towerGroup_:
             tower.draw(self.screen_)
@@ -99,12 +101,13 @@ class Game():
 
         gold_text = self.font.render(f"${self.gold_}", True, constants.YELLOW)  
         life_text = self.font.render(f"{self.remainingLifes}", True, constants.RED)
-
+        waves_text = self.font.render(f"{self.currentWaveIndex}/{len(self.waves)}", True, constants.RED)
         self.screen_.blit(gold_text, (10, 10))
         self.screen_.blit(self.heart_image, (10, 50)) 
         self.screen_.blit(life_text, (40, 50))
+        self.screen_.blit(waves_text, (10, 100))
         
-    def CreateTurret(self,pos):
+    def CreateTurret(self,pos)->None:
         mousePosX = pos[0] // constants.tileSize
         mousePosY = pos[1] // constants.tileSize
 
@@ -128,21 +131,55 @@ class Game():
         else:
             return 0#0 se é rua
         
-    def enemyDied(self, bounty,killed,lifes):
+    def EnemyDied(self, bounty,killed,lifes)->None:
         if not killed:
             self.remainingLifes-= lifes 
         self.gold_ += bounty
 
 
-    def spawnEnemy(self):
-        enemy = Healer(self.level_.waypoints_,self.enemyGroup_,self.screen_,self.enemyDied)
-        enemy2 = Frezzer(self.level_.waypoints_, self.towerGroup_, self.enemyDied)
-        
-        self.enemyGroup_.add(enemy)
-        self.enemyGroup_.add(enemy2)
-        pass
+    def Waves(self)->None:
+        current_time = time.time()
 
+        if self.currentWave:
+            count, enemy_type, delay = self.currentWave[0]
 
+            if current_time - self.lastSpawnTime >= delay:
+                self.SpawnEnemy(enemy_type)
+                self.lastSpawnTime = current_time
+                count -= 1
+
+                if count > 0:
+                    self.currentWave[0] = (count, enemy_type, delay)
+                else:
+                    self.currentWave.pop(0)
+
+        elif len(self.enemyGroup_) == 0 and self.currentWaveIndex + 1 < len(self.waves):
+            self.currentWaveIndex += 1
+            self.currentWave = self.waves[self.currentWaveIndex]
+
+    def SpawnEnemy(self, enemy_type)->None:
+        if enemy_type in self.enemyTypes:
+            create_enemy_func = self.enemyTypes[enemy_type]
+            new_enemy = create_enemy_func()
+            self.enemyGroup_.add(new_enemy)
+
+    def createClassicEnemy(self)->Enemy:
+        return Enemy(self.level_.waypoints_, self.enemyImage_, self.EnemyDied)
+
+    def createHealerEnemy(self)->Healer:
+        return Healer(self.level_.waypoints_, self.enemyGroup_, self.screen_, self.EnemyDied)
+
+    def createTankEnemy(self)->Tank:
+        return Tank(self.level_.waypoints_, self.EnemyDied)
+
+    def createFrezzerEnemy(self)->Frezzer:
+        return Frezzer(self.level_.waypoints_, self.towerGroup_, self.EnemyDied)
+    
+    def Update(self)->None:
+        self.Waves()
+        self.enemyGroup_.update()
+        self.projectileGroup_.update()
+        self.towerGroup_.update(self.enemyGroup_,self.projectileGroup_) 
 
         
 
