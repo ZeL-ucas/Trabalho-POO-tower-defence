@@ -111,9 +111,11 @@ class Game():
         self.enemyGroup_.draw(self.screen_)
         self.projectileGroup_.draw(self.screen_)
         
-    def CreateTurret(self, pos) -> None:
+    def CreateTurret(self, pos:list) -> None:
         """
         Cria uma torre na posição especificada se o jogador tiver ouro suficiente.
+        
+        Observação: A variável "pos" é a coordenada X,Y. 
         """
         mousePosX = pos[0] // constants.tileSize
         mousePosY = pos[1] // constants.tileSize
@@ -126,7 +128,7 @@ class Game():
             self.towerGroup_.add(tower)
             self.gold_ -= 100
 
-    def CheckSpace(self, pos) -> int:
+    def CheckSpace(self, pos:list) -> int:
         """
         Verifica se o espaço especificado está disponível para colocar uma torre.
         Retorna:
@@ -160,7 +162,7 @@ class Game():
         enemy = Enemy(self.level_.waypoints_, self.enemyImage_, self.enemyDied)
         self.enemyGroup_.add(enemy)
 
-    def menuTower(self, tower) -> None:
+    def menuTower(self, tower:Tower) -> None:
         """
         Mostra o menu de upgrade para a torre especificada.
         """
@@ -168,7 +170,7 @@ class Game():
         self.tower_menu = TowerMenu(tower, self.screen_, self.upgradeImage_)
 
 
-    def is_click_outside_menu(self, mouse_pos) -> bool:
+    def is_click_outside_menu(self, mouse_pos:float) -> bool:
         """
         Verifica se um clique do mouse está fora do menu de upgrade da torre.
         """
@@ -179,7 +181,7 @@ class Game():
             return distance > radius
         return False
 
-    def UpgradeTower(self, tower) -> None:
+    def UpgradeTower(self, tower:Tower) -> None:
         """
         Realiza o upgrade da torre se o jogador tiver ouro suficiente.
         """
