@@ -10,7 +10,11 @@ from Levels.levelLoader import Level
 from Utils.towerMenu import TowerMenu
 
 class Game():
-    def __init__(self):
+    def __init__(self) -> None:
+        """
+        Inicializa a instância do jogo, configura a tela, carrega os recursos
+        e inicializa os grupos de sprites.
+        """
         pygame.init()
 
         self.gold_ = 1000
@@ -44,7 +48,10 @@ class Game():
         self.enemyCounter_ = 50
         self.projectileGroup_ = pygame.sprite.Group()
 
-    def Run(self):
+    def Run(self) -> None:
+        """
+        Inicia o loop principal do jogo.
+        """
         run = True
         while run:
             if self.enemyCounter_ == 0:
@@ -89,16 +96,25 @@ class Game():
                 self.tower_menu.draw()
             pygame.display.flip()
 
-    def Quit(self):
+    def Quit(self) -> None:
+        """
+        Encerra o Pygame e fecha o jogo.
+        """
         pygame.quit()
 
-    def Draw(self):
+    def Draw(self) -> None:
+        """
+        Desenha todos os elementos do jogo na tela.
+        """
         self.level_.draw(self.screen_)
         self.towerGroup_.draw(self.screen_)
         self.enemyGroup_.draw(self.screen_)
         self.projectileGroup_.draw(self.screen_)
         
-    def CreateTurret(self, pos):
+    def CreateTurret(self, pos) -> None:
+        """
+        Cria uma torre na posição especificada se o jogador tiver ouro suficiente.
+        """
         mousePosX = pos[0] // constants.tileSize
         mousePosY = pos[1] // constants.tileSize
 
@@ -111,6 +127,13 @@ class Game():
             self.gold_ -= 100
 
     def CheckSpace(self, pos) -> int:
+        """
+        Verifica se o espaço especificado está disponível para colocar uma torre.
+        Retorna:
+            1 se o espaço já está ocupado por uma torre.
+            2 se o espaço está disponível.
+            0 se o espaço não é válido.
+        """
         mousePosX = pos[0] // constants.tileSize
         mousePosY = pos[1] // constants.tileSize
         self.mouse_tile_num = (mousePosY * constants.cols) + mousePosX
@@ -124,19 +147,31 @@ class Game():
         else:
             return 0
 
-    def enemyDied(self, bounty):
+    def enemyDied(self, bounty: int) -> None:
+        """
+        Incrementa a quantidade de ouro do jogador quando um inimigo é derrotado.
+        """
         self.gold_ += bounty
 
-    def spawnEnemy(self):
+    def spawnEnemy(self) -> None:
+        """
+        Cria um novo inimigo e adiciona ao grupo de inimigos.
+        """
         enemy = Enemy(self.level_.waypoints_, self.enemyImage_, self.enemyDied)
         self.enemyGroup_.add(enemy)
 
-    def menuTower(self, tower: Tower):
+    def menuTower(self, tower) -> None:
+        """
+        Mostra o menu de upgrade para a torre especificada.
+        """
         tower.drawRange(self.screen_)
         self.tower_menu = TowerMenu(tower, self.screen_, self.upgradeImage_)
 
 
-    def is_click_outside_menu(self, mouse_pos):
+    def is_click_outside_menu(self, mouse_pos) -> bool:
+        """
+        Verifica se um clique do mouse está fora do menu de upgrade da torre.
+        """
         if self.tower_menu:
             tower_pos = self.tower_menu.tower.get_position()
             radius = self.tower_menu.radius
@@ -144,8 +179,10 @@ class Game():
             return distance > radius
         return False
 
-    def UpgradeTower(self, tower):
+    def UpgradeTower(self, tower) -> None:
+        """
+        Realiza o upgrade da torre se o jogador tiver ouro suficiente.
+        """
         if self.gold_ >= self.tower_menu.tower.upcost_ and self.tower_menu.tower.upgrade_level_ < constants.levelMaxTower:
             self.gold_ -= self.tower_menu.tower.upcost_
-            tower.upgrade()
-            
+            tower.upgrade()   
