@@ -55,10 +55,10 @@ class Game():
         self.enemyList = []
         self.lastSpawnTime = time.time()
         self.enemyTypes = {
-            "Classic": self.createClassicEnemy,
-            "Healer": self.createHealerEnemy,
-            "Tank": self.createTankEnemy,
-            "Frezzer": self.createFrezzerEnemy
+            "Classic": self.CreateClassicEnemy,
+            "Healer": self.CreateHealerEnemy,
+            "Tank": self.CreateTankEnemy,
+            "Frezzer": self.CreateFrezzerEnemy
         }
 
     def Run(self)->None:
@@ -82,7 +82,7 @@ class Game():
                     if self.tower_menu and self.tower_menu.is_clicked(mousePos):
                         self.UpgradeTower(self.tower_menu.tower)
                         self.tower_menu = None
-                    elif self.is_click_outside_menu(mousePos):
+                    elif self.Is_click_outside_menu(mousePos):
                         self.tower_menu = None
                     else:
                         if mousePos[0] < constants.map_width:
@@ -165,7 +165,7 @@ class Game():
         else:
             return 0
 
-    def enemyDied(self, bounty: int) -> None:
+    def EnemyDied(self, bounty: int) -> None:
         """
         Incrementa a quantidade de ouro do jogador quando um inimigo é derrotado.
         """
@@ -198,16 +198,16 @@ class Game():
             new_enemy = create_enemy_func()
             self.enemyGroup_.add(new_enemy)
 
-    def createClassicEnemy(self)->Enemy:
+    def CreateClassicEnemy(self)->Enemy:
         return Enemy(self.level_.waypoints_, self.enemyImage_, self.EnemyDied)
 
-    def createHealerEnemy(self)->Healer:
+    def CreateHealerEnemy(self)->Healer:
         return Healer(self.level_.waypoints_, self.enemyGroup_, self.screen_, self.EnemyDied)
 
-    def createTankEnemy(self)->Tank:
+    def CreateTankEnemy(self)->Tank:
         return Tank(self.level_.waypoints_, self.EnemyDied)
 
-    def createFrezzerEnemy(self)->Frezzer:
+    def CreateFrezzerEnemy(self)->Frezzer:
         return Frezzer(self.level_.waypoints_, self.towerGroup_, self.EnemyDied)
     
     def Update(self)->None:
@@ -218,7 +218,7 @@ class Game():
 
         
 
-    def is_click_outside_menu(self, mouse_pos:float) -> bool:
+    def Is_click_outside_menu(self, mouse_pos:float) -> bool:
         """
         Verifica se um clique do mouse está fora do menu de upgrade da torre.
         """
