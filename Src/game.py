@@ -164,6 +164,12 @@ class Game():
             return 2
         else:
             return 0
+    def menuTower(self, tower:Tower) -> None:
+        """
+        Mostra o menu de upgrade para a torre especificada.
+        """
+        tower.drawRange(self.screen_)
+        self.tower_menu = TowerMenu(tower, self.screen_, self.upgradeImage_)
 
     def EnemyDied(self, bounty: int) -> None:
         """
