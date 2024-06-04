@@ -25,11 +25,13 @@ class Enemy(pygame.sprite.Sprite,InterfaceEnemy ):          #A classe Enemy herd
         self.bounty = 50  # valor de ouro pra quando o inimigo morrer
 
         self.sprite_sheet = self.original_image
-        self.animation_list = self.load_images()
+        self.frames=13
+        self.animation_list = self.load_images(self.frames)
         self.frame_index = 0
         self.update_time = pygame.time.get_ticks()
         self.image_enemy = self.animation_list[self.frame_index]
         self.image = self.image_enemy
+        
 
     def update(self):
         self.move()
@@ -90,11 +92,11 @@ class Enemy(pygame.sprite.Sprite,InterfaceEnemy ):          #A classe Enemy herd
     def get_max_health(self)->int:
         return self.max_health_
 
-    def load_images(self):
+    def load_images(self,frames):
         # Extract images from spritesheet
         size = self.sprite_sheet.get_height()
         animation_list = []
-        for x in range(constants.ANIMATION_STEPS_ENEMY):
+        for x in range(frames):
             temp_img = self.sprite_sheet.subsurface(x * size, 0, size, size)
             animation_list.append(temp_img)
         return animation_list

@@ -29,17 +29,18 @@ class Tower(pygame.sprite.Sprite):
         self.projectile_image_ = pygame.transform.scale(projectile_image,(20,40))
         self.frozen = False
         self.freeze_timer = 0
-        self.original_image = self.image.copy()
+
 
  
         self.sprite_sheet = pygame.image.load("Assets/Sprites/Towers/TowerClassicTop.png")
         self.animation_list = self.load_images()
         self.frame_index = 0
         self.update_time = pygame.time.get_ticks()
-        self.image_enemy = self.animation_list[self.frame_index]
-        self.image = self.image_enemy
+        self.image_weapon = self.animation_list[self.frame_index]
+        self.image = self.image_weapon
+        self.original_image = self.image.copy()
 
-    def update(self, enemyGroup,projectileGroup):
+    def update(self, enemyGroup,projectileGroup,surface):
         if self.frozen:
             if self.freeze_timer > 0:
                 self.freeze_timer -= 1

@@ -219,7 +219,7 @@ class Game():
         self.Waves()
         self.enemyGroup_.update()
         self.projectileGroup_.update()
-        self.towerGroup_.update(self.enemyGroup_,self.projectileGroup_) 
+        self.towerGroup_.update(self.enemyGroup_,self.projectileGroup_,self.screen_) 
 
         
 

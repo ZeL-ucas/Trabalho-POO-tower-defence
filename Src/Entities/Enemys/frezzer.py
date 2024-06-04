@@ -9,6 +9,7 @@ class Frezzer(Enemy):
         image = "Assets/Sprites/Enemys/Voidbutterfly.png"
         sprites = functions.load_sprite_sheet(image,9,10)
         self.static = sprites[0][0]
+        self.frames = 7
         super().__init__(waypoints, self.static, death_callback)
         self.health_= constants.frezzerHealth
         self.speed = constants.frezzerSpeed
