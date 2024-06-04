@@ -96,3 +96,10 @@ class Tower(pygame.sprite.Sprite):
 
     def get_position(self):
             return (int(self.X_), int(self.Y_))
+
+    def upgrade(self):
+        self.upgrade_level_ += 1
+        self.range_ = towerData[self.upgrade_level_ - 1].get("range")
+        self.damage_ = towerData[self.upgrade_level_ -1].get("damage")
+        self.attackCD_ = towerData[self.upgrade_level_ - 1].get("cooldown")
+        self.upcost_ = towerData[self.upgrade_level_ - 1].get("upcost")
