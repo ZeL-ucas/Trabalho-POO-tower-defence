@@ -3,6 +3,7 @@ from Utils import constants
 import pygame
 import math
 from .projectiles import Projectile
+from Utils.towerData import towerData
 
 class Tower(pygame.sprite.Sprite):
     def __init__(self,image,posX, posY) -> None : # colocar no construtor depois mousePosX,mousePosY
@@ -15,9 +16,11 @@ class Tower(pygame.sprite.Sprite):
         self.image = image
         self.rect = self.image.get_rect()
         self.rect.center = (self.X_, self.Y_)
-        self.range_ = 150
-        self.damage_ = 10
-        self.attackCD_ = 30
+        self.upgrade_level_ = 1
+        self.range_ = towerData[self.upgrade_level_ - 1].get("range")
+        self.damage_ = towerData[self.upgrade_level_ -1].get("damage")
+        self.attackCD_ = towerData[self.upgrade_level_ - 1].get("cooldown")
+        self.upcost_ = towerData[self.upgrade_level_ - 1].get("upcost")
         self.cdCounter_ = 0
         projectile_image = pygame.image.load("Assets/Sprites/Projectiles/Arrow.png").convert_alpha()
 
@@ -79,10 +82,9 @@ class Tower(pygame.sprite.Sprite):
         projectile = Projectile(rotated_projectile, adjusted_pos, enemy, self.damage_)
         projectileGroup.add(projectile)
 
-    def draw(self, surface):
+    def drawRange(self,surface):
         surface.blit(self.image, self.rect)
-        #pygame.draw.circle(surface, (0, 255, 0), (int(self.X_), int(self.Y_)), self.range_, 1)
-        #removi o range por enquanto
+        pygame.draw.circle(surface, constants.LIGHT_GREY, (int(self.X_), int(self.Y_)), self.range_, 1)
 
     def freeze(self, duration):
         self.frozen = True
@@ -92,4 +94,5 @@ class Tower(pygame.sprite.Sprite):
         self.image = frozen_image
     
 
-
+    def get_position(self):
+            return (int(self.X_), int(self.Y_))
