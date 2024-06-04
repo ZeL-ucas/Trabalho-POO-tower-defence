@@ -2,9 +2,11 @@ import pygame
 from pygame.math import Vector2
 import math
 from Utils import constants
+from .enemyInterface import InterfaceEnemy
+#pygame sprit class
 
-class Enemy(pygame.sprite.Sprite):
-    def __init__(self, waypoints, image, death_callback=None):
+class Enemy(pygame.sprite.Sprite,InterfaceEnemy ):          #A classe Enemy herdará as propriedades da classe Sprite
+    def __init__(self, waypoints, image,death_callback=None)->None:
         pygame.sprite.Sprite.__init__(self)
         self.waypoints = waypoints
         self.position = Vector2(self.waypoints[0])
@@ -17,6 +19,9 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.center = self.position #posiciona os retângulos center na variável position
         self.flash_time = 0
         self.death_callback = death_callback
+        self.bounty = 50 #valor de ouro pra quando o inimigo morrer 
+        self.lifes = constants.classicEnemyLifes
+        self.alive = True
         self.bounty = 50  # valor de ouro pra quando o inimigo morrer
 
         self.sprite_sheet = self.original_image
@@ -41,10 +46,9 @@ class Enemy(pygame.sprite.Sprite):
             self.target = Vector2(self.waypoints[self.target_waypoint])
             self.movement = self.target - self.position 
         else:
-            # Enemy chegou ao fim do caminho
-            self.kill()
-
-        # Distance to target
+            #enemy chegou ao fim do caminho
+            self.kill(False)
+        #Distance to target
         distance = self.movement.length()
 
         # Distance is greater than the enemy speed
@@ -55,8 +59,8 @@ class Enemy(pygame.sprite.Sprite):
                 self.position += self.movement.normalize() * distance
             self.target_waypoint += 1
 
-    def rotate(self):
-        # Distance to next waypoint
+    def rotate(self)->None:
+        #distance to next waypoint
         distance = self.target - self.position
 
         # Angle
@@ -67,19 +71,24 @@ class Enemy(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()   
         self.rect.center = self.position
 
-    def take_damage(self, damage):
+    def take_damage(self, damage:int)->None:
         self.health_ -= damage
         self.flash_time = 1  # Configurar o tempo de flash para um frame
         flashed_image = self.animation_list[self.frame_index].copy()
         flashed_image.fill((255, 0, 0), special_flags=pygame.BLEND_MULT)  # Aplicar efeito de flash vermelho
         self.image = pygame.transform.rotate(flashed_image, self.angle)
         if self.health_ <= 0:
-            self.kill()
+            self.kill(True)
 
-    def kill(self):
-        if self.death_callback:
-            self.death_callback(self.bounty)  # Passar o valor de ouro para o callback de morte
-        super().kill()
+    def kill(self,killed:bool)->None:
+        if self.alive:
+            self.alive = False
+            if self.death_callback:
+                self.death_callback(self.bounty, killed, self.lifes)
+            super().kill()
+
+    def get_max_health(self)->int:
+        return self.max_health_
 
     def load_images(self):
         # Extract images from spritesheet

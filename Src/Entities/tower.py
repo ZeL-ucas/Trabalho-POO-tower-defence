@@ -27,6 +27,11 @@ class Tower(pygame.sprite.Sprite):
         self.cdCounter_ = 0
         projectile_image = pygame.image.load("Assets/Sprites/Projectiles/Arrow.png").convert_alpha()
         self.projectile_image_ = pygame.transform.scale(projectile_image,(20,40))
+        self.frozen = False
+        self.freeze_timer = 0
+        self.original_image = self.image.copy()
+
+ 
         self.sprite_sheet = pygame.image.load("Assets/Sprites/Towers/TowerClassicTop.png")
         self.animation_list = self.load_images()
         self.frame_index = 0
@@ -34,14 +39,21 @@ class Tower(pygame.sprite.Sprite):
         self.image_enemy = self.animation_list[self.frame_index]
         self.image = self.image_enemy
 
-    def update(self, enemyGroup,projectileGroup,surface):
-        if self.cdCounter_ > 0:
-            self.cdCounter_ -= 1
-        
-        targetEnemy = self.getTargetEnemy(enemyGroup)
-        if targetEnemy and self.cdCounter_ == 0:
-            self.attack(targetEnemy,projectileGroup)
-            self.cdCounter_ = self.attackCD_
+    def update(self, enemyGroup,projectileGroup):
+        if self.frozen:
+            if self.freeze_timer > 0:
+                self.freeze_timer -= 1
+            else:
+                self.frozen = False
+                self.image = self.original_image
+        else:
+            if self.cdCounter_ > 0:
+                self.cdCounter_ -= 1
+            
+            targetEnemy = self.getTargetEnemy(enemyGroup)
+            if targetEnemy and self.cdCounter_ == 0:
+                self.attack(targetEnemy, projectileGroup)
+                self.cdCounter_ = self.attackCD_
         self.play_animation()
     
     # Desenhe a imagem base primeiro
@@ -89,6 +101,17 @@ class Tower(pygame.sprite.Sprite):
         surface.blit(self.image, self.rect)
 
         pygame.draw.circle(surface, constants.LIGHT_GREY, (int(self.X_), int(self.Y_)), self.range_, 1)
+
+    def freeze(self, duration):
+        self.frozen = True
+        self.freeze_timer = (self.attackCD_  *duration)
+        frozen_image = self.original_image.copy()
+        frozen_image.fill((0, 0, 255), special_flags=pygame.BLEND_MULT)
+        self.image = frozen_image
+    
+
+    def get_position(self):
+            return (int(self.X_), int(self.Y_))
 
     def upgrade(self):
         self.upgrade_level_ += 1
