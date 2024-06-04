@@ -62,7 +62,7 @@ class Game():
             self.Draw()
             self.enemyGroup_.update()
             self.projectileGroup_.update()
-            self.towerGroup_.update(self.enemyGroup_, self.projectileGroup_) 
+            self.towerGroup_.update(self.enemyGroup_, self.projectileGroup_,self.screen_) 
             self.enemyCounter_ -= 1
 
             for event in pygame.event.get():

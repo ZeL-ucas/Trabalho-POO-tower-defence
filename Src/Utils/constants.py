@@ -20,4 +20,4 @@ LIGHT_GREY = (211,211,211)
 
 #constants animations
 #enemy
-ANIMATION_STEPS_ENEMY = 8
+ANIMATION_STEPS_ENEMY = 13

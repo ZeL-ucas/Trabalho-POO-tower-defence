@@ -13,9 +13,12 @@ class Tower(pygame.sprite.Sprite):
         self.price = 50
         self.X_ = (self.posX_ + 0.5) * constants.tileSize
         self.Y_ = (self.posY_ + 0.2) * constants.tileSize #valor diferente para a torre atual não ficar em cima dos blocos
-        self.image = image
-        self.rect = self.image.get_rect()
+        self.imageBase = image
+        self.rect = self.imageBase.get_rect()
         self.rect.center = (self.X_, self.Y_)
+        self.rectBase = self.imageBase.get_rect()
+        self.rectBase.center = (self.X_, self.Y_)
+
         self.upgrade_level_ = 1
         self.range_ = towerData[self.upgrade_level_ - 1].get("range")
         self.damage_ = towerData[self.upgrade_level_ -1].get("damage")
@@ -23,11 +26,15 @@ class Tower(pygame.sprite.Sprite):
         self.upcost_ = towerData[self.upgrade_level_ - 1].get("upcost")
         self.cdCounter_ = 0
         projectile_image = pygame.image.load("Assets/Sprites/Projectiles/Arrow.png").convert_alpha()
-
         self.projectile_image_ = pygame.transform.scale(projectile_image,(20,40))
- 
+        self.sprite_sheet = pygame.image.load("Assets/Sprites/Towers/TowerClassicTop.png")
+        self.animation_list = self.load_images()
+        self.frame_index = 0
+        self.update_time = pygame.time.get_ticks()
+        self.image_enemy = self.animation_list[self.frame_index]
+        self.image = self.image_enemy
 
-    def update(self, enemyGroup,projectileGroup):
+    def update(self, enemyGroup,projectileGroup,surface):
         if self.cdCounter_ > 0:
             self.cdCounter_ -= 1
         
@@ -35,7 +42,14 @@ class Tower(pygame.sprite.Sprite):
         if targetEnemy and self.cdCounter_ == 0:
             self.attack(targetEnemy,projectileGroup)
             self.cdCounter_ = self.attackCD_
+        self.play_animation()
     
+    # Desenhe a imagem base primeiro
+        surface.blit(self.imageBase, self.rectBase)
+    
+    # Depois, desenhe a imagem da torre
+        surface.blit(self.image, self.rect)
+
 
     def getTargetEnemy(self, enemyGroup):
         targetEnemy = None
@@ -73,6 +87,7 @@ class Tower(pygame.sprite.Sprite):
 
     def drawRange(self,surface):
         surface.blit(self.image, self.rect)
+
         pygame.draw.circle(surface, constants.LIGHT_GREY, (int(self.X_), int(self.Y_)), self.range_, 1)
 
     def upgrade(self):
@@ -84,3 +99,23 @@ class Tower(pygame.sprite.Sprite):
 
     def get_position(self):
             return (int(self.X_), int(self.Y_))
+    
+    def load_images(self):
+        # Extract images from spritesheet
+        size = self.sprite_sheet.get_height()
+        animation_list = []
+        for x in range(29):
+            temp_img = self.sprite_sheet.subsurface(x * size, 0, size, size)
+            animation_list.append(temp_img)
+        return animation_list
+
+    def play_animation(self):
+        # Atualizar imagem
+        current_time = pygame.time.get_ticks()
+        if current_time - self.update_time > 10:  # Atualizar a cada 100ms
+            self.frame_index = (self.frame_index + 1) % len(self.animation_list)
+            self.update_time = current_time
+        self.image = pygame.transform.rotate(self.animation_list[self.frame_index], 0)
+        self.rect = self.image.get_rect()
+        self.rect.center = (self.X_,(self.Y_ -20 ))
+
