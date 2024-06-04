@@ -171,10 +171,9 @@ class Game():
         tower.drawRange(self.screen_)
         self.tower_menu = TowerMenu(tower, self.screen_, self.upgradeImage_)
 
-    def EnemyDied(self, bounty: int) -> None:
-        """
-        Incrementa a quantidade de ouro do jogador quando um inimigo é derrotado.
-        """
+    def EnemyDied(self, bounty,killed,lifes)->None:
+        if not killed:
+            self.remainingLifes-= lifes 
         self.gold_ += bounty
 
 
