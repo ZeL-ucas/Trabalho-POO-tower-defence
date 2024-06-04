@@ -4,7 +4,7 @@ import time
 from Src.Utils import functions
 from Src.Utils import constants
 from Src.Entities.enemy import Enemy
-from .healerInterface import InterfaceHealer
+from ...Interfaces.healerInterface import InterfaceHealer
 class Healer(Enemy,InterfaceHealer):
 
     def __init__(self, waypoints,enemy_group, surface ,death_callback=None )->None:
@@ -49,3 +49,8 @@ class Healer(Enemy,InterfaceHealer):
         pygame.draw.circle(self.surface, (0, 255, 0), (int(self.position[0]), int(self.position[1])), self.heal_radius, 1)
         if enemy.health_ > max_health:
             enemy.health_ = max_health
+
+        """
+        Aplica a cura a um inimigo específico, desenha o curador na superfície e desenha um círculo 
+        representando o raio de cura. Garante que a vida do inimigo não exceda sua vida máxima.
+        """

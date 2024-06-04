@@ -1,14 +1,14 @@
 import pygame 
 
 class Level():
-    def __init__(self, data, map):
+    def __init__(self, data, map)->None:
         self.waypoints_ = []
         self.data_level_ = data
         self.map_ = map
         self.tilemap_ = []
         self.waves = []
 
-    def ProcessData(self):
+    def ProcessData(self)->None:
         for layer in self.data_level_["layers"]:
             if layer["name"] == "waypoints":
                 for obj in layer["objects"]:
@@ -18,7 +18,7 @@ class Level():
             elif layer["name"] == "Plano de fundo":
                 self.tilemap_ = layer["data"]
 
-    def loadWaves(self, filename):
+    def loadWaves(self, filename)->list:
         with open(filename, 'r') as file:
             current_wave = []
             for line in file:
@@ -39,5 +39,5 @@ class Level():
 
         return self.waves         
 
-    def draw(self, surface):
+    def draw(self, surface)->None:
         surface.blit(self.map_, (0, 0))

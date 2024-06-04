@@ -1,7 +1,9 @@
 import pygame
 import math
-class Projectile(pygame.sprite.Sprite):
-    def __init__(self, image, start_pos, target, damage):
+from Interfaces.projectilesInterface import InterfaceProjectiles
+
+class Projectile(pygame.sprite.Sprite, InterfaceProjectiles):
+    def __init__(self, image, start_pos, target, damage) -> None:
         pygame.sprite.Sprite.__init__(self)
         self.image = image
         self.original_image = image
@@ -11,7 +13,7 @@ class Projectile(pygame.sprite.Sprite):
         self.damage = damage
         self.speed = 7
 
-    def update(self):
+    def update(self) -> None:
         direction = pygame.math.Vector2(self.target.rect.center) - pygame.math.Vector2(self.rect.center)
         distance = direction.length()
         if distance <= self.speed:
