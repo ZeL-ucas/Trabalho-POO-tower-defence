@@ -25,16 +25,27 @@ class Tower(pygame.sprite.Sprite):
         projectile_image = pygame.image.load("Assets/Sprites/Projectiles/Arrow.png").convert_alpha()
 
         self.projectile_image_ = pygame.transform.scale(projectile_image,(20,40))
+        self.frozen = False
+        self.freeze_timer = 0
+        self.original_image = self.image.copy()
+
  
 
     def update(self, enemyGroup,projectileGroup):
-        if self.cdCounter_ > 0:
-            self.cdCounter_ -= 1
-        
-        targetEnemy = self.getTargetEnemy(enemyGroup)
-        if targetEnemy and self.cdCounter_ == 0:
-            self.attack(targetEnemy,projectileGroup)
-            self.cdCounter_ = self.attackCD_
+        if self.frozen:
+            if self.freeze_timer > 0:
+                self.freeze_timer -= 1
+            else:
+                self.frozen = False
+                self.image = self.original_image
+        else:
+            if self.cdCounter_ > 0:
+                self.cdCounter_ -= 1
+            
+            targetEnemy = self.getTargetEnemy(enemyGroup)
+            if targetEnemy and self.cdCounter_ == 0:
+                self.attack(targetEnemy, projectileGroup)
+                self.cdCounter_ = self.attackCD_
     
 
     def getTargetEnemy(self, enemyGroup):
@@ -75,12 +86,20 @@ class Tower(pygame.sprite.Sprite):
         surface.blit(self.image, self.rect)
         pygame.draw.circle(surface, constants.LIGHT_GREY, (int(self.X_), int(self.Y_)), self.range_, 1)
 
+    def freeze(self, duration):
+        self.frozen = True
+        self.freeze_timer = (self.attackCD_  *duration)
+        frozen_image = self.original_image.copy()
+        frozen_image.fill((0, 0, 255), special_flags=pygame.BLEND_MULT)
+        self.image = frozen_image
+    
+
+    def get_position(self):
+            return (int(self.X_), int(self.Y_))
+
     def upgrade(self):
         self.upgrade_level_ += 1
         self.range_ = towerData[self.upgrade_level_ - 1].get("range")
         self.damage_ = towerData[self.upgrade_level_ -1].get("damage")
         self.attackCD_ = towerData[self.upgrade_level_ - 1].get("cooldown")
         self.upcost_ = towerData[self.upgrade_level_ - 1].get("upcost")
-
-    def get_position(self):
-            return (int(self.X_), int(self.Y_))
