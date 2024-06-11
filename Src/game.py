@@ -35,7 +35,7 @@ class Game():
         self.mapa_ = pygame.image.load("Assets/Backgrounds/mapa.png").convert_alpha()
         self.level_ = Level(self.level_data_, self.mapa_)
         self.towerGroup_ = pygame.sprite.Group()
-        self.enemyImage_ = pygame.image.load("Assets/Sprites/Enemys/EnemyClassic/enemy_3.png").convert_alpha()
+        self.enemyImage_ = pygame.image.load("Assets/Sprites/Enemys/EnemyClassic/enemy_classic.png").convert_alpha()
         self.enemyGroup_ = pygame.sprite.Group()
         self.level_.ProcessData()
         self.buy_tower_Image_ = pygame.image.load("Assets/Sprites/Side_Menu/buy_turret.png").convert_alpha()

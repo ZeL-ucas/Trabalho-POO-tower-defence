@@ -5,10 +5,13 @@ from Src.Entities.enemy import Enemy
 
 class Tank(Enemy):
     def __init__(self, waypoints, death_callback=None) -> None:
-        image = "Assets/Sprites/Enemys/Scorpion.png"
+        image = "Assets/Sprites/Enemys/Tank/tank.png"
         sprites = functions.load_sprite_sheet(image,9,8)
-        self.static = sprites[0][0]
-        super().__init__(waypoints, self.static, death_callback)
+        self.enemyImage_ = pygame.image.load(image).convert_alpha()
+        self.enemyImage_ = pygame.transform.scale(self.enemyImage_, (48, 48))
+        super().__init__(waypoints, self.enemyImage_, death_callback)
+        self.frames = 12
+        self.animation_list = self.load_images(self.frames)
         self.health_= constants.tankHealth
         self.speed = constants.tankSpeed
         self.lifes =constants.tankLifes
