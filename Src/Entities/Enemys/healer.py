@@ -9,11 +9,9 @@ class Healer(Enemy,InterfaceHealer):
 
     def __init__(self, waypoints,enemy_group, surface ,death_callback=None )->None:
 
-        image = "Assets/Sprites/Enemys/Wisp - Animations.png"
-        sprites = functions.load_sprite_sheet(image,6,9)
+        image = pygame.image.load("Assets/Sprites/Enemys/Healer/healer.png").convert_alpha()
         self.surface = surface
-        self.static = sprites[0][0]
-        super().__init__(waypoints, self.static, death_callback)
+        super().__init__(waypoints, 9, image, death_callback)
         self.health_ = constants.healerHealth
         self.max_health_=constants.healerHealth
         self.speed = constants.healerSpeed

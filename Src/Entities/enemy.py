@@ -6,7 +6,7 @@ from .enemyInterface import InterfaceEnemy
 #pygame sprit class
 
 class Enemy(pygame.sprite.Sprite,InterfaceEnemy ):          #A classe Enemy herdará as propriedades da classe Sprite
-    def __init__(self, waypoints,frames, image,death_callback=None)->None:
+    def __init__(self, waypoints,frames, image:pygame.surface,death_callback=None)->None:
         pygame.sprite.Sprite.__init__(self)
         self.waypoints = waypoints
         self.position = Vector2(self.waypoints[0])
@@ -14,6 +14,7 @@ class Enemy(pygame.sprite.Sprite,InterfaceEnemy ):          #A classe Enemy herd
         self.speed = constants.classicEnemySpeed
         self.angle = 0
         self.health_ = constants.classicEnemyHealth
+        self.max_health_ = self.health_
         self.original_image = image
         self.rect = self.original_image.get_rect() #self.rect é derivado da image. E, get_rect() é um método
         self.rect.center = self.position #posiciona os retângulos center na variável position
