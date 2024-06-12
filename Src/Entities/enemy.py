@@ -2,7 +2,7 @@ import pygame
 from pygame.math import Vector2
 import math
 from Utils import constants
-from .enemyInterface import InterfaceEnemy
+from Interfaces.enemyInterface import InterfaceEnemy
 #pygame sprit class
 
 class Enemy(pygame.sprite.Sprite,InterfaceEnemy ):          #A classe Enemy herdará as propriedades da classe Sprite

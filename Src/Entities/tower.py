@@ -1,12 +1,12 @@
 from Utils import constants
-
 import pygame
 import math
 from .projectiles import Projectile
 from Utils.towerData import towerData
+from Interfaces.towerInterface import InterfaceTower
 
-class Tower(pygame.sprite.Sprite):
-    def __init__(self,image,posX, posY) -> None : # colocar no construtor depois mousePosX,mousePosY
+class Tower(pygame.sprite.Sprite, InterfaceTower):
+    def __init__(self,image,posX, posY)->None : # colocar no construtor depois mousePosX,mousePosY
         pygame.sprite.Sprite.__init__(self)
         self.posX_ = posX
         self.posY_ = posY
@@ -64,7 +64,7 @@ class Tower(pygame.sprite.Sprite):
         surface.blit(self.image, self.rect)
 
 
-    def getTargetEnemy(self, enemyGroup):
+    def getTargetEnemy(self, enemyGroup)->Enemy:
         targetEnemy = None
         furthest_progress = -1
 
@@ -77,18 +77,18 @@ class Tower(pygame.sprite.Sprite):
 
         return targetEnemy
     
-    def isWithinRange(self, enemy):
+    def isWithinRange(self, enemy)->float:
         distance = self.calculateDistance(enemy)
         return distance <= self.range_
     
     
-    def calculateDistance(self, enemy):
+    def calculateDistance(self, enemy)->float:
         enemy_pos = enemy.rect.center
         tower_pos = self.rect.center
         return math.hypot(enemy_pos[0] - tower_pos[0], enemy_pos[1] - tower_pos[1])
     
     
-    def attack(self,enemy,projectileGroup):
+    def attack(self,enemy,projectileGroup)->None:
         direction = pygame.math.Vector2(enemy.rect.center) - pygame.math.Vector2(self.rect.center)
         angle_rad = math.atan2(direction.y, direction.x)
         angle_deg = math.degrees(angle_rad) + 180
@@ -98,12 +98,12 @@ class Tower(pygame.sprite.Sprite):
         projectile = Projectile(rotated_projectile, adjusted_pos, enemy, self.damage_)
         projectileGroup.add(projectile)
 
-    def drawRange(self,surface):
+    def drawRange(self,surface)->None:
         surface.blit(self.image, self.rect)
 
         pygame.draw.circle(surface, constants.LIGHT_GREY, (int(self.X_), int(self.Y_)), self.range_, 1)
 
-    def freeze(self, duration):
+    def freeze(self, duration)->None:
         self.frozen = True
         self.freeze_timer = (self.attackCD_  *duration)
         frozen_image = self.original_image.copy()
@@ -111,10 +111,10 @@ class Tower(pygame.sprite.Sprite):
         self.image = frozen_image
     
 
-    def get_position(self):
+    def get_position(self)->list:
             return (int(self.X_), int(self.Y_))
 
-    def upgrade(self):
+    def upgrade(self)->None:
         self.upgrade_level_ += 1
         self.range_ = towerData[self.upgrade_level_ - 1].get("range")
         self.damage_ = towerData[self.upgrade_level_ -1].get("damage")
