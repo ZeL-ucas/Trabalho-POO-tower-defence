@@ -4,7 +4,7 @@ import time
 from Src.Utils import functions
 from Src.Utils import constants
 from Src.Entities.enemy import Enemy
-from ...Interfaces.healerInterface import InterfaceHealer
+from Src.Interfaces.healerInterface import InterfaceHealer
 class Healer(Enemy,InterfaceHealer):
 
     def __init__(self, waypoints,enemy_group, surface ,death_callback=None )->None:

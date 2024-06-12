@@ -2,7 +2,7 @@ from abc import ABC,abstractmethod
 
 class InterfaceFrezzer(ABC):
     @abstractmethod
-    def Kill(self)->None:
+    def kill(self, killed: bool)->None:
         pass
         """
         Define o que acontece quando o Frezzer morre. Se o freezer tiver estiver vivo, ele será

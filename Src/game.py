@@ -43,7 +43,7 @@ class Game():
         self.upgradeImage_ = pygame.image.load("Assets/Sprites/TowerMenu/upgrade_icon.svg").convert_alpha()
         self.towerButton_ = SideMenu(constants.tileSize + 960, 120, self.buy_tower_Image_, True)
         self.cancelButton_ = SideMenu(constants.tileSize + 960, 180, self.cancelImage_, True)
-    
+
         self.remainingLifes = 10
 
         self.projectileGroup_ = pygame.sprite.Group()

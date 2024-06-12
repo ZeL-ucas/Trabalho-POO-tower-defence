@@ -64,7 +64,7 @@ class Tower(pygame.sprite.Sprite, InterfaceTower):
         surface.blit(self.image, self.rect)
 
 
-    def getTargetEnemy(self, enemyGroup)->Enemy:
+    def getTargetEnemy(self, enemyGroup):
         targetEnemy = None
         furthest_progress = -1
 

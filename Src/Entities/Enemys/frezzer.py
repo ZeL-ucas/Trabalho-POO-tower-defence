@@ -7,11 +7,8 @@ import math
 
 class Frezzer(Enemy, InterfaceFrezzer):
     def __init__(self, waypoints,towerGroup_, death_callback=None) -> None:
-        image = "Assets/Sprites/Enemys/Voidbutterfly.png"
-        sprites = functions.load_sprite_sheet(image,9,10)
-        self.static = sprites[0][0]
-        self.frames = 7
-        super().__init__(waypoints, self.static, death_callback)
+        image = pygame.image.load("Assets/Sprites/Enemys/Frezzer/frezzer.png").convert_alpha()
+        super().__init__(waypoints, 8, image, death_callback)
         self.health_= constants.frezzerHealth
         self.speed = constants.frezzerSpeed
         self.lifes =constants.frezzerLifes
@@ -40,8 +37,6 @@ class Frezzer(Enemy, InterfaceFrezzer):
 
         if nearest_tower:
             nearest_tower.freeze(constants.freezeDuration)
-
-    
     """
     Este código define a lógica de um inimigo do tipo Frezzer que, ao morrer, congela 
     a torre mais próxima. A funcionalidade de congelamento específica precisaria ser 
