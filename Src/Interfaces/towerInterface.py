@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-
 class InterfaceTower(ABC):
     @abstractmethod
     def update(self)->None:
@@ -10,7 +9,7 @@ class InterfaceTower(ABC):
         pass
 
     @abstractmethod
-    def getTargetEnemy(self)->Enemy:
+    def getTargetEnemy(self):
         pass
 
     @abstractmethod

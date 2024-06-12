@@ -43,14 +43,14 @@ class Game():
         self.upgradeImage_ = pygame.image.load("Assets/Sprites/TowerMenu/upgrade_icon.svg").convert_alpha()
         self.towerButton_ = SideMenu(constants.tileSize + 960, 120, self.buy_tower_Image_, True)
         self.cancelButton_ = SideMenu(constants.tileSize + 960, 180, self.cancelImage_, True)
-    
+        self.score =0 
         self.remainingLifes = 10
 
         self.projectileGroup_ = pygame.sprite.Group()
         self.waves = self.level_.loadWaves('Src/Utils/waves.txt')
 
         self.currentWaveIndex = 0
-
+        self.won = False
         self.currentWave = self.waves[self.currentWaveIndex] if self.waves else []
         self.enemyList = []
         self.lastSpawnTime = time.time()
@@ -61,7 +61,7 @@ class Game():
             "Frezzer": self.CreateFrezzerEnemy
         }
 
-    def Run(self)->None:
+    def Run(self)->int:
         run = True
 
         while (run):
@@ -69,13 +69,20 @@ class Game():
             self.screen_.fill(constants.GRAPHITE)
             self.Draw()
             self.Update()
+
+            #checando derrota
             if self.remainingLifes <=0:
                 run = False
-                self.Quit()
+                return "lose",self.score
+            #checando vitoria
+            if self.won:
+                self.score +=1000
+                return "win",self.score
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
-                    self.Quit()
+                    return "quit",self.score
 
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     mousePos = pygame.mouse.get_pos()
@@ -108,7 +115,7 @@ class Game():
         Encerra o Pygame e fecha o jogo.
         """
         pygame.quit()
-        sys.exit()
+
 
     def Draw(self) -> None:
         """
@@ -121,7 +128,7 @@ class Game():
 
         gold_text = self.font.render(f"${self.gold_}", True, constants.YELLOW)  
         life_text = self.font.render(f"{self.remainingLifes}", True, constants.RED)
-        waves_text = self.font.render(f"{self.currentWaveIndex}/{len(self.waves)}", True, constants.RED)
+        waves_text = self.font.render(f"{self.currentWaveIndex+1}/{len(self.waves)}", True, constants.RED)
         self.screen_.blit(gold_text, (10, 10))
         self.screen_.blit(self.heart_image, (10, 50)) 
         self.screen_.blit(life_text, (40, 50))
@@ -175,6 +182,7 @@ class Game():
         if not killed:
             self.remainingLifes-= lifes 
         self.gold_ += bounty
+        self.score += bounty*0.8
 
 
     def Waves(self)->None:
@@ -193,9 +201,13 @@ class Game():
                 else:
                     self.currentWave.pop(0)
 
-        elif len(self.enemyGroup_) == 0 and self.currentWaveIndex + 1 < len(self.waves):
-            self.currentWaveIndex += 1
-            self.currentWave = self.waves[self.currentWaveIndex]
+        elif len(self.enemyGroup_) == 0:
+            if self.currentWaveIndex + 1 < len(self.waves):
+                self.score += 500
+                self.currentWaveIndex += 1
+                self.currentWave = self.waves[self.currentWaveIndex]
+            elif self.currentWaveIndex + 1 == len(self.waves):
+                self.won =True
 
     def SpawnEnemy(self, enemy_type)->None:
         if enemy_type in self.enemyTypes:

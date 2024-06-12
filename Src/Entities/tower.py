@@ -48,7 +48,7 @@ class Tower(pygame.sprite.Sprite, InterfaceTower):
                 self.cdCounter_ = self.attackCD_
     
 
-    def getTargetEnemy(self, enemyGroup)->Enemy:
+    def getTargetEnemy(self, enemyGroup):
         targetEnemy = None
         furthest_progress = -1
 
