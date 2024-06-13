@@ -6,9 +6,9 @@ from Interfaces.frezzerInterface import InterfaceFrezzer
 import math
 
 class Frezzer(Enemy, InterfaceFrezzer):
-    def __init__(self, waypoints,towerGroup_, death_callback=None) -> None:
+    def __init__(self, waypoints:list,towerGroup_:pygame.sprite.Group, death_callback=None) -> None:
         image = pygame.image.load("Assets/Sprites/Enemys/Frezzer/frezzer.png").convert_alpha()
-        super().__init__(waypoints, 8, image, death_callback)
+        super().__init__(waypoints, constants.ANIMATION_STEPS_ENEMY_FREZZER, image, death_callback)
         self.health_= constants.frezzerHealth
         self.speed = constants.frezzerSpeed
         self.lifes =constants.frezzerLifes

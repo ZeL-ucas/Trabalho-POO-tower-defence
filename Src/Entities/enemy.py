@@ -6,7 +6,7 @@ from Interfaces.enemyInterface import InterfaceEnemy
 #pygame sprit class
 
 class Enemy(pygame.sprite.Sprite,InterfaceEnemy ):          #A classe Enemy herdará as propriedades da classe Sprite
-    def __init__(self, waypoints,frames, image:pygame.surface,death_callback=None)->None:
+    def __init__(self, waypoints:list,frames:int, image:pygame.surface,death_callback=None)->None:
         pygame.sprite.Sprite.__init__(self)
         self.waypoints = waypoints
         self.position = Vector2(self.waypoints[0])
@@ -92,7 +92,7 @@ class Enemy(pygame.sprite.Sprite,InterfaceEnemy ):          #A classe Enemy herd
     def get_max_health(self)->int:
         return self.max_health_
 
-    def load_images(self,frames):
+    def load_images(self,frames:int):
         # Extract images from spritesheet
         height = self.sprite_sheet.get_height()
         width = self.sprite_sheet.get_width()
@@ -112,3 +112,4 @@ class Enemy(pygame.sprite.Sprite,InterfaceEnemy ):          #A classe Enemy herd
         self.image = pygame.transform.rotate(self.animation_list[self.frame_index], self.angle)
         self.rect = self.image.get_rect()
         self.rect.center = self.position
+        
