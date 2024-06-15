@@ -16,7 +16,7 @@ def load_sprite_sheet(image_path:str, rows:int, cols:int)->list:
         sprites.append(row_sprites)
 
     return sprites
-def load_animation(sprite_sheet:pygame.Surface, frames:int) -> list:
+def loadAnimation(sprite_sheet:pygame.Surface, frames:int) -> list:
     """
     Carrega as imagens de animação a partir de um spritesheet.
     
@@ -33,7 +33,7 @@ def load_animation(sprite_sheet:pygame.Surface, frames:int) -> list:
         animation_list.append(temp_img)
     return animation_list
 
-def play_animation(animation_list: list, frame_index: int, angle: float, position: pygame.math.Vector2, update_time: int, animation_speed: int) -> tuple[pygame.Surface, int, int]:
+def playAnimation(animation_list: list, frame_index: int, angle: float, position: pygame.math.Vector2, update_time: int, animation_speed: int) -> tuple[pygame.Surface, int, int]:
     """
     Atualiza a animação e retorna a imagem atual da animação.
     

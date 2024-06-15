@@ -19,12 +19,12 @@ class Zapper(Enemy, InterfaceZapper):
             self.alive = False
 
             if killed:
-                self.zapper_nearest_tower()
+                self.zapperNearestTower()
             if self.death_callback:
                 self.death_callback(self.bounty, killed, self.lifes)
             pygame.sprite.Sprite.kill(self)
 
-    def zapper_nearest_tower(self)->None:
+    def zapperNearestTower(self)->None:
         nearest_tower = None
         shortest_distance = float('inf')
         

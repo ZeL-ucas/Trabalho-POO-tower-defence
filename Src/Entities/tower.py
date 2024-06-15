@@ -5,10 +5,10 @@ import random
 from .projectiles import Projectile
 from Utils.towerData import towerData
 from Interfaces.towerInterface import InterfaceTower
-from Utils.functions import load_animation, play_animation
+from Utils.functions import loadAnimation, playAnimation
 
 class Tower(pygame.sprite.Sprite, InterfaceTower):
-    def __init__(self,image:pygame.Surface,posX:int, posY:int)->None : # colocar no construtor depois mousePosX,mousePosY
+    def __init__(self,image:pygame.Surface,posX:int, posY:int)->None :
         pygame.sprite.Sprite.__init__(self)
         self.posX_ = posX
         self.posY_ = posY
@@ -35,7 +35,7 @@ class Tower(pygame.sprite.Sprite, InterfaceTower):
  
         self.sprite_sheet = pygame.image.load("Assets/Sprites/Towers/TowerClassicTop.png").convert_alpha()
         self.frames = 29
-        self.animation_list = load_animation(self.sprite_sheet, self.frames)
+        self.animation_list = loadAnimation(self.sprite_sheet, self.frames)
         self.frame_index = 0
         self.update_time = pygame.time.get_ticks()
         self.image_weapon = self.animation_list[self.frame_index]
@@ -59,7 +59,7 @@ class Tower(pygame.sprite.Sprite, InterfaceTower):
                 self.attack(targetEnemy, projectileGroup)
                 self.cdCounter_ = self.attackCD_
 
-        self.image, self.frame_index, self.update_time = play_animation(
+        self.image, self.frame_index, self.update_time = playAnimation(
             self.animation_list, self.frame_index, 0, (self.X_, self.Y_ - 20), self.update_time, 10
         )
         self.rect = self.image.get_rect()
@@ -104,7 +104,7 @@ class Tower(pygame.sprite.Sprite, InterfaceTower):
         angle_deg = math.degrees(angle_rad) + 180
         rotated_projectile = pygame.transform.rotate(self.projectile_image_, -angle_deg)
 
-        adjusted_pos = (self.rect.centerx - rotated_projectile.get_width() / 2, self.rect.centery - rotated_projectile.get_height())
+        adjusted_pos = (self.rect.centerx, self.rect.centery)  
         projectile = Projectile(rotated_projectile, adjusted_pos, enemy, self.damage_)
         projectileGroup.add(projectile)
 

@@ -10,10 +10,6 @@ class InterfaceTower(ABC):
         pass
 
     @abstractmethod
-    def getTargetEnemy(self):
-        pass
-
-    @abstractmethod
     def isWithinRange(self)->float:
         pass
 

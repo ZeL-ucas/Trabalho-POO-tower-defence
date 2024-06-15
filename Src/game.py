@@ -3,7 +3,7 @@ import json
 import sys
 import math
 from Utils import constants
-from Utils.side_menu import SideMenu
+from Src.Utils.sideMenu import SideMenu
 from Entities.tower import Tower
 from Entities.enemy import Enemy
 from Entities.Enemys.healer import Healer
@@ -82,7 +82,7 @@ class Game():
                     if self.tower_menu and self.tower_menu.is_clicked(mousePos):
                         self.UpgradeTower(self.tower_menu.tower)
                         self.tower_menu = None
-                    elif self.Is_click_outside_menu(mousePos):
+                    elif self.isClickOutsideMenu(mousePos):
                         self.tower_menu = None
                     else:
                         if mousePos[0] < constants.map_width:
@@ -223,12 +223,12 @@ class Game():
 
         
 
-    def Is_click_outside_menu(self, mouse_pos:tuple) -> bool:
+    def isClickOutsideMenu(self, mouse_pos:tuple) -> bool:
         """
         Verifica se um clique do mouse está fora do menu de upgrade da torre.
         """
         if self.tower_menu:
-            tower_pos = self.tower_menu.tower.get_position()
+            tower_pos = self.tower_menu.tower.getPosition()
             radius = self.tower_menu.radius
             distance = math.hypot(mouse_pos[0] - tower_pos[0], mouse_pos[1] - tower_pos[1])
             return distance > radius

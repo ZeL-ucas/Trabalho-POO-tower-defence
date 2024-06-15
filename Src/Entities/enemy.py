@@ -3,7 +3,7 @@ from pygame.math import Vector2
 import math
 from Utils import constants
 from Interfaces.enemyInterface import InterfaceEnemy
-from Utils.functions import load_animation, play_animation
+from Utils.functions import loadAnimation, playAnimation
 #pygame sprit class
 
 class Enemy(pygame.sprite.Sprite,InterfaceEnemy ):          #A classe Enemy herdará as propriedades da classe Sprite
@@ -28,7 +28,7 @@ class Enemy(pygame.sprite.Sprite,InterfaceEnemy ):          #A classe Enemy herd
 
         self.sprite_sheet = self.original_image
         self.frames=frames
-        self.animation_list = load_animation(self.sprite_sheet, self.frames)       
+        self.animation_list = loadAnimation(self.sprite_sheet, self.frames)       
         self.frame_index = 0
         self.update_time = pygame.time.get_ticks()
         self.image_enemy = self.animation_list[self.frame_index]
@@ -41,7 +41,7 @@ class Enemy(pygame.sprite.Sprite,InterfaceEnemy ):          #A classe Enemy herd
             self.flash_time -= 1
             if self.flash_time == 0:
                 self.image = pygame.transform.rotate(self.animation_list[self.frame_index], self.angle)
-        self.image, self.frame_index, self.update_time = play_animation(self.animation_list, self.frame_index, self.angle, self.position, self.update_time, 100)
+        self.image, self.frame_index, self.update_time = playAnimation(self.animation_list, self.frame_index, self.angle, self.position, self.update_time, 100)
 
     def move(self):
         # Target waypoint
@@ -74,7 +74,7 @@ class Enemy(pygame.sprite.Sprite,InterfaceEnemy ):          #A classe Enemy herd
         self.rect = self.image.get_rect()   
         self.rect.center = self.position
 
-    def take_damage(self, damage:int)->None:
+    def takeDamage(self, damage:int)->None:
         self.health_ -= damage
         self.flash_time = 1  # Configurar o tempo de flash para um frame
         flashed_image = self.animation_list[self.frame_index].copy()
@@ -90,6 +90,6 @@ class Enemy(pygame.sprite.Sprite,InterfaceEnemy ):          #A classe Enemy herd
                 self.death_callback(self.bounty, killed, self.lifes)
             super().kill()
 
-    def get_max_health(self)->int:
+    def getMaxHealth(self)->int:
         return self.max_health_
         
