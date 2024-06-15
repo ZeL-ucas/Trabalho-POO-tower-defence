@@ -28,7 +28,7 @@ class Healer(Enemy,InterfaceHealer):
         self.healing_frames = self.load_healing_frames(special_sprite_sheet, constants.ANIMATION_STEPS_ENEMY_HEALER_SPECIAL)
         self.current_healing_frame = 0
 
-    def load_healing_frames(self, sprite_sheet:pygame.Surface, frames:int):
+    def load_healing_frames(self, sprite_sheet:pygame.Surface, frames:int) -> int:
         width = sprite_sheet.get_width() // frames
         height = sprite_sheet.get_height()
         frame_images = []

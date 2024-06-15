@@ -1,17 +1,16 @@
 import pygame
-from Src.Utils import functions
 from Src.Utils import constants
 from Src.Entities.enemy import Enemy
-from Interfaces.frezzerInterface import InterfaceFrezzer
+from Interfaces.zapperInterface import InterfaceZapper
 import math
 
-class Frezzer(Enemy, InterfaceFrezzer):
+class Zapper(Enemy, InterfaceZapper):
     def __init__(self, waypoints:list,towerGroup_:pygame.sprite.Group, death_callback=None) -> None:
-        image = pygame.image.load("Assets/Sprites/Enemys/Frezzer/frezzer.png").convert_alpha()
-        super().__init__(waypoints, constants.ANIMATION_STEPS_ENEMY_FREZZER, image, death_callback)
-        self.health_= constants.frezzerHealth
-        self.speed = constants.frezzerSpeed
-        self.lifes =constants.frezzerLifes
+        image = pygame.image.load("Assets/Sprites/Enemys/Zapper/zapper.png").convert_alpha()
+        super().__init__(waypoints, constants.ANIMATION_STEPS_ENEMY_ZAPPER, image, death_callback)
+        self.health_= constants.zapperHealth
+        self.speed = constants.zapperSpeed
+        self.lifes =constants.zapperLifes
         self.bounty = 30
         self.towerGroup = towerGroup_
 
@@ -20,12 +19,12 @@ class Frezzer(Enemy, InterfaceFrezzer):
             self.alive = False
 
             if killed:
-                self.freeze_nearest_tower()
+                self.zapper_nearest_tower()
             if self.death_callback:
                 self.death_callback(self.bounty, killed, self.lifes)
             pygame.sprite.Sprite.kill(self)
 
-    def freeze_nearest_tower(self)->None:
+    def zapper_nearest_tower(self)->None:
         nearest_tower = None
         shortest_distance = float('inf')
         
@@ -36,9 +35,9 @@ class Frezzer(Enemy, InterfaceFrezzer):
                 nearest_tower = tower
 
         if nearest_tower:
-            nearest_tower.freeze(constants.freezeDuration)
+            nearest_tower.zapper(constants.zapperDuration)
     """
-    Este código define a lógica de um inimigo do tipo Frezzer que, ao morrer, congela 
+    Este código define a lógica de um inimigo do tipo Zapper que, ao morrer, congela 
     a torre mais próxima. A funcionalidade de congelamento específica precisaria ser 
-    implementada na classe da torre com um método freeze.
+    implementada na classe da torre com um método zapper.
     """

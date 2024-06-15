@@ -1,12 +1,13 @@
 from Utils import constants
 import pygame
 import math
+import random
 from .projectiles import Projectile
 from Utils.towerData import towerData
 from Interfaces.towerInterface import InterfaceTower
 
 class Tower(pygame.sprite.Sprite, InterfaceTower):
-    def __init__(self,image,posX, posY)->None : # colocar no construtor depois mousePosX,mousePosY
+    def __init__(self,image:pygame.Surface,posX:int, posY:int)->None : # colocar no construtor depois mousePosX,mousePosY
         pygame.sprite.Sprite.__init__(self)
         self.posX_ = posX
         self.posY_ = posY
@@ -27,8 +28,8 @@ class Tower(pygame.sprite.Sprite, InterfaceTower):
         self.cdCounter_ = 0
         projectile_image = pygame.image.load("Assets/Sprites/Projectiles/Arrow.png").convert_alpha()
         self.projectile_image_ = pygame.transform.scale(projectile_image,(20,40))
-        self.frozen = False
-        self.freeze_timer = 0
+        self.zap = False
+        self.zapper_timer = 0
 
 
  
@@ -40,12 +41,13 @@ class Tower(pygame.sprite.Sprite, InterfaceTower):
         self.image = self.image_weapon
         self.original_image = self.image.copy()
 
-    def update(self, enemyGroup,projectileGroup,surface):
-        if self.frozen:
-            if self.freeze_timer > 0:
-                self.freeze_timer -= 1
+    def update(self, enemyGroup:pygame.sprite.Group,projectileGroup:pygame.sprite.Group,surface:pygame.Surface) -> None:
+        self.screen = surface
+        if self.zap:
+            if self.zapper_timer > 0:
+                self.zapper_timer -= 1
             else:
-                self.frozen = False
+                self.zap = False
                 self.image = self.original_image
         else:
             if self.cdCounter_ > 0:
@@ -62,9 +64,11 @@ class Tower(pygame.sprite.Sprite, InterfaceTower):
     
     # Depois, desenhe a imagem da torre
         surface.blit(self.image, self.rect)
+    # Se está paralisada, desenha os raios
+        if self.zap:
+            self.draw_rays(surface, self.rect.centerx, self.rect.centery)
 
-
-    def getTargetEnemy(self, enemyGroup):
+    def getTargetEnemy(self, enemyGroup:pygame.sprite.Group) -> None:
         targetEnemy = None
         furthest_progress = -1
 
@@ -88,7 +92,7 @@ class Tower(pygame.sprite.Sprite, InterfaceTower):
         return math.hypot(enemy_pos[0] - tower_pos[0], enemy_pos[1] - tower_pos[1])
     
     
-    def attack(self,enemy,projectileGroup)->None:
+    def attack(self,enemy,projectileGroup:pygame.sprite.Group)->None:
         direction = pygame.math.Vector2(enemy.rect.center) - pygame.math.Vector2(self.rect.center)
         angle_rad = math.atan2(direction.y, direction.x)
         angle_deg = math.degrees(angle_rad) + 180
@@ -98,20 +102,16 @@ class Tower(pygame.sprite.Sprite, InterfaceTower):
         projectile = Projectile(rotated_projectile, adjusted_pos, enemy, self.damage_)
         projectileGroup.add(projectile)
 
-    def drawRange(self,surface)->None:
+    def drawRange(self,surface:pygame.Surface)->None:
         surface.blit(self.image, self.rect)
 
         pygame.draw.circle(surface, constants.LIGHT_GREY, (int(self.X_), int(self.Y_)), self.range_, 1)
 
-    def freeze(self, duration)->None:
-        self.frozen = True
-        self.freeze_timer = (self.attackCD_  *duration)
-        frozen_image = self.original_image.copy()
-        frozen_image.fill((0, 0, 255), special_flags=pygame.BLEND_MULT)
-        self.image = frozen_image
-    
+    def zapper(self, duration: int)->None:
+        self.zap = True
+        self.zapper_timer = (self.attackCD_  *duration) 
 
-    def get_position(self)->list:
+    def get_position(self)->tuple:
             return (int(self.X_), int(self.Y_))
 
     def upgrade(self)->None:
@@ -121,10 +121,10 @@ class Tower(pygame.sprite.Sprite, InterfaceTower):
         self.attackCD_ = towerData[self.upgrade_level_ - 1].get("cooldown")
         self.upcost_ = towerData[self.upgrade_level_ - 1].get("upcost")
 
-    def get_position(self):
+    def get_position(self) -> None:
             return (int(self.X_), int(self.Y_))
     
-    def load_images(self):
+    def load_images(self) -> None:
         # Extract images from spritesheet
         size = self.sprite_sheet.get_height()
         animation_list = []
@@ -133,7 +133,7 @@ class Tower(pygame.sprite.Sprite, InterfaceTower):
             animation_list.append(temp_img)
         return animation_list
 
-    def play_animation(self):
+    def play_animation(self) -> None:
         # Atualizar imagem
         current_time = pygame.time.get_ticks()
         if current_time - self.update_time > 10:  # Atualizar a cada 100ms
@@ -143,3 +143,12 @@ class Tower(pygame.sprite.Sprite, InterfaceTower):
         self.rect = self.image.get_rect()
         self.rect.center = (self.X_,(self.Y_ -20 ))
 
+    @staticmethod
+    def draw_rays(surface:pygame.Surface, x:int, y:int) -> None:
+        for _ in range(constants.zapperQuant):
+            angle = random.uniform(0, 2 * math.pi)
+            length = random.uniform(constants.zapperRadius // 2, constants.zapperRadius)
+            x_end = x + length * math.cos(angle)
+            y_end = y + length * math.sin(angle)
+            cor = constants.YELLOW if random.random() > 0.67 else constants.LIGHT_GREY
+            pygame.draw.line(surface, cor, (x, y), (x_end, y_end), 2)
