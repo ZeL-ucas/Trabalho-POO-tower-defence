@@ -36,11 +36,7 @@ def load_animation(sprite_sheet:pygame.Surface, frames:int) -> list:
 def play_animation(animation_list: list, frame_index: int, angle: float, position: pygame.math.Vector2, update_time: int, animation_speed: int) -> tuple[pygame.Surface, int, int]:
     """
     Atualiza a animação e retorna a imagem atual da animação.
-
-    :param animation_list: Lista de superfícies da animação.
-    :param frame_index: Índice do frame atual.
-    :param angle: Ângulo para rotacionar a imagem.
-    :param position: Posição para centralizar o retângulo da imagem.
+    
     :param update_time: Tempo da última atualização da animação.
     :param animation_speed: Velocidade da animação em milissegundos.
     :return: Imagem atual da animação, novo índice do frame, novo tempo de atualização.
