@@ -8,7 +8,7 @@ from Entities.tower import Tower
 from Entities.enemy import Enemy
 from Entities.Enemys.healer import Healer
 from Entities.Enemys.tank import Tank
-from Entities.Enemys.frezzer import Frezzer
+from Entities.Enemys.zapper import Zapper
 from Levels.levelLoader import Level
 import time
 from Utils.towerMenu import TowerMenu
@@ -35,7 +35,7 @@ class Game():
         self.mapa_ = pygame.image.load("Assets/Backgrounds/mapa.png").convert_alpha()
         self.level_ = Level(self.level_data_, self.mapa_)
         self.towerGroup_ = pygame.sprite.Group()
-        self.enemyImage_ = pygame.image.load("Assets/Sprites/Enemys/enemy_1.png").convert_alpha()
+        self.enemyImage_ = pygame.image.load("Assets/Sprites/Enemys/EnemyClassic/enemy_classic.png").convert_alpha()
         self.enemyGroup_ = pygame.sprite.Group()
         self.level_.ProcessData()
         self.buy_tower_Image_ = pygame.image.load("Assets/Sprites/Side_Menu/buy_turret.png").convert_alpha()
@@ -43,7 +43,7 @@ class Game():
         self.upgradeImage_ = pygame.image.load("Assets/Sprites/TowerMenu/upgrade_icon.svg").convert_alpha()
         self.towerButton_ = SideMenu(constants.tileSize + 960, 120, self.buy_tower_Image_, True)
         self.cancelButton_ = SideMenu(constants.tileSize + 960, 180, self.cancelImage_, True)
-    
+
         self.remainingLifes = 10
 
         self.projectileGroup_ = pygame.sprite.Group()
@@ -58,7 +58,7 @@ class Game():
             "Classic": self.CreateClassicEnemy,
             "Healer": self.CreateHealerEnemy,
             "Tank": self.CreateTankEnemy,
-            "Frezzer": self.CreateFrezzerEnemy
+            "Zapper": self.CreateZapperEnemy
         }
 
     def Run(self)->None:
@@ -127,7 +127,7 @@ class Game():
         self.screen_.blit(life_text, (40, 50))
         self.screen_.blit(waves_text, (10, 100))
         
-    def CreateTurret(self, pos:list) -> None:
+    def CreateTurret(self, pos:tuple) -> None:
         """
         Cria uma torre na posição especificada se o jogador tiver ouro suficiente.
         
@@ -144,7 +144,7 @@ class Game():
             self.towerGroup_.add(tower)
             self.gold_ -= 100
 
-    def CheckSpace(self, pos:list) -> int:
+    def CheckSpace(self, pos:tuple) -> int:
         """
         Verifica se o espaço especificado está disponível para colocar uma torre.
         Retorna:
@@ -171,7 +171,7 @@ class Game():
         tower.drawRange(self.screen_)
         self.tower_menu = TowerMenu(tower, self.screen_, self.upgradeImage_)
 
-    def EnemyDied(self, bounty,killed,lifes)->None:
+    def EnemyDied(self, bounty:int,killed:bool,lifes:int)->None:
         if not killed:
             self.remainingLifes-= lifes 
         self.gold_ += bounty
@@ -197,14 +197,14 @@ class Game():
             self.currentWaveIndex += 1
             self.currentWave = self.waves[self.currentWaveIndex]
 
-    def SpawnEnemy(self, enemy_type)->None:
+    def SpawnEnemy(self, enemy_type:str)->None:
         if enemy_type in self.enemyTypes:
             create_enemy_func = self.enemyTypes[enemy_type]
             new_enemy = create_enemy_func()
             self.enemyGroup_.add(new_enemy)
 
     def CreateClassicEnemy(self)->Enemy:
-        return Enemy(self.level_.waypoints_, self.enemyImage_, self.EnemyDied)
+        return Enemy(self.level_.waypoints_,13, self.enemyImage_, self.EnemyDied)
 
     def CreateHealerEnemy(self)->Healer:
         return Healer(self.level_.waypoints_, self.enemyGroup_, self.screen_, self.EnemyDied)
@@ -212,18 +212,18 @@ class Game():
     def CreateTankEnemy(self)->Tank:
         return Tank(self.level_.waypoints_, self.EnemyDied)
 
-    def CreateFrezzerEnemy(self)->Frezzer:
-        return Frezzer(self.level_.waypoints_, self.towerGroup_, self.EnemyDied)
+    def CreateZapperEnemy(self)->Zapper:
+        return Zapper(self.level_.waypoints_, self.towerGroup_, self.EnemyDied)
     
     def Update(self)->None:
         self.Waves()
         self.enemyGroup_.update()
         self.projectileGroup_.update()
-        self.towerGroup_.update(self.enemyGroup_,self.projectileGroup_) 
+        self.towerGroup_.update(self.enemyGroup_,self.projectileGroup_,self.screen_) 
 
         
 
-    def Is_click_outside_menu(self, mouse_pos:float) -> bool:
+    def Is_click_outside_menu(self, mouse_pos:tuple) -> bool:
         """
         Verifica se um clique do mouse está fora do menu de upgrade da torre.
         """
