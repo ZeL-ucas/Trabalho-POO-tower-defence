@@ -4,6 +4,7 @@ import time
 from Src.Utils import constants
 from Src.Entities.enemy import Enemy
 from Src.Interfaces.healerInterface import InterfaceHealer
+from Utils.functions import load_animation, play_animation
 class Healer(Enemy,InterfaceHealer):
 
     def __init__(self, waypoints:list,enemy_group:pygame.sprite.Group, surface:pygame.Surface ,death_callback=None )->None:
@@ -25,18 +26,9 @@ class Healer(Enemy,InterfaceHealer):
         self.healing_start_time = 0
         self.healing_duration = 1  
         self.healing_frame_duration = 1/constants.ANIMATION_STEPS_ENEMY_HEALER_SPECIAL
-        self.healing_frames = self.load_healing_frames(special_sprite_sheet, constants.ANIMATION_STEPS_ENEMY_HEALER_SPECIAL)
+        self.healing_frames = load_animation(special_sprite_sheet, constants.ANIMATION_STEPS_ENEMY_HEALER_SPECIAL)
         self.current_healing_frame = 0
 
-    def load_healing_frames(self, sprite_sheet:pygame.Surface, frames:int) -> int:
-        width = sprite_sheet.get_width() // frames
-        height = sprite_sheet.get_height()
-        frame_images = []
-        for i in range(frames):
-            frame = sprite_sheet.subsurface(pygame.Rect(i * width, 0, width, height))
-            frame_images.append(frame)
-        return frame_images
-    
     #realiza o update padrao dos inimigos mas a cada alguns segundos ele cura um pouco 
     def update(self)->None:
         super().update()

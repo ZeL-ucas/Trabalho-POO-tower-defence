@@ -3,6 +3,7 @@ from pygame.math import Vector2
 import math
 from Utils import constants
 from Interfaces.enemyInterface import InterfaceEnemy
+from Utils.functions import load_animation, play_animation
 #pygame sprit class
 
 class Enemy(pygame.sprite.Sprite,InterfaceEnemy ):          #A classe Enemy herdará as propriedades da classe Sprite
@@ -27,7 +28,7 @@ class Enemy(pygame.sprite.Sprite,InterfaceEnemy ):          #A classe Enemy herd
 
         self.sprite_sheet = self.original_image
         self.frames=frames
-        self.animation_list = self.load_images(self.frames)
+        self.animation_list = load_animation(self.sprite_sheet, self.frames)       
         self.frame_index = 0
         self.update_time = pygame.time.get_ticks()
         self.image_enemy = self.animation_list[self.frame_index]
@@ -40,7 +41,7 @@ class Enemy(pygame.sprite.Sprite,InterfaceEnemy ):          #A classe Enemy herd
             self.flash_time -= 1
             if self.flash_time == 0:
                 self.image = pygame.transform.rotate(self.animation_list[self.frame_index], self.angle)
-        self.play_animation()
+        self.image, self.frame_index, self.update_time = play_animation(self.animation_list, self.frame_index, self.angle, self.position, self.update_time, 100)
 
     def move(self):
         # Target waypoint
@@ -91,25 +92,4 @@ class Enemy(pygame.sprite.Sprite,InterfaceEnemy ):          #A classe Enemy herd
 
     def get_max_health(self)->int:
         return self.max_health_
-
-    def load_images(self,frames:int):
-        # Extract images from spritesheet
-        height = self.sprite_sheet.get_height()
-        width = self.sprite_sheet.get_width()
-        frame_width = width/self.frames
-        animation_list = []
-        for x in range(frames):
-            temp_img = self.sprite_sheet.subsurface(x * frame_width, 0, frame_width, height)
-            animation_list.append(temp_img)
-        return animation_list
-
-    def play_animation(self):
-        # Atualizar imagem
-        current_time = pygame.time.get_ticks()
-        if current_time - self.update_time > 100:  # Atualizar a cada 100ms
-            self.frame_index = (self.frame_index + 1) % len(self.animation_list)
-            self.update_time = current_time
-        self.image = pygame.transform.rotate(self.animation_list[self.frame_index], self.angle)
-        self.rect = self.image.get_rect()
-        self.rect.center = self.position
         

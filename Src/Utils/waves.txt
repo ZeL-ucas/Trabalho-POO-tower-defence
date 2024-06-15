@@ -1,7 +1,7 @@
 Wave 1
-10, Healer, 1
-
-
+2, Healer, 1
+2, Zapper, 1
+2, Tank, 1
 Wave 2
 10, Classic, 1
 Wave 3 
