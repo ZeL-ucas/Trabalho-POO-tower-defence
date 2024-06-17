@@ -16,11 +16,18 @@ def main():
         constants.setDificulty(dificulty)
         towerDefence = Game()
         score = towerDefence.Run()
+        scoreText=0
+        if dificulty == "easy":
+            scoreText = score[1] *0.8
+        elif dificulty == "hard":
+            scoreText = score[1] *1.2
         towerDefence.Quit()
+
         if(score[0] == 'quit'):
             run = False
             sys.exit()
-        gameEnd = EndMenu((score[0],score[1])) 
+        
+        gameEnd = EndMenu(score[0],str(scoreText))
         choice = gameEnd.run()
         if choice == "quit":
             run = False

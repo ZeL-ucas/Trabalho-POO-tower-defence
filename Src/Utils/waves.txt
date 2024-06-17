@@ -1,4 +1,3 @@
 Wave 1
 2, Classic, 0.5
-15, Zapper, 1
-2, Tank, 1
+

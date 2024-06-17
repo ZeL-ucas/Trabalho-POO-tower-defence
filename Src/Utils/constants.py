@@ -49,7 +49,7 @@ def setDificulty(dificult: str) -> None:
     elif dificult == "medium":
         classicEnemySpeed = 2.4
         classicEnemyHealth = 120
-        classicEnemyLifes = 1
+        classicEnemyLifes = 10
 
         healerSpeed = 1
         healerHealth = 175

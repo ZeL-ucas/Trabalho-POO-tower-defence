@@ -182,10 +182,12 @@ class Game():
         self.tower_menu = TowerMenu(tower, self.screen_)
 
     def EnemyDied(self, bounty:int,killed:bool,lifes:int)->None:
+        if killed:
+            self.score += bounty*0.8
         if not killed:
             self.remainingLifes-= lifes 
         self.gold_ += bounty
-        self.score += bounty*0.8
+        
 
 
     def Waves(self)->None:

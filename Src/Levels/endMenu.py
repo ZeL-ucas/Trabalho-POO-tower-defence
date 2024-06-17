@@ -4,7 +4,7 @@ from Utils import constants
 
 
 class EndMenu():
-    def __init__(self, outcome: str):
+    def __init__(self, outcome: str, score:str):
         pygame.init()
         self.font_ = pygame.font.Font(None, 74)
         self.button_font_ = pygame.font.Font(None, 40)
@@ -13,9 +13,9 @@ class EndMenu():
         pygame.display.set_caption('Defesa Blaster')
         self.screen_width_, self.screen_height_ = constants.window
         
-        self.quit_button_rect_ = pygame.Rect(self.screen_width_ // 2 - 100, self.screen_height_ // 2, 250, 50)
-        self.retry_button_rect_ = pygame.Rect(self.screen_width_ // 2 - 100, self.screen_height_ // 2 + 100, 250, 50)
-        
+        self.quit_button_rect_ = pygame.Rect(self.screen_width_ // 2 - 100, self.screen_height_ // 2, 200, 50)
+        self.retry_button_rect_ = pygame.Rect(self.screen_width_ // 2 - 100, self.screen_height_ // 2 + 100, 200, 50)
+        self.score = score
         self.outcome = outcome
 
     def drawText(self, text: str, font: pygame.font.Font, color: tuple, surface: pygame.Surface, x: int, y: int) -> None:
@@ -35,7 +35,7 @@ class EndMenu():
         self.screen_.fill(constants.GREEN)
         title_text = 'Game Over' if self.outcome == 'lose' else 'Vitória'
         self.drawText(title_text, self.font_, constants.BLACK, self.screen_, self.screen_width_ // 2, self.screen_height_ // 4)
-        
+        self.drawText(self.score, self.font_, constants.BLACK, self.screen_, self.screen_width_ // 2, (self.screen_height_ // 4)+40)
         mouse_pos = pygame.mouse.get_pos()
         quit_hover = self.quit_button_rect_.collidepoint(mouse_pos)
         retry_hover = self.retry_button_rect_.collidepoint(mouse_pos)
