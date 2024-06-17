@@ -20,7 +20,7 @@ def main():
         if(score[0] == 'quit'):
             run = False
             sys.exit()
-        gameEnd = EndMenu(score[0],score[1])
+        gameEnd = EndMenu((score[0],score[1])) 
         choice = gameEnd.run()
         if choice == "quit":
             run = False

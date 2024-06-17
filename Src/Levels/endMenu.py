@@ -7,14 +7,14 @@ class EndMenu():
     def __init__(self, outcome: str):
         pygame.init()
         self.font_ = pygame.font.Font(None, 74)
-        self.button_font_ = pygame.font.Font(None, 50)
+        self.button_font_ = pygame.font.Font(None, 40)
         self.clock_ = pygame.time.Clock()
         self.screen_ = pygame.display.set_mode(constants.window)
         pygame.display.set_caption('Defesa Blaster')
         self.screen_width_, self.screen_height_ = constants.window
         
-        self.quit_button_rect_ = pygame.Rect(self.screen_width_ // 2 - 100, self.screen_height_ // 2, 200, 50)
-        self.retry_button_rect_ = pygame.Rect(self.screen_width_ // 2 - 100, self.screen_height_ // 2 + 100, 200, 50)
+        self.quit_button_rect_ = pygame.Rect(self.screen_width_ // 2 - 100, self.screen_height_ // 2, 250, 50)
+        self.retry_button_rect_ = pygame.Rect(self.screen_width_ // 2 - 100, self.screen_height_ // 2 + 100, 250, 50)
         
         self.outcome = outcome
 
