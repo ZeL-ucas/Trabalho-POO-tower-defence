@@ -219,7 +219,7 @@ class Game():
             self.enemyGroup_.add(new_enemy)
 
     def CreateClassicEnemy(self)->Enemy:
-        return Enemy(self.level_.waypoints_,13, self.enemyImage_, self.EnemyDied)
+        return Enemy(self.level_.waypoints_,13, self.enemyImage_, "classic", self.EnemyDied)
 
     def CreateHealerEnemy(self)->Healer:
         return Healer(self.level_.waypoints_, self.enemyGroup_, self.screen_, self.EnemyDied)

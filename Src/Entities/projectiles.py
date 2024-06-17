@@ -10,7 +10,7 @@ class Projectile(pygame.sprite.Sprite, InterfaceProjectiles):
         self.rect = self.image.get_rect(center=start_pos)
         self.target = target
         self.damage = damage
-        self.speed = 4
+        self.speed = 10
         self.update_time = pygame.time.get_ticks()
         self.frames = 12
         self.animation_list = loadAnimation(self.image, self.frames)

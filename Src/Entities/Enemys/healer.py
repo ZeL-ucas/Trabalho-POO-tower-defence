@@ -11,16 +11,12 @@ class Healer(Enemy,InterfaceHealer):
         image = pygame.image.load("Assets/Sprites/Enemys/Healer/healer.png").convert_alpha()
         special_sprite_sheet = pygame.image.load("Assets/Sprites/Enemys/Healer/healer_special.png").convert_alpha()
         self.surface = surface
-        super().__init__(waypoints, constants.ANIMATION_STEPS_ENEMY_HEALER, image, death_callback)
-        self.health_ = constants.healerHealth
-        self.max_health_=constants.healerHealth
-        self.speed = constants.healerSpeed
+        super().__init__(waypoints, constants.ANIMATION_STEPS_ENEMY_HEALER, image, "healer", death_callback)
         self.enemy_group = enemy_group
         self.heal_radius = 100
         self.heal_amount = 20
         self.last_heal_time = time.time()
         self.heal_interval = 5
-        self.lifes = constants.healerLifes
         self.bounty = 80
         self.is_healing = False
         self.healing_start_time = 0

@@ -1,6 +1,3 @@
-
-
-
 rows = 15
 cols = 20
 tileSize = 48
@@ -8,23 +5,8 @@ fps = 60
 PainelSize = 240
 map_width = cols*tileSize
 window = (((cols*tileSize)+ PainelSize), (rows*tileSize))
-#classic
-classicEnemySpeed = 2
-classicEnemyHealth = 100
-classicEnemyLifes = 1
-#healer
-healerSpeed = 0.75
-healerHealth = 150
-healerLifes = 1 
-#tank
-tankSpeed = 1.3
-tankHealth = 500
-tankLifes= 1 
-#zapper
-zapperSpeed = 3
-zapperHealth = 40
-zapperLifes = 2
-zapperDuration = 5
+
+#draw rays
 zapperQuant = 10
 zapperRadius = 40
 
@@ -45,9 +27,27 @@ LIGHT_GREY = (211,211,211)
 
 def setDificulty(dificult: str) -> None:
     global classicEnemySpeed, classicEnemyHealth, classicEnemyLifes ,healerSpeed, healerHealth, healerLifes ,tankSpeed, tankHealth, tankLifes ,zapperSpeed, zapperHealth, zapperLifes, zapperDuration
+    
+    if dificult == "easy":
+        classicEnemySpeed = 2
+        classicEnemyHealth = 100
+        classicEnemyLifes = 1
 
-    if dificult == "medium":
-        classicEnemySpeed = 15
+        healerSpeed = 0.75
+        healerHealth = 150
+        healerLifes = 1
+
+        tankSpeed = 1.3
+        tankHealth = 500
+        tankLifes = 1
+
+        zapperSpeed = 3
+        zapperHealth = 40
+        zapperLifes = 2
+        zapperDuration = 5
+
+    elif dificult == "medium":
+        classicEnemySpeed = 2.4
         classicEnemyHealth = 120
         classicEnemyLifes = 1
 
@@ -55,11 +55,11 @@ def setDificulty(dificult: str) -> None:
         healerHealth = 175
         healerLifes = 1
 
-        tankSpeed = 10
+        tankSpeed = 1.6
         tankHealth = 650
         tankLifes = 2
 
-        zapperSpeed = 4.5
+        zapperSpeed = 4
         zapperHealth = 50
         zapperLifes = 3
         zapperDuration = 6
@@ -67,17 +67,17 @@ def setDificulty(dificult: str) -> None:
     elif dificult == "hard":
         classicEnemySpeed = 2.7
         classicEnemyHealth = 160
-        classicEnemyLifes = 1
+        classicEnemyLifes = 2
 
         healerSpeed = 1.25
         healerHealth = 250
         healerLifes = 2
 
-        tankSpeed = 1
+        tankSpeed = 1.6
         tankHealth = 1000
         tankLifes = 3
 
-        zapperSpeed = 18
+        zapperSpeed = 5
         zapperHealth = 60
         zapperLifes = 4
         zapperDuration = 7
