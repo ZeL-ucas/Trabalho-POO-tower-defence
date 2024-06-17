@@ -1,19 +1,17 @@
 import pygame
 
 import time
-from Src.Utils import functions
 from Src.Utils import constants
 from Src.Entities.enemy import Enemy
 from Src.Interfaces.healerInterface import InterfaceHealer
+from Utils.functions import loadAnimation
 class Healer(Enemy,InterfaceHealer):
 
-    def __init__(self, waypoints,enemy_group, surface ,death_callback=None )->None:
-
-        image = "Assets/Sprites/Enemys/Wisp - Animations.png"
-        sprites = functions.load_sprite_sheet(image,6,9)
+    def __init__(self, waypoints:list,enemy_group:pygame.sprite.Group, surface:pygame.Surface ,death_callback=None )->None:
+        image = pygame.image.load("Assets/Sprites/Enemys/Healer/healer.png").convert_alpha()
+        special_sprite_sheet = pygame.image.load("Assets/Sprites/Enemys/Healer/healer_special.png").convert_alpha()
         self.surface = surface
-        self.static = sprites[0][0]
-        super().__init__(waypoints, self.static, death_callback)
+        super().__init__(waypoints, constants.ANIMATION_STEPS_ENEMY_HEALER, image, death_callback)
         self.health_ = constants.healerHealth
         self.max_health_=constants.healerHealth
         self.speed = constants.healerSpeed
@@ -24,32 +22,47 @@ class Healer(Enemy,InterfaceHealer):
         self.heal_interval = 5
         self.lifes = constants.healerLifes
         self.bounty = 80
+        self.is_healing = False
+        self.healing_start_time = 0
+        self.healing_duration = 1  
+        self.healing_frame_duration = 1/constants.ANIMATION_STEPS_ENEMY_HEALER_SPECIAL
+        self.healing_frames = loadAnimation(special_sprite_sheet, constants.ANIMATION_STEPS_ENEMY_HEALER_SPECIAL)
+        self.current_healing_frame = 0
+
     #realiza o update padrao dos inimigos mas a cada alguns segundos ele cura um pouco 
     def update(self)->None:
         super().update()
         current_time = time.time()
+        if self.is_healing:
+            if current_time - self.healing_start_time >= self.healing_duration:
+                self.is_healing = False
+                # self.image = self.original_image
+            else:
+                frame_index = int((current_time - self.healing_start_time) / self.healing_frame_duration) % len(self.healing_frames)
+                healing_frame = self.healing_frames[frame_index]
+                self.image = pygame.transform.rotate(healing_frame, self.angle)
         if current_time - self.last_heal_time >= self.heal_interval:
-            self.heal_nearby_enemies()
+            self.healNearbyEnemies()
             self.last_heal_time = current_time
     
     #checa os inimigos proximos
-    def heal_nearby_enemies(self)->None:
+    def healNearbyEnemies(self)->None:
         self.health_ += self.heal_amount
         if self.health_ > self.max_health_:
             self.health_ = self.max_health_
         for enemy in self.enemy_group:
             if enemy != self and self.position.distance_to(enemy.position) <= self.heal_radius:
-                self.apply_heal(enemy)
+                self.applyHeal(enemy)
 
 
-    def apply_heal(self, enemy:Enemy)->None:
-        max_health = enemy.get_max_health()  
+    def applyHeal(self, enemy:Enemy)->None:
+        self.is_healing = True
+        self.healing_start_time  = time.time()
+        max_health = enemy.getMaxHealth()  
         enemy.health_ += self.heal_amount
-        self.surface.blit(self.image, self.rect)
-        pygame.draw.circle(self.surface, (0, 255, 0), (int(self.position[0]), int(self.position[1])), self.heal_radius, 1)
+        pygame.draw.circle(self.surface, constants.MUSTARD_YELLOW, (int(self.position[0]), int(self.position[1])), self.heal_radius, 1)
         if enemy.health_ > max_health:
             enemy.health_ = max_health
-
         """
         Aplica a cura a um inimigo específico, desenha o curador na superfície e desenha um círculo 
         representando o raio de cura. Garante que a vida do inimigo não exceda sua vida máxima.

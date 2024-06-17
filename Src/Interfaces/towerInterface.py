@@ -29,13 +29,18 @@ class InterfaceTower(ABC):
         pass
 
     @abstractmethod
-    def freeze(self)->None:
+    def zapper(self)->None:
         pass
     
     @abstractmethod
-    def get_position(self)->list:
+    def getPosition(self)->tuple:
         pass
 
     @abstractmethod
     def upgrade(self)->None:
+        pass
+    
+    @staticmethod
+    @abstractmethod
+    def drawRays():
         pass
