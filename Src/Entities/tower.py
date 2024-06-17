@@ -30,16 +30,21 @@ class Tower(pygame.sprite.Sprite, InterfaceTower):
         self.projectile_image_ = pygame.image.load("Assets/Sprites/Projectiles/TowerBase/base_projectile_1.png").convert_alpha()
         self.zap = False
         self.zapper_timer = 0
+        self.isAttack = False
 
-
- 
+    
         self.sprite_sheet = pygame.image.load("Assets/Sprites/Towers/TowerClassicTop.png").convert_alpha()
+        self.sprite_sheet_idle = pygame.image.load("Assets/Sprites/Towers/TowerClassicTopIdle.png").convert_alpha()        
         self.frames = 29
+        self.framesIdle = 8
         self.animation_list = loadAnimation(self.sprite_sheet, self.frames)
+        self.animation_list_idle = loadAnimation(self.sprite_sheet, self.framesIdle)
         self.frame_index = 0
         self.update_time = pygame.time.get_ticks()
         self.image_weapon = self.animation_list[self.frame_index]
+        self.image_weapon_idle = self.animation_list_idle[self.frame_index]
         self.image = self.image_weapon
+        self.imageIdle = self.image_weapon_idle
         self.original_image = self.image.copy()
 
     def update(self, enemyGroup:pygame.sprite.Group,projectileGroup:pygame.sprite.Group,surface:pygame.Surface) -> None:
@@ -58,10 +63,19 @@ class Tower(pygame.sprite.Sprite, InterfaceTower):
             if targetEnemy and self.cdCounter_ == 0:
                 self.attack(targetEnemy, projectileGroup)
                 self.cdCounter_ = self.attackCD_
+                self.isAttack = True
+            else:
+                self.isAttack = False
 
-        self.image, self.frame_index, self.update_time = playAnimation(
-            self.animation_list, self.frame_index, 0, (self.X_, self.Y_ - 20), self.update_time, 10
+        if not(self.isAttack):
+            self.imageIdle, self.frame_index, self.update_time = playAnimation(
+            self.animation_list_idle, self.frame_index, 0, (self.X_, self.Y_ - 20), self.update_time, 10
         )
+        else:
+            self.image, self.frame_index, self.update_time = playAnimation(
+            self.animation_list, self.frame_index, 0, (self.X_, self.Y_ - 20), self.update_time, 100
+        )
+            
         self.rect = self.image.get_rect()
         self.rect.center = (self.X_, self.Y_ - 20)
     # Desenhe a imagem base primeiro
