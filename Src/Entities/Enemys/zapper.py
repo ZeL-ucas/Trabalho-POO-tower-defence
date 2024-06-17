@@ -1,7 +1,7 @@
 import pygame
-from Src.Utils import constants
 from Src.Entities.enemy import Enemy
 from Interfaces.zapperInterface import InterfaceZapper
+from Src.Utils import constants
 import math
 
 class Zapper(Enemy, InterfaceZapper):
@@ -10,6 +10,7 @@ class Zapper(Enemy, InterfaceZapper):
         super().__init__(waypoints, constants.ANIMATION_STEPS_ENEMY_ZAPPER, image, death_callback)
         self.health_= constants.zapperHealth
         self.speed = constants.zapperSpeed
+
         self.lifes =constants.zapperLifes
         self.bounty = 30
         self.towerGroup = towerGroup_

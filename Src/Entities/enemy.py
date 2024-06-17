@@ -33,7 +33,6 @@ class Enemy(pygame.sprite.Sprite,InterfaceEnemy ):          #A classe Enemy herd
         self.update_time = pygame.time.get_ticks()
         self.image_enemy = self.animation_list[self.frame_index]
         self.image = self.image_enemy
-
     def update(self):
         self.move()
         self.rotate()

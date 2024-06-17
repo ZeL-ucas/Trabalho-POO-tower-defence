@@ -40,7 +40,6 @@ class Game():
         self.level_.ProcessData()
         self.buy_tower_Image_ = pygame.image.load("Assets/Sprites/Side_Menu/buy_turret.png").convert_alpha()
         self.cancelImage_ = pygame.image.load("Assets/Sprites/Side_Menu/cancel.png").convert_alpha()
-        self.upgradeImage_ = pygame.image.load("Assets/Sprites/TowerMenu/upgrade_icon.svg").convert_alpha()
         self.towerButton_ = SideMenu(constants.tileSize + 960, 120, self.buy_tower_Image_, True)
         self.cancelButton_ = SideMenu(constants.tileSize + 960, 180, self.cancelImage_, True)
         self.score =0 
@@ -86,8 +85,11 @@ class Game():
 
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     mousePos = pygame.mouse.get_pos()
-                    if self.tower_menu and self.tower_menu.is_clicked(mousePos):
+                    if self.tower_menu and self.tower_menu.is_clicked(mousePos) == "upgrade":
                         self.UpgradeTower(self.tower_menu.tower)
+                        self.tower_menu = None
+                    elif self.tower_menu and self.tower_menu.is_clicked(mousePos) == "sell":
+                        self.SellTower(self.tower_menu.tower)
                         self.tower_menu = None
                     elif self.isClickOutsideMenu(mousePos):
                         self.tower_menu = None
@@ -149,7 +151,7 @@ class Game():
         if hasGold: 
             tower = Tower(self.tower_, mousePosX, mousePosY)
             self.towerGroup_.add(tower)
-            self.gold_ -= 100
+            self.gold_ -= tower.price
 
     def CheckSpace(self, pos:tuple) -> int:
         """
@@ -171,12 +173,13 @@ class Game():
             return 2
         else:
             return 0
+        
     def menuTower(self, tower:Tower) -> None:
         """
         Mostra o menu de upgrade para a torre especificada.
         """
         tower.drawRange(self.screen_)
-        self.tower_menu = TowerMenu(tower, self.screen_, self.upgradeImage_)
+        self.tower_menu = TowerMenu(tower, self.screen_)
 
     def EnemyDied(self, bounty:int,killed:bool,lifes:int)->None:
         if not killed:
@@ -253,3 +256,7 @@ class Game():
         if self.gold_ >= self.tower_menu.tower.upcost_ and self.tower_menu.tower.upgrade_level_ < constants.levelMaxTower:
             self.gold_ -= self.tower_menu.tower.upcost_
             tower.upgrade()   
+    def SellTower(self,tower:Tower)->None:
+        self.gold_ += (tower.price / 2) * tower.upgrade_level_ 
+        tower.kill()
+

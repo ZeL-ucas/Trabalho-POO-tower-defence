@@ -12,7 +12,7 @@ class Tower(pygame.sprite.Sprite, InterfaceTower):
         pygame.sprite.Sprite.__init__(self)
         self.posX_ = posX
         self.posY_ = posY
-        self.price = 50
+        self.price = 100
         self.X_ = (self.posX_ + 0.5) * constants.tileSize
         self.Y_ = (self.posY_ + 0.2) * constants.tileSize #valor diferente para a torre atual não ficar em cima dos blocos
         self.imageBase = image

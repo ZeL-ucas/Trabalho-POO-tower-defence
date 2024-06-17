@@ -23,7 +23,7 @@ tankLifes= 1
 #zapper
 zapperSpeed = 3
 zapperHealth = 40
-zapperLifes= 2
+zapperLifes = 2
 zapperDuration = 5
 zapperQuant = 10
 zapperRadius = 40
@@ -42,47 +42,46 @@ GREEN = (87, 128, 24)
 GRAPHITE = (54, 69, 79)
 SILVER = (192,192,192)
 LIGHT_GREY = (211,211,211)
-def setDificulty(dificult:str)->None:  
-    global classicEnemySpeed, classicEnemyHealth, classicEnemyLifes
-    global healerSpeed, healerHealth, healerLifes
-    global tankSpeed, tankHealth, tankLifes
-    global frezzerSpeed, frezzerHealth, frezzerLifes, freezeDuration
-    
+
+def setDificulty(dificult: str) -> None:
+    global classicEnemySpeed, classicEnemyHealth, classicEnemyLifes ,healerSpeed, healerHealth, healerLifes ,tankSpeed, tankHealth, tankLifes ,zapperSpeed, zapperHealth, zapperLifes, zapperDuration
+
     if dificult == "medium":
-        classicEnemySpeed = 2.5
-        classicEnemyHealth = 10
+        classicEnemySpeed = 15
+        classicEnemyHealth = 120
         classicEnemyLifes = 1
-        
+
         healerSpeed = 1
         healerHealth = 175
         healerLifes = 1
-        
-        tankSpeed = 1.3
+
+        tankSpeed = 10
         tankHealth = 650
         tankLifes = 2
-        
-        frezzerSpeed = 4.5
-        frezzerHealth = 40
-        frezzerLifes = 3
-        freezeDuration = 5
-    
+
+        zapperSpeed = 4.5
+        zapperHealth = 50
+        zapperLifes = 3
+        zapperDuration = 6
+
     elif dificult == "hard":
         classicEnemySpeed = 2.7
         classicEnemyHealth = 160
         classicEnemyLifes = 1
-        
+
         healerSpeed = 1.25
         healerHealth = 250
         healerLifes = 2
-        
+
         tankSpeed = 1
         tankHealth = 1000
         tankLifes = 3
-        
-        frezzerSpeed = 6
-        frezzerHealth = 50
-        frezzerLifes = 4
-        freezeDuration = 7
+
+        zapperSpeed = 18
+        zapperHealth = 60
+        zapperLifes = 4
+        zapperDuration = 7
+
 
 #constants animations
 #enemy

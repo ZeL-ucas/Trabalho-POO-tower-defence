@@ -9,6 +9,7 @@ class Tank(Enemy):
         self.health_= constants.tankHealth
         self.speed = constants.tankSpeed
         self.lifes =constants.tankLifes
+        print(self.speed)
         self.bounty = 200
 
     """
