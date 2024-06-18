@@ -10,7 +10,7 @@ class Projectile(pygame.sprite.Sprite, InterfaceProjectiles):
         self.rect.center = start_pos
         self.target = target
         self.damage = damage
-        self.speed = 7
+        self.speed = 3
 
     def update(self) -> None:
         direction = pygame.math.Vector2(self.target.rect.center) - pygame.math.Vector2(self.rect.center)

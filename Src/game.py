@@ -5,6 +5,8 @@ import math
 from Utils import constants
 from Src.Utils.sideMenu import SideMenu
 from Entities.tower import Tower
+from Entities.Towers.towerDamage import TowerDamage
+from Entities.Towers.towerSplash import TowerSplash
 from Entities.enemy import Enemy
 from Entities.Enemys.healer import Healer
 from Entities.Enemys.tank import Tank
@@ -30,7 +32,7 @@ class Game():
 
         with open('Assets/Waypoints/mapa1.tmj') as file:
             self.level_data_ = json.load(file)
-        self.tower_ = pygame.image.load("Assets/Sprites/Towers/towerTest.png").convert_alpha()
+        self.tower_ = pygame.image.load("Assets/Sprites/Towers/TowerClassic/towerClassic.png").convert_alpha()
         self.tower_ = pygame.transform.scale(self.tower_, (48, 80))
         self.mapa_ = pygame.image.load("Assets/Backgrounds/mapa.png").convert_alpha()
         self.level_ = Level(self.level_data_, self.mapa_)
@@ -140,7 +142,7 @@ class Game():
         if self.gold_ < 100:
             hasGold = False
         if hasGold: 
-            tower = Tower(self.tower_, mousePosX, mousePosY)
+            tower = TowerSplash( mousePosX, mousePosY)
             self.towerGroup_.add(tower)
             self.gold_ -= 100
 

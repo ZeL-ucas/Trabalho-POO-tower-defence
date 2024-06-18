@@ -3,7 +3,7 @@ import pygame
 import math
 import random
 from .projectiles import Projectile
-from Utils.towerData import towerData
+from Utils.towerData import towerClassic
 from Interfaces.towerInterface import InterfaceTower
 from Utils.functions import loadAnimation, playAnimation
 
@@ -14,18 +14,18 @@ class Tower(pygame.sprite.Sprite, InterfaceTower):
         self.posY_ = posY
         self.price = 50
         self.X_ = (self.posX_ + 0.5) * constants.tileSize
-        self.Y_ = (self.posY_ + 0.2) * constants.tileSize #valor diferente para a torre atual não ficar em cima dos blocos
-        self.imageBase = image
+        self.Y_ = (self.posY_ + 0.2) * constants.tileSize
+        self.imageBase = pygame.transform.scale(image, (48, 80))
         self.rect = self.imageBase.get_rect()
         self.rect.center = (self.X_, self.Y_)
         self.rectBase = self.imageBase.get_rect()
         self.rectBase.center = (self.X_, self.Y_)
 
         self.upgrade_level_ = 1
-        self.range_ = towerData[self.upgrade_level_ - 1].get("range")
-        self.damage_ = towerData[self.upgrade_level_ -1].get("damage")
-        self.attackCD_ = towerData[self.upgrade_level_ - 1].get("cooldown")
-        self.upcost_ = towerData[self.upgrade_level_ - 1].get("upcost")
+        self.range_ = towerClassic[self.upgrade_level_ - 1].get("range")
+        self.damage_ = towerClassic[self.upgrade_level_ -1].get("damage")
+        self.attackCD_ = towerClassic[self.upgrade_level_ - 1].get("cooldown")
+        self.upcost_ = towerClassic[self.upgrade_level_ - 1].get("upcost")
         self.cdCounter_ = 0
         self.projectile_image_ = pygame.image.load("Assets/Sprites/Projectiles/TowerBase/base_projectile_1.png").convert_alpha()
         self.zap = False
@@ -33,13 +33,12 @@ class Tower(pygame.sprite.Sprite, InterfaceTower):
         self.active = True
 
     
-        self.sprite_sheet = pygame.image.load("Assets/Sprites/Towers/TowerClassicTop.png").convert_alpha()
+        self.sprite_sheet = pygame.image.load("Assets/Sprites/Towers/TowerClassic/towerClassicTop.png").convert_alpha()
         self.frames = constants.ANIMATION_STEPS_TOWER
         self.animation_list = loadAnimation(self.sprite_sheet, self.frames)
         self.frame_index = 0
         self.update_time = pygame.time.get_ticks()
         self.image_weapon = self.animation_list[self.frame_index]
-        # self.image_weapon_idle = self.animation_list[0] 
         self.image = self.image_weapon
         self.original_image = self.image.copy()
 
@@ -130,10 +129,10 @@ class Tower(pygame.sprite.Sprite, InterfaceTower):
 
     def upgrade(self)->None:
         self.upgrade_level_ += 1
-        self.range_ = towerData[self.upgrade_level_ - 1].get("range")
-        self.damage_ = towerData[self.upgrade_level_ -1].get("damage")
-        self.attackCD_ = towerData[self.upgrade_level_ - 1].get("cooldown")
-        self.upcost_ = towerData[self.upgrade_level_ - 1].get("upcost")
+        self.range_ = towerClassic[self.upgrade_level_ - 1].get("range")
+        self.damage_ = towerClassic[self.upgrade_level_ -1].get("damage")
+        self.attackCD_ = towerClassic[self.upgrade_level_ - 1].get("cooldown")
+        self.upcost_ = towerClassic[self.upgrade_level_ - 1].get("upcost")
 
     @staticmethod
     def drawRays(surface:pygame.Surface, x:int, y:int) -> None:
