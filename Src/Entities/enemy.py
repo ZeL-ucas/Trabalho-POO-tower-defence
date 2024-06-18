@@ -6,7 +6,7 @@ from Interfaces.enemyInterface import InterfaceEnemy
 from Utils.functions import loadAnimation, playAnimation
 #pygame sprit class
 
-class Enemy(pygame.sprite.Sprite,InterfaceEnemy ):          #A classe Enemy herdará as propriedades da classe Sprite
+class Enemy(pygame.sprite.Sprite,InterfaceEnemy ):
     def __init__(self, waypoints:list,frames:int, image:pygame.surface, enemy_type: str, death_callback=None)->None:
         pygame.sprite.Sprite.__init__(self)
         self.waypoints = waypoints
@@ -41,8 +41,6 @@ class Enemy(pygame.sprite.Sprite,InterfaceEnemy ):          #A classe Enemy herd
         self.death_callback = death_callback
         self.bounty = 50 #valor de ouro pra quando o inimigo morrer 
         self.alive = True
-        self.bounty = 50  # valor de ouro pra quando o inimigo morrer
-
         self.sprite_sheet = self.original_image
         self.frames=frames
         self.animation_list = loadAnimation(self.sprite_sheet, self.frames)       
@@ -50,6 +48,7 @@ class Enemy(pygame.sprite.Sprite,InterfaceEnemy ):          #A classe Enemy herd
         self.update_time = pygame.time.get_ticks()
         self.image_enemy = self.animation_list[self.frame_index]
         self.image = self.image_enemy
+        
     def update(self):
         self.move()
         self.rotate()
