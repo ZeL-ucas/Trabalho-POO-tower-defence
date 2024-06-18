@@ -3,7 +3,6 @@ from abc import ABC, abstractmethod
 class InterfaceProjectiles(ABC):
     @abstractmethod
     def update(self) -> None:
-        pass
         
         """
         Calcula a direção e a distância do projétil em relação ao alvo. Além disso, se o projétil
@@ -11,3 +10,4 @@ class InterfaceProjectiles(ABC):
         o projétil. Caso contrário, move o projétil na direção do alvo, normalizando a direção e 
         multiplicando pela velocidade para garantir movimento uniforme.
         """
+        pass

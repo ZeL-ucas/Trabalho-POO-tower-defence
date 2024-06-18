@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-
 class InterfaceTower(ABC):
     @abstractmethod
     def update(self)->None:
@@ -34,7 +33,7 @@ class InterfaceTower(ABC):
         pass
     
     @abstractmethod
-    def get_position(self)->tuple:
+    def getPosition(self)->tuple:
         pass
 
     @abstractmethod
@@ -43,5 +42,5 @@ class InterfaceTower(ABC):
     
     @staticmethod
     @abstractmethod
-    def draw_rays():
+    def drawRays():
         pass

@@ -1,6 +1,7 @@
 import pygame
+from Interfaces.sideMenuInterface import sideMenuInterface
 
-class SideMenu():
+class SideMenu(sideMenuInterface):
     def __init__(self, x, y, image, singleClick):
         self.image = image
         self.rect = self.image.get_rect()

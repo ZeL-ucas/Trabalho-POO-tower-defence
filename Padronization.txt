@@ -2,7 +2,7 @@ Padronizaçao de alguns aspectos do codigo
 
 nome de variaveis do codigo : lowerCamelCase , ou seja variaveis no estilo : guardaChuva , portaLapis
 nome de variaveis de classe :variveis que pertencem dentro de uma classe devem seguir snake case e possuir um _ No final
-Exemplo: porta_lapis_ , vida_maxima_ , dano_ .
+Exemplo: porta_lapis , vida_maxima , dano .
 
 nome de funçoes : funçoes sejam de classe devem seguir o padrao UpperCamelCase : CalculaMedia , Somar;
 

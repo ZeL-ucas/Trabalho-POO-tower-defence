@@ -3,7 +3,7 @@ import json
 import sys
 import math
 from Utils import constants
-from Utils.side_menu import SideMenu
+from Src.Utils.sideMenu import SideMenu
 from Entities.tower import Tower
 from Entities.enemy import Enemy
 from Entities.Enemys.healer import Healer
@@ -40,17 +40,16 @@ class Game():
         self.level_.ProcessData()
         self.buy_tower_Image_ = pygame.image.load("Assets/Sprites/Side_Menu/buy_turret.png").convert_alpha()
         self.cancelImage_ = pygame.image.load("Assets/Sprites/Side_Menu/cancel.png").convert_alpha()
-        self.upgradeImage_ = pygame.image.load("Assets/Sprites/TowerMenu/upgrade_icon.svg").convert_alpha()
         self.towerButton_ = SideMenu(constants.tileSize + 960, 120, self.buy_tower_Image_, True)
         self.cancelButton_ = SideMenu(constants.tileSize + 960, 180, self.cancelImage_, True)
-
+        self.score =0 
         self.remainingLifes = 10
 
         self.projectileGroup_ = pygame.sprite.Group()
         self.waves = self.level_.loadWaves('Src/Utils/waves.txt')
 
         self.currentWaveIndex = 0
-
+        self.won = False
         self.currentWave = self.waves[self.currentWaveIndex] if self.waves else []
         self.enemyList = []
         self.lastSpawnTime = time.time()
@@ -61,7 +60,7 @@ class Game():
             "Zapper": self.CreateZapperEnemy
         }
 
-    def Run(self)->None:
+    def Run(self)->int:
         run = True
 
         while (run):
@@ -69,20 +68,30 @@ class Game():
             self.screen_.fill(constants.GRAPHITE)
             self.Draw()
             self.Update()
+
+            #checando derrota
             if self.remainingLifes <=0:
                 run = False
-                self.Quit()
+                return "lose",self.score
+            #checando vitoria
+            if self.won:
+                self.score +=1000
+                return "win",self.score
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
-                    self.Quit()
+                    return "quit",self.score
 
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     mousePos = pygame.mouse.get_pos()
-                    if self.tower_menu and self.tower_menu.is_clicked(mousePos):
+                    if self.tower_menu and self.tower_menu.is_clicked(mousePos) == "upgrade":
                         self.UpgradeTower(self.tower_menu.tower)
                         self.tower_menu = None
-                    elif self.Is_click_outside_menu(mousePos):
+                    elif self.tower_menu and self.tower_menu.is_clicked(mousePos) == "sell":
+                        self.SellTower(self.tower_menu.tower)
+                        self.tower_menu = None
+                    elif self.isClickOutsideMenu(mousePos):
                         self.tower_menu = None
                     else:
                         if mousePos[0] < constants.map_width:
@@ -108,7 +117,7 @@ class Game():
         Encerra o Pygame e fecha o jogo.
         """
         pygame.quit()
-        sys.exit()
+
 
     def Draw(self) -> None:
         """
@@ -121,7 +130,7 @@ class Game():
 
         gold_text = self.font.render(f"${self.gold_}", True, constants.YELLOW)  
         life_text = self.font.render(f"{self.remainingLifes}", True, constants.RED)
-        waves_text = self.font.render(f"{self.currentWaveIndex}/{len(self.waves)}", True, constants.RED)
+        waves_text = self.font.render(f"{self.currentWaveIndex+1}/{len(self.waves)}", True, constants.RED)
         self.screen_.blit(gold_text, (10, 10))
         self.screen_.blit(self.heart_image, (10, 50)) 
         self.screen_.blit(life_text, (40, 50))
@@ -142,7 +151,7 @@ class Game():
         if hasGold: 
             tower = Tower(self.tower_, mousePosX, mousePosY)
             self.towerGroup_.add(tower)
-            self.gold_ -= 100
+            self.gold_ -= tower.price
 
     def CheckSpace(self, pos:tuple) -> int:
         """
@@ -164,17 +173,21 @@ class Game():
             return 2
         else:
             return 0
+        
     def menuTower(self, tower:Tower) -> None:
         """
         Mostra o menu de upgrade para a torre especificada.
         """
         tower.drawRange(self.screen_)
-        self.tower_menu = TowerMenu(tower, self.screen_, self.upgradeImage_)
+        self.tower_menu = TowerMenu(tower, self.screen_)
 
     def EnemyDied(self, bounty:int,killed:bool,lifes:int)->None:
+        if killed:
+            self.score += bounty*0.8
         if not killed:
             self.remainingLifes-= lifes 
         self.gold_ += bounty
+        
 
 
     def Waves(self)->None:
@@ -193,9 +206,13 @@ class Game():
                 else:
                     self.currentWave.pop(0)
 
-        elif len(self.enemyGroup_) == 0 and self.currentWaveIndex + 1 < len(self.waves):
-            self.currentWaveIndex += 1
-            self.currentWave = self.waves[self.currentWaveIndex]
+        elif len(self.enemyGroup_) == 0:
+            if self.currentWaveIndex + 1 < len(self.waves):
+                self.score += 500
+                self.currentWaveIndex += 1
+                self.currentWave = self.waves[self.currentWaveIndex]
+            elif self.currentWaveIndex + 1 == len(self.waves):
+                self.won =True
 
     def SpawnEnemy(self, enemy_type:str)->None:
         if enemy_type in self.enemyTypes:
@@ -204,7 +221,7 @@ class Game():
             self.enemyGroup_.add(new_enemy)
 
     def CreateClassicEnemy(self)->Enemy:
-        return Enemy(self.level_.waypoints_,13, self.enemyImage_, self.EnemyDied)
+        return Enemy(self.level_.waypoints_,13, self.enemyImage_, "classic", self.EnemyDied)
 
     def CreateHealerEnemy(self)->Healer:
         return Healer(self.level_.waypoints_, self.enemyGroup_, self.screen_, self.EnemyDied)
@@ -223,12 +240,12 @@ class Game():
 
         
 
-    def Is_click_outside_menu(self, mouse_pos:tuple) -> bool:
+    def isClickOutsideMenu(self, mouse_pos:tuple) -> bool:
         """
         Verifica se um clique do mouse está fora do menu de upgrade da torre.
         """
         if self.tower_menu:
-            tower_pos = self.tower_menu.tower.get_position()
+            tower_pos = self.tower_menu.tower.getPosition()
             radius = self.tower_menu.radius
             distance = math.hypot(mouse_pos[0] - tower_pos[0], mouse_pos[1] - tower_pos[1])
             return distance > radius
@@ -241,3 +258,7 @@ class Game():
         if self.gold_ >= self.tower_menu.tower.upcost_ and self.tower_menu.tower.upgrade_level_ < constants.levelMaxTower:
             self.gold_ -= self.tower_menu.tower.upcost_
             tower.upgrade()   
+    def SellTower(self,tower:Tower)->None:
+        self.gold_ += (tower.price / 2) * tower.upgrade_level_ 
+        tower.kill()
+
