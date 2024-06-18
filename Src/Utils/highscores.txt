@@ -2,4 +2,4 @@ luiz 10000
 paulo 4000
 pedro 3000
 bruno 2000
-breno 1200
+breno 1296

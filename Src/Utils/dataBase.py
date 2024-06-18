@@ -4,7 +4,7 @@ class DataBase():
         self.path = path
         self.scores = None
         pass
-    def ReadHighScores(self):
+    def ReadHighScores(self)->list:
         try:
             with open(self.path, 'r', encoding='utf-8') as file:
                 scores = file.readlines()
@@ -14,7 +14,7 @@ class DataBase():
         except IOError:
             print(f"There has been an error reading {self.caminho_arquivo}.")
 
-    def GetHighScores(self):
+    def GetHighScores(self)->list:
         scores = self.ReadHighScores()
         highscores = []
         for line in scores:
@@ -30,7 +30,10 @@ class DataBase():
 
         return highscores
     
-    def AddHighScore(self, newName, newScore):
+    def AddHighScore(self, newName, newScore)->None:
+        if newName == '':
+            return
+        
         highscores = self.GetHighScores()
         
         hasHighscore = False
