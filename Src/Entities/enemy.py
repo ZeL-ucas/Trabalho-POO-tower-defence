@@ -7,7 +7,7 @@ from Utils.functions import loadAnimation, playAnimation
 #pygame sprit class
 
 class Enemy(pygame.sprite.Sprite,InterfaceEnemy ):
-    def __init__(self, waypoints:list,frames:int, image:pygame.surface, enemy_type: str, death_callback=None)->None:
+    def __init__(self, waypoints: list, frames: int, image: pygame.surface, enemy_type: str, death_callback=None)->None:
         pygame.sprite.Sprite.__init__(self)
         self.waypoints = waypoints
         self.position = Vector2(self.waypoints[0])
@@ -39,7 +39,7 @@ class Enemy(pygame.sprite.Sprite,InterfaceEnemy ):
         self.rect.center = self.position #posiciona os retângulos center na variável position
         self.flash_time = 0
         self.death_callback = death_callback
-        self.bounty = 50 #valor de ouro pra quando o inimigo morrer 
+        self.bounty = constants.bountyClassic #valor de ouro pra quando o inimigo morrer 
         self.alive = True
         self.sprite_sheet = self.original_image
         self.frames=frames
@@ -49,7 +49,7 @@ class Enemy(pygame.sprite.Sprite,InterfaceEnemy ):
         self.image_enemy = self.animation_list[self.frame_index]
         self.image = self.image_enemy
         
-    def update(self):
+    def update(self) -> None:
         self.move()
         self.rotate()
         if self.flash_time > 0:
@@ -58,7 +58,7 @@ class Enemy(pygame.sprite.Sprite,InterfaceEnemy ):
                 self.image = pygame.transform.rotate(self.animation_list[self.frame_index], self.angle)
         self.image, self.frame_index, self.update_time = playAnimation(self.animation_list, self.frame_index, self.angle, self.position, self.update_time, 100)
 
-    def move(self):
+    def move(self) -> None:
         # Target waypoint
         if self.target_waypoint < len(self.waypoints):
             self.target = Vector2(self.waypoints[self.target_waypoint])
@@ -77,7 +77,7 @@ class Enemy(pygame.sprite.Sprite,InterfaceEnemy ):
                 self.position += self.movement.normalize() * distance
             self.target_waypoint += 1
 
-    def rotate(self)->None:
+    def rotate(self) -> None:
         #distance to next waypoint
         distance = self.target - self.position
 
@@ -89,7 +89,7 @@ class Enemy(pygame.sprite.Sprite,InterfaceEnemy ):
         self.rect = self.image.get_rect()   
         self.rect.center = self.position
 
-    def takeDamage(self, damage:int)->None:
+    def takeDamage(self, damage: int) -> None:
         self.health_ -= damage
         self.flash_time = 1  # Configurar o tempo de flash para um frame
         flashed_image = self.animation_list[self.frame_index].copy()
@@ -98,13 +98,13 @@ class Enemy(pygame.sprite.Sprite,InterfaceEnemy ):
         if self.health_ <= 0:
             self.kill(True)
 
-    def kill(self,killed:bool)->None:
+    def kill(self, killed: bool) -> None:
         if self.alive:
             self.alive = False
             if self.death_callback:
                 self.death_callback(self.bounty, killed, self.lifes)
             super().kill()
 
-    def getMaxHealth(self)->int:
+    def getMaxHealth(self) -> int:
         return self.max_health_
         

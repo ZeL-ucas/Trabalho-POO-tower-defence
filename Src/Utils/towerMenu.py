@@ -13,7 +13,7 @@ class TowerMenu:
         self.sell_rect =  self.sell_image.get_rect()
         self.radius = 50
 
-    def draw(self):
+    def draw(self) -> None:
         tower_pos = self.tower.getPosition()
         pygame.draw.circle(self.screen_, constants.SILVER, tower_pos, self.radius, 1)
         self.tower.drawRange(self.screen_)
@@ -28,7 +28,7 @@ class TowerMenu:
 
         self.screen_.blit(self.upgrade_image, (button_x, button_y))
 
-    def is_clicked(self, mouse_pos)->str:
+    def is_clicked(self, mouse_pos:tuple)->str:
         tower_pos = self.tower.getPosition()
 
         button_x_upgrade = tower_pos[0] + self.radius * math.cos(math.radians(90)) - self.upgrade_rect.width // 2

@@ -4,7 +4,7 @@ from Utils import constants
 from Interfaces.startMenuInterface import startMenuInterface
 
 class StartMenu(startMenuInterface):
-    def __init__(self,scores):
+    def __init__(self, scores: list):
         pygame.init()
         self.font_ = pygame.font.Font(None, 74)
         self.button_font_ = pygame.font.Font(None, 50)

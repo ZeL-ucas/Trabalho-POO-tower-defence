@@ -3,10 +3,6 @@ import pygame
 def loadAnimation(sprite_sheet:pygame.Surface, frames:int) -> list:
     """
     Carrega as imagens de animação a partir de um spritesheet.
-    
-    :param sprite_sheet: A superfície do spritesheet.
-    :param frames: O número de frames na animação.
-    :return: Uma lista de superfícies de cada frame.
     """
     height = sprite_sheet.get_height()
     width = sprite_sheet.get_width()
@@ -20,9 +16,6 @@ def loadAnimation(sprite_sheet:pygame.Surface, frames:int) -> list:
 def playAnimation(animation_list: list, frame_index: int, angle: float, position: pygame.math.Vector2, update_time: int, animation_speed: int) -> tuple[pygame.Surface, int, int]:
     """
     Atualiza a animação e retorna a imagem atual da animação.
-    
-    :param update_time: Tempo da última atualização da animação.
-    :param animation_speed: Velocidade da animação em milissegundos.
     :return: Imagem atual da animação, novo índice do frame, novo tempo de atualização.
     """
     current_time = pygame.time.get_ticks()

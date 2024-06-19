@@ -27,10 +27,9 @@ class DataBase():
                 continue
 
         highscores.sort(key=lambda x: x[1], reverse=True)
-
         return highscores
     
-    def AddHighScore(self, newName, newScore)->None:
+    def AddHighScore(self, newName:str, newScore:int)->None:
         if newName == '':
             return
         

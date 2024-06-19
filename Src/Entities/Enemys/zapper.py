@@ -8,10 +8,10 @@ class Zapper(Enemy, InterfaceZapper):
     def __init__(self, waypoints:list,towerGroup_:pygame.sprite.Group, death_callback=None) -> None:
         image = pygame.image.load("Assets/Sprites/Enemys/Zapper/zapper.png").convert_alpha()
         super().__init__(waypoints, constants.ANIMATION_STEPS_ENEMY_ZAPPER, image, "zapper", death_callback)
-        self.bounty = 30
+        self.bounty = constants.bountyZapper
         self.towerGroup = towerGroup_
 
-    def kill(self, killed: bool)->None:
+    def kill(self, killed: bool) -> None:
         if self.alive:
             self.alive = False
 
@@ -21,7 +21,7 @@ class Zapper(Enemy, InterfaceZapper):
                 self.death_callback(self.bounty, killed, self.lifes)
             pygame.sprite.Sprite.kill(self)
 
-    def zapperNearestTower(self)->None:
+    def zapperNearestTower(self) -> None:
         nearest_tower = None
         shortest_distance = float('inf')
         

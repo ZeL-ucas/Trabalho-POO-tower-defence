@@ -4,7 +4,7 @@ from Utils import constants
 
 
 class EndMenu():
-    def __init__(self, outcome: str, score:str):
+    def __init__(self, outcome: str, score: str):
         pygame.init()
         self.font_ = pygame.font.Font(None, 74)
         self.button_font_ = pygame.font.Font(None, 40)

@@ -6,7 +6,7 @@ from Utils.functions import loadAnimation
 
 
 class TowerDamage(Tower):
-    def __init__(self, posX:int, posY:int) -> None:
+    def __init__(self, posX: int, posY: int) -> None:
         image = pygame.image.load("Assets/Sprites/Towers/TowerDamage/towerDamage.png").convert_alpha()
         super().__init__(image, posX, posY)
         self.projectile_image_ = pygame.image.load("Assets/Sprites/Projectiles/TowerDamage/damage_projectile.png").convert_alpha()

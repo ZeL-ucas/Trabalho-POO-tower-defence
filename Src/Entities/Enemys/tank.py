@@ -3,10 +3,10 @@ from Src.Utils import constants
 from Src.Entities.enemy import Enemy
 
 class Tank(Enemy):
-    def __init__(self, waypoints:list, death_callback=None) -> None:
+    def __init__(self, waypoints: list, death_callback=None) -> None:
         image = pygame.image.load("Assets/Sprites/Enemys/Tank/tank.png").convert_alpha()
         super().__init__(waypoints, constants.ANIMATION_STEPS_ENEMY_TANK, image, "tank", death_callback)
-        self.bounty = 200
+        self.bounty = constants.bountyTank
 
     """
     Define a lógica básica de um inimigo do tipo Tank, que é um inimigo com alta vida,

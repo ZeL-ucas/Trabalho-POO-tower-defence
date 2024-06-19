@@ -19,48 +19,58 @@ class Game():
     def __init__(self)->None:
         pygame.init()
 
-        self.gold_ = 1000
         self.font = pygame.font.SysFont(None, 36)
         self.clock_ = pygame.time.Clock()
         self.screen_ = pygame.display.set_mode(constants.window)
         pygame.display.set_caption("Defesa Blaster ")
-        self.heart_image = pygame.image.load("Assets/Sprites/Icons/heart.png").convert_alpha()
-        self.heart_image = pygame.transform.scale(self.heart_image, (24, 24))
-        self.placing_tower = False
-        self.is_select_ = False
-        self.tower_menu = None
 
         with open('Assets/Waypoints/mapa1.tmj') as file:
             self.level_data_ = json.load(file)
-        self.tower_ = pygame.image.load("Assets/Sprites/Towers/TowerClassic/towerClassic.png").convert_alpha()
-        self.tower_ = pygame.transform.scale(self.tower_, (48, 80))
-        self.mapa_ = pygame.image.load("Assets/Backgrounds/mapa.png").convert_alpha()
-        self.level_ = Level(self.level_data_, self.mapa_)
-        self.towerGroup_ = pygame.sprite.Group()
-        self.enemyImage_ = pygame.image.load("Assets/Sprites/Enemys/EnemyClassic/enemy_classic.png").convert_alpha()
-        self.enemyGroup_ = pygame.sprite.Group()
-        self.level_.ProcessData()
-        self.buy_tower_Image_ = pygame.image.load("Assets/Sprites/Side_Menu/buy_turret.png").convert_alpha()
-        self.cancelImage_ = pygame.image.load("Assets/Sprites/Side_Menu/cancel.png").convert_alpha()
-        self.towerButton_ = SideMenu(constants.tileSize + 960, 120, self.buy_tower_Image_, True)
-        self.cancelButton_ = SideMenu(constants.tileSize + 960, 180, self.cancelImage_, True)
-        self.score =0 
-        self.remainingLifes = 10
 
-        self.projectileGroup_ = pygame.sprite.Group()
-        self.waves = self.level_.loadWaves('Src/Utils/waves.txt')
+        self.tower_ = {
+            "Classic": pygame.transform.scale(pygame.image.load("Assets/Sprites/Towers/TowerClassic/towerClassic.png").convert_alpha(), (48, 80)),
+            "Damage": pygame.transform.scale(pygame.image.load("Assets/Sprites/Towers/TowerDamage/towerDamage.png").convert_alpha(), (48, 80)),
+            "Splash": pygame.image.load("Assets/Sprites/Towers/TowerSplash/towerSplashImage.png").convert_alpha()
+        }
 
-        self.currentWaveIndex = 0
-        self.won = False
-        self.currentWave = self.waves[self.currentWaveIndex] if self.waves else []
-        self.enemyList = []
-        self.lastSpawnTime = time.time()
         self.enemyTypes = {
             "Classic": self.CreateClassicEnemy,
             "Healer": self.CreateHealerEnemy,
             "Tank": self.CreateTankEnemy,
             "Zapper": self.CreateZapperEnemy
         }
+
+        self.heart_image = pygame.image.load("Assets/Sprites/Icons/heart.png").convert_alpha()
+        self.heart_image = pygame.transform.scale(self.heart_image, (24, 24))
+        self.mapa_ = pygame.image.load("Assets/Backgrounds/mapa.png").convert_alpha()
+        self.cancelImage_ = pygame.image.load("Assets/Sprites/Side_Menu/cancel.png").convert_alpha()
+        self.enemyImage_ = pygame.image.load("Assets/Sprites/Enemys/EnemyClassic/enemy_classic.png").convert_alpha()
+
+
+        self.level_ = Level(self.level_data_, self.mapa_)
+        self.level_.ProcessData()
+
+        self.towerButton_ = SideMenu(constants.tileSize + 950, 20, self.tower_["Classic"], True)
+        self.towerButtonDamage = SideMenu(constants.tileSize + 1070, 20, self.tower_["Damage"], True)
+        self.towerButtonSplash = SideMenu(constants.tileSize + 950, 100, self.tower_["Splash"], True)
+        self.cancelButton_ = SideMenu(constants.tileSize + 950, 240, self.cancelImage_, True)
+
+        self.towerGroup_ = pygame.sprite.Group()
+        self.enemyGroup_ = pygame.sprite.Group()
+        self.projectileGroup_ = pygame.sprite.Group()
+        self.waves = self.level_.loadWaves('Src/Utils/waves.txt')
+        self.lastSpawnTime = time.time()
+        self.currentWaveIndex = 0
+        self.currentWave = self.waves[self.currentWaveIndex] if self.waves else []
+        self.score =0 
+        self.remainingLifes = 10
+        self.enemyList = []
+        self.gold_ = constants.gold
+        self.won = False
+        self.placing_tower = False
+        self.is_select_ = False
+        self.tower_menu = None
+
 
     def Run(self)->int:
         run = True
@@ -77,7 +87,7 @@ class Game():
                 return "lose",self.score
             #checando vitoria
             if self.won:
-                self.score +=1000
+                self.score += constants.victory
                 return "win",self.score
 
             for event in pygame.event.get():
@@ -102,12 +112,21 @@ class Game():
                                 self.CreateTurret(mousePos)
             if self.towerButton_.draw(self.screen_):
                 self.placing_tower = True
+                self.towerType = "Classic"
+            if self.towerButtonDamage.draw(self.screen_):
+                self.placing_tower = True
+                self.towerType = "Damage"
+            if self.towerButtonSplash.draw(self.screen_):
+                self.placing_tower = True
+                self.towerType = "Splash"
+
             if self.placing_tower:
-                self.cursor_rect = self.tower_.get_rect()
+                tower_image = self.tower_[self.towerType]
+                self.cursor_rect =tower_image.get_rect()
                 self.cursor_pos = pygame.mouse.get_pos()
                 self.cursor_rect.center = self.cursor_pos
                 if self.cursor_pos[0] <= constants.map_width:
-                    self.screen_.blit(self.tower_, self.cursor_rect)
+                    self.screen_.blit(tower_image, self.cursor_rect)
                 if self.cancelButton_.draw(self.screen_):
                     self.placing_tower = False
             if self.tower_menu:
@@ -150,8 +169,13 @@ class Game():
         hasGold = True
         if self.gold_ < 100:
             hasGold = False
-        if hasGold: 
-            tower = TowerSplash( mousePosX, mousePosY)
+        if hasGold:
+            if self.towerType == "Classic":
+                tower = Tower(self.tower_[self.towerType], mousePosX, mousePosY)
+            elif self.towerType == "Damage":
+                tower = TowerDamage(mousePosX, mousePosY)
+            elif self.towerType == "Splash":
+                tower = TowerSplash( mousePosX, mousePosY)
             self.towerGroup_.add(tower)
             self.gold_ -= tower.price
 

@@ -2,17 +2,18 @@ from Utils import constants
 import pygame
 import math
 import random
+from Entities.enemy import Enemy
 from .projectiles import Projectile
 from Utils.towerData import towerClassic
 from Interfaces.towerInterface import InterfaceTower
 from Utils.functions import loadAnimation, playAnimation
 
 class Tower(pygame.sprite.Sprite, InterfaceTower):
-    def __init__(self,image:pygame.Surface,posX:int, posY:int)->None :
+    def __init__(self,image: pygame.Surface, posX: int, posY: int)->None :
         pygame.sprite.Sprite.__init__(self)
         self.posX_ = posX
         self.posY_ = posY
-        self.price = 100
+        self.price = constants.priceClassic
         self.X_ = (self.posX_ + 0.5) * constants.tileSize
         self.Y_ = (self.posY_ + 0.2) * constants.tileSize
         self.imageBase = pygame.transform.scale(image, (48, 80))
@@ -27,12 +28,12 @@ class Tower(pygame.sprite.Sprite, InterfaceTower):
         self.attackCD_ = towerClassic[self.upgrade_level_ - 1].get("cooldown")
         self.upcost_ = towerClassic[self.upgrade_level_ - 1].get("upcost")
         self.cdCounter_ = 0
-        self.projectile_image_ = pygame.image.load("Assets/Sprites/Projectiles/TowerBase/base_projectile_1.png").convert_alpha()
         self.zap = False
         self.zapper_timer = 0
         self.active = True
 
     
+        self.projectile_image_ = pygame.image.load("Assets/Sprites/Projectiles/TowerBase/base_projectile_1.png").convert_alpha()
         self.sprite_sheet = pygame.image.load("Assets/Sprites/Towers/TowerClassic/towerClassicTop.png").convert_alpha()
         self.frames = constants.ANIMATION_STEPS_TOWER
         self.animation_list = loadAnimation(self.sprite_sheet, self.frames)
@@ -42,7 +43,7 @@ class Tower(pygame.sprite.Sprite, InterfaceTower):
         self.image = self.image_weapon
         self.original_image = self.image.copy()
 
-    def update(self, enemyGroup:pygame.sprite.Group,projectileGroup:pygame.sprite.Group,surface:pygame.Surface) -> None:
+    def update(self, enemyGroup: pygame.sprite.Group, projectileGroup: pygame.sprite.Group, surface: pygame.Surface) -> None:
         self.screen = surface
         if self.active:
             self.image, self.frame_index, self.update_time = playAnimation(
@@ -81,7 +82,7 @@ class Tower(pygame.sprite.Sprite, InterfaceTower):
         if self.zap:
             self.drawRays(surface, self.rect.centerx, self.rect.centery)
 
-    def getTargetEnemy(self, enemyGroup:pygame.sprite.Group) -> None:
+    def getTargetEnemy(self, enemyGroup: pygame.sprite.Group) -> None:
         targetEnemy = None
         furthest_progress = -1
 
@@ -94,18 +95,18 @@ class Tower(pygame.sprite.Sprite, InterfaceTower):
 
         return targetEnemy
     
-    def isWithinRange(self, enemy)->float:
+    def isWithinRange(self, enemy: Enemy)->float:
         distance = self.calculateDistance(enemy)
         return distance <= self.range_
     
     
-    def calculateDistance(self, enemy)->float:
+    def calculateDistance(self, enemy: Enemy)->float:
         enemy_pos = enemy.rect.center
         tower_pos = self.rect.center
         return math.hypot(enemy_pos[0] - tower_pos[0], enemy_pos[1] - tower_pos[1])
     
     
-    def attack(self,enemy,projectileGroup:pygame.sprite.Group)->None:
+    def attack(self,enemy: Enemy,projectileGroup: pygame.sprite.Group)->None:
         direction = pygame.math.Vector2(enemy.rect.center) - pygame.math.Vector2(self.rect.center)
         angle_rad = math.atan2(direction.y, direction.x)
         angle_deg = math.degrees(angle_rad) + 180
@@ -115,7 +116,7 @@ class Tower(pygame.sprite.Sprite, InterfaceTower):
         projectile = Projectile(rotated_projectile, adjusted_pos, enemy, self.damage_)
         projectileGroup.add(projectile)
 
-    def drawRange(self,surface:pygame.Surface)->None:
+    def drawRange(self,surface: pygame.Surface)->None:
         surface.blit(self.image, self.rect)
 
         pygame.draw.circle(surface, constants.LIGHT_GREY, (int(self.X_), int(self.Y_)), self.range_, 1)
@@ -135,7 +136,7 @@ class Tower(pygame.sprite.Sprite, InterfaceTower):
         self.upcost_ = towerClassic[self.upgrade_level_ - 1].get("upcost")
 
     @staticmethod
-    def drawRays(surface:pygame.Surface, x:int, y:int) -> None:
+    def drawRays(surface: pygame.Surface, x: int, y: int) -> None:
         for _ in range(constants.zapperQuant):
             angle = random.uniform(0, 2 * math.pi)
             length = random.uniform(constants.zapperRadius // 2, constants.zapperRadius)

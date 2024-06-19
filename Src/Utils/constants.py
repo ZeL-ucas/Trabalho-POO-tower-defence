@@ -1,3 +1,4 @@
+#screen constants
 rows = 15
 cols = 20
 tileSize = 48
@@ -10,9 +11,29 @@ window = (((cols*tileSize)+ PainelSize), (rows*tileSize))
 zapperQuant = 10
 zapperRadius = 40
 
+#game constants
 levelMaxTower = 3
+gold = 1000
+victory = 1000
 
-#cores
+#price towers
+priceClassic = 100
+
+#enemys
+bountyClassic = 50
+bountyHealer = 80
+bountyZapper = 30
+bountyTank = 200
+#healer
+healRadius = 100
+healAmount = 20
+healInterval = 5
+
+
+#projectile constants
+projectileSpeed = 8
+
+#cors
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 BROWN_CHOC = (123, 63, 0)

@@ -18,7 +18,7 @@ class Level():
             elif layer["name"] == "Plano de fundo":
                 self.tilemap_ = layer["data"]
 
-    def loadWaves(self, filename)->list:
+    def loadWaves(self, filename: str)->list:
         with open(filename, 'r') as file:
             current_wave = []
             for line in file:
@@ -39,5 +39,5 @@ class Level():
 
         return self.waves         
 
-    def draw(self, surface)->None:
+    def draw(self, surface: pygame.Surface)->None:
         surface.blit(self.map_, (0, 0))

@@ -1,16 +1,18 @@
 import pygame
-import math
+from Utils import constants
 from Interfaces.projectilesInterface import InterfaceProjectiles
+from Entities.enemy import Enemy
+
 
 class Projectile(pygame.sprite.Sprite, InterfaceProjectiles):
-    def __init__(self, image, start_pos, target, damage) -> None:
+    def __init__(self, image: pygame.Surface, start_pos: tuple, target: Enemy, damage: int) -> None:
         pygame.sprite.Sprite.__init__(self)
         self.image = image
         self.rect = self.image.get_rect()
         self.rect.center = start_pos
         self.target = target
         self.damage = damage
-        self.speed = 3
+        self.speed = constants.projectileSpeed
 
     def update(self) -> None:
         direction = pygame.math.Vector2(self.target.rect.center) - pygame.math.Vector2(self.rect.center)
