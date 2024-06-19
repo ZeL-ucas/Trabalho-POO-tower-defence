@@ -1,8 +1,8 @@
 import pygame
 import math
 from Utils import constants
-
-class TowerMenu:
+from Interfaces.towerMenu import InterfaceTowerMenu
+class TowerMenu(InterfaceTowerMenu):
     def __init__(self, tower, screen):
         self.screen_ = screen
         self.tower = tower

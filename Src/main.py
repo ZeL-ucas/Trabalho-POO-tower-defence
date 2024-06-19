@@ -17,7 +17,6 @@ def main():
 
         menu = StartMenu(currentScores)
         currentPlayerData = menu.run()
-
         constants.setDificulty(currentPlayerData[1])
         towerDefence = Game()
         score = towerDefence.Run()

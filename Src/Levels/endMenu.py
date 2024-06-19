@@ -1,9 +1,9 @@
 import sys
 import pygame
 from Utils import constants
+from Interfaces.endMenuInterface import InterfaceEndMenu
 
-
-class EndMenu():
+class EndMenu(InterfaceEndMenu):
     def __init__(self, outcome: str, score: str):
         pygame.init()
         self.font_ = pygame.font.Font(None, 74)

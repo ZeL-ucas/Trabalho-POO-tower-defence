@@ -14,7 +14,7 @@ class InterfaceHealer(ABC):
         """
         pass
     @abstractmethod
-    def applyHeal(self,enemy)->None:
+    def applyHeal(self)->None:
         """
         Verifica se há inimigos próximos dentro do raio de cura para aplicar a cura a eles.
         """

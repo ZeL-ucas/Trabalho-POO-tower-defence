@@ -15,8 +15,8 @@ from Entities.Enemys.zapper import Zapper
 from Levels.levelLoader import Level
 import time
 from Utils.towerMenu import TowerMenu
-
-class Game():
+from Interfaces.gameInterface import InterfaceGame
+class Game(InterfaceGame):
     def __init__(self)->None:
         pygame.init()
 

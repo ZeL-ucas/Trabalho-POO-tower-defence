@@ -4,8 +4,8 @@ from Src.Utils import constants
 from Src.Entities.tower import Tower
 from Utils.towerData import towerSplash
 from Utils.functions import loadAnimation, playAnimation
-
-class TowerSplash(Tower):
+from Interfaces.towerSplashInterface import InterfaceTowerSplash
+class TowerSplash(Tower,InterfaceTowerSplash):
     def __init__(self, posX: int, posY: int) -> None:
         image = pygame.image.load("Assets/Sprites/Towers/TowerSplash/towerSplashImage.png").convert_alpha()
         super().__init__(image, posX, posY)
@@ -30,8 +30,7 @@ class TowerSplash(Tower):
             )
             if self.frame_index == self.frames:
                 self.frame_index = 0
-        if self.cdCounter_ > 0: 
-            self.cdCounter_ -= 1
+
         if self.zap:
             if self.zapper_timer > 0:
                 self.zapper_timer -= 1
@@ -41,7 +40,9 @@ class TowerSplash(Tower):
                 self.active = True
                 self.zap = False
                 self.image = self.original_image
-                
+        else:         
+            if self.cdCounter_ > 0: 
+                self.cdCounter_ -= 1        
         if self.cdCounter_ == 0:
             self.attack(enemyGroup)
             self.cdCounter_ = self.attackCD_
