@@ -1,5 +1,6 @@
+from Interfaces.dataBaseInterface import InterfaceDataBase
 
-class DataBase():
+class DataBase(InterfaceDataBase):
     def __init__(self,path) -> None:
         self.path = path
         self.scores = None

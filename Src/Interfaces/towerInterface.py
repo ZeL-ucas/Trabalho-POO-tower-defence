@@ -1,19 +1,17 @@
 from abc import ABC, abstractmethod
+from Entities.enemy import Enemy
 class InterfaceTower(ABC):
     @abstractmethod
     def update(self)->None:
         pass
     
     @abstractmethod
-    def getTargetEnemy(self)->None:
+    def getTargetEnemy(self)->Enemy:
         pass
 
-    @abstractmethod
-    def getTargetEnemy(self):
-        pass
 
     @abstractmethod
-    def isWithinRange(self)->float:
+    def isWithinRange(self)->bool:
         pass
 
     @abstractmethod
