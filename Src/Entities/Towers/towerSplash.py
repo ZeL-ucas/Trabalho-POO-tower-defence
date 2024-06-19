@@ -21,6 +21,7 @@ class TowerSplash(Tower):
         self.attackCD_ = towerSplash[self.upgrade_level_ - 1].get("cooldown")
         self.upcost_ = towerSplash[self.upgrade_level_ - 1].get("upcost")
         self.cdCounter_ = 0  # Cooldown counter
+        self.price = constants.priceSplash
 
     def update(self, enemyGroup: pygame.sprite.Group, projectileGroup: pygame.sprite.Group, surface: pygame.Surface) -> None:
         if self.active:

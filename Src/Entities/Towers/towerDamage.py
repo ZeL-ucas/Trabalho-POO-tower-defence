@@ -16,3 +16,4 @@ class TowerDamage(Tower):
         self.damage_ = towerDamage[self.upgrade_level_ -1].get("damage")
         self.attackCD_ = towerDamage[self.upgrade_level_ - 1].get("cooldown")
         self.upcost_ = towerDamage[self.upgrade_level_ - 1].get("upcost")
+        self.price = constants.priceDamage

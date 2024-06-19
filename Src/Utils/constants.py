@@ -18,6 +18,9 @@ victory = 1000
 
 #price towers
 priceClassic = 100
+priceDamage = 150
+priceSplash = 200
+priceSlow = 175
 
 #enemys
 bountyClassic = 50

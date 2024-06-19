@@ -1,5 +1,5 @@
 luiz 10000
 paulo 4000
+Luiz_2 3465
 pedro 3000
-bruno 2000
-breno 1296
+Luiz 2156
