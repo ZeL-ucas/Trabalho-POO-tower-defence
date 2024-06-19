@@ -5,23 +5,8 @@ fps = 60
 PainelSize = 240
 map_width = cols*tileSize
 window = (((cols*tileSize)+ PainelSize), (rows*tileSize))
-#classic
-classicEnemySpeed = 2
-classicEnemyHealth = 100
-classicEnemyLifes = 1
-#healer
-healerSpeed = 0.75
-healerHealth = 150
-healerLifes = 1 
-#tank
-tankSpeed = 1.3
-tankHealth = 500
-tankLifes= 1 
-#zapper
-zapperSpeed = 3
-zapperHealth = 40
-zapperLifes= 2
-zapperDuration = 5
+
+#draw rays
 zapperQuant = 10
 zapperRadius = 40
 
@@ -39,6 +24,64 @@ GREEN = (87, 128, 24)
 GRAPHITE = (54, 69, 79)
 SILVER = (192,192,192)
 LIGHT_GREY = (211,211,211)
+
+def setDificulty(dificult: str) -> None:
+    global classicEnemySpeed, classicEnemyHealth, classicEnemyLifes ,healerSpeed, healerHealth, healerLifes ,tankSpeed, tankHealth, tankLifes ,zapperSpeed, zapperHealth, zapperLifes, zapperDuration
+    
+    if dificult == "easy":
+        classicEnemySpeed = 2
+        classicEnemyHealth = 100
+        classicEnemyLifes = 1
+
+        healerSpeed = 0.75
+        healerHealth = 150
+        healerLifes = 1
+
+        tankSpeed = 1.3
+        tankHealth = 500
+        tankLifes = 1
+
+        zapperSpeed = 3
+        zapperHealth = 40
+        zapperLifes = 2
+        zapperDuration = 5
+
+    elif dificult == "medium":
+        classicEnemySpeed = 2.4
+        classicEnemyHealth = 120
+        classicEnemyLifes = 10
+
+        healerSpeed = 1
+        healerHealth = 175
+        healerLifes = 1
+
+        tankSpeed = 1.6
+        tankHealth = 650
+        tankLifes = 2
+
+        zapperSpeed = 4
+        zapperHealth = 50
+        zapperLifes = 3
+        zapperDuration = 6
+
+    elif dificult == "hard":
+        classicEnemySpeed = 2.7
+        classicEnemyHealth = 160
+        classicEnemyLifes = 2
+
+        healerSpeed = 1.25
+        healerHealth = 250
+        healerLifes = 2
+
+        tankSpeed = 1.6
+        tankHealth = 1000
+        tankLifes = 3
+
+        zapperSpeed = 5
+        zapperHealth = 60
+        zapperLifes = 4
+        zapperDuration = 7
+
 
 #constants animations
 #enemy

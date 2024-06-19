@@ -1,16 +1,13 @@
 import pygame
-from Src.Utils import constants
 from Src.Entities.enemy import Enemy
 from Interfaces.zapperInterface import InterfaceZapper
+from Src.Utils import constants
 import math
 
 class Zapper(Enemy, InterfaceZapper):
     def __init__(self, waypoints:list,towerGroup_:pygame.sprite.Group, death_callback=None) -> None:
         image = pygame.image.load("Assets/Sprites/Enemys/Zapper/zapper.png").convert_alpha()
-        super().__init__(waypoints, constants.ANIMATION_STEPS_ENEMY_ZAPPER, image, death_callback)
-        self.health_= constants.zapperHealth
-        self.speed = constants.zapperSpeed
-        self.lifes =constants.zapperLifes
+        super().__init__(waypoints, constants.ANIMATION_STEPS_ENEMY_ZAPPER, image, "zapper", death_callback)
         self.bounty = 30
         self.towerGroup = towerGroup_
 
@@ -35,7 +32,7 @@ class Zapper(Enemy, InterfaceZapper):
                 nearest_tower = tower
 
         if nearest_tower:
-            nearest_tower.zapper(constants.zapperDuration)
+            nearest_tower.zapper(self.zapperDuration)
     """
     Este código define a lógica de um inimigo do tipo Zapper que, ao morrer, congela 
     a torre mais próxima. A funcionalidade de congelamento específica precisaria ser 

@@ -6,15 +6,33 @@ from Interfaces.enemyInterface import InterfaceEnemy
 from Utils.functions import loadAnimation, playAnimation
 #pygame sprit class
 
-class Enemy(pygame.sprite.Sprite,InterfaceEnemy ):          #A classe Enemy herdará as propriedades da classe Sprite
-    def __init__(self, waypoints:list,frames:int, image:pygame.surface,death_callback=None)->None:
+class Enemy(pygame.sprite.Sprite,InterfaceEnemy ):
+    def __init__(self, waypoints:list,frames:int, image:pygame.surface, enemy_type: str, death_callback=None)->None:
         pygame.sprite.Sprite.__init__(self)
         self.waypoints = waypoints
         self.position = Vector2(self.waypoints[0])
         self.target_waypoint = 1 
-        self.speed = constants.classicEnemySpeed
+
+        #atribuição de atributos para cada inimigo diferente, necessário para linkar com as dificuldades
+        if enemy_type == "classic":
+            self.speed = constants.classicEnemySpeed
+            self.health_ = constants.classicEnemyHealth
+            self.lifes = constants.classicEnemyLifes
+        elif enemy_type == "healer":
+            self.speed = constants.healerSpeed
+            self.health_ = constants.healerHealth
+            self.lifes = constants.healerLifes
+        elif enemy_type == "tank":
+            self.speed = constants.tankSpeed
+            self.health_ = constants.tankHealth
+            self.lifes = constants.tankLifes
+        elif enemy_type == "zapper":
+            self.speed = constants.zapperSpeed
+            self.health_ = constants.zapperHealth
+            self.lifes = constants.zapperLifes
+            self.zapperDuration = constants.zapperDuration
+
         self.angle = 0
-        self.health_ = constants.classicEnemyHealth
         self.max_health_ = self.health_
         self.original_image = image
         self.rect = self.original_image.get_rect() #self.rect é derivado da image. E, get_rect() é um método
@@ -22,10 +40,7 @@ class Enemy(pygame.sprite.Sprite,InterfaceEnemy ):          #A classe Enemy herd
         self.flash_time = 0
         self.death_callback = death_callback
         self.bounty = 50 #valor de ouro pra quando o inimigo morrer 
-        self.lifes = constants.classicEnemyLifes
         self.alive = True
-        self.bounty = 50  # valor de ouro pra quando o inimigo morrer
-
         self.sprite_sheet = self.original_image
         self.frames=frames
         self.animation_list = loadAnimation(self.sprite_sheet, self.frames)       
@@ -33,7 +48,7 @@ class Enemy(pygame.sprite.Sprite,InterfaceEnemy ):          #A classe Enemy herd
         self.update_time = pygame.time.get_ticks()
         self.image_enemy = self.animation_list[self.frame_index]
         self.image = self.image_enemy
-
+        
     def update(self):
         self.move()
         self.rotate()
