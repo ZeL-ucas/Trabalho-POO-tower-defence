@@ -10,9 +10,9 @@ class DataBase():
                 scores = file.readlines()
                 return scores
         except FileNotFoundError:
-            print(f"The file {self.caminho_arquivo} could not be found.")
+            print(f"The file {self.path} could not be found.")
         except IOError:
-            print(f"There has been an error reading {self.caminho_arquivo}.")
+            print(f"There has been an error reading {self.path}.")
 
     def GetHighScores(self)->list:
         scores = self.ReadHighScores()
