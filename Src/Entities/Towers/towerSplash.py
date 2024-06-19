@@ -29,10 +29,18 @@ class TowerSplash(Tower):
             )
             if self.frame_index == self.frames:
                 self.frame_index = 0
-
-        if self.cdCounter_ > 0:
+        if self.cdCounter_ > 0: 
             self.cdCounter_ -= 1
+        if self.zap:
+            if self.zapper_timer > 0:
+                self.zapper_timer -= 1
+                self.active = False
 
+            else:
+                self.active = True
+                self.zap = False
+                self.image = self.original_image
+                
         if self.cdCounter_ == 0:
             self.attack(enemyGroup)
             self.cdCounter_ = self.attackCD_
