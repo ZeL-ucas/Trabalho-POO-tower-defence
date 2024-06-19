@@ -12,7 +12,7 @@ def main():
     run = True
 
     while(run):
-        data = DataBase("/home/jose/POO/Trabalho-POO-tower-defence/Src/Utils/highscores.txt")
+        data = DataBase("Src/Utils/highscores.txt")
         currentScores = data.GetHighScores()
 
         menu = StartMenu(currentScores)
