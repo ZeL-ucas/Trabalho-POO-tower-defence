@@ -23,6 +23,7 @@ class StartMenu(startMenuInterface):
         self.input_color_ = self.input_color_inactive_
         self.player_name_ = ''
         self.scores = scores
+        self.error = False
 
     def drawText(self, text: str, font: pygame.font.Font, color: tuple, surface: pygame.Surface, x: int, y: int) -> None:
         textobj = font.render(text, True, color)
@@ -54,7 +55,7 @@ class StartMenu(startMenuInterface):
 
     def draw(self) -> None:
         self.screen_.fill(constants.GREEN)
-        self.drawText('Defesa Blaster', self.font_, constants.BLACK, self.screen_, self.screen_width_ // 2, self.screen_height_ // 4)
+        self.drawText('Defesa Blaster', self.font_, constants.BLACK, self.screen_, self.screen_width_ // 2, self.screen_height_ // 4 - 100)
         
         mouse_pos = pygame.mouse.get_pos()
         easy_hover = self.easy_button_rect_.collidepoint(mouse_pos)
@@ -66,6 +67,8 @@ class StartMenu(startMenuInterface):
         self.drawButton('Difícil', self.button_font_, constants.BLACK, self.hard_button_rect_, hard_hover)
         self.drawScores()
         self.drawInputBox()
+        if self.error:
+            self.drawText("insira um nome",self.font_,constants.RED,self.screen_,self.screen_width_ // 2, self.screen_height_ // 4)
         pygame.display.update()
 
     def run(self) -> tuple:
@@ -87,14 +90,22 @@ class StartMenu(startMenuInterface):
 
                     if self.easy_button_rect_.collidepoint(event.pos):
                         difficulty = 'easy'
-                        run = False
+                        if self.player_name_ == "":
+                            self.error = True
+                        else :
+                            run = False
                     elif self.medium_button_rect_.collidepoint(event.pos):
                         difficulty = 'medium'
-                        run = False
+                        if self.player_name_ == "":
+                            self.error = True
+                        else :
+                            run = False
                     elif self.hard_button_rect_.collidepoint(event.pos):
                         difficulty = 'hard'
-                        run = False
-
+                        if self.player_name_ == "":
+                            self.error = True
+                        else :
+                            run = False
                 if event.type == pygame.KEYDOWN:
                     if self.active_:
                         if event.key == pygame.K_RETURN:
