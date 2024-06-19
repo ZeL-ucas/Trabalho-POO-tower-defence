@@ -13,24 +13,24 @@ zapperRadius = 40
 
 #game constants
 levelMaxTower = 3
-gold = 1000
+gold = 500
 victory = 1000
 
 #price towers
-priceClassic = 100
+priceClassic = 75
 priceDamage = 150
 priceSplash = 200
-priceSlow = 175
+priceSlow = 125
 
 #enemys
-bountyClassic = 50
-bountyHealer = 80
+bountyClassic = 30
+bountyHealer = 50
 bountyZapper = 30
-bountyTank = 200
+bountyTank = 250
 #healer
-healRadius = 100
-healAmount = 20
-healInterval = 5
+healRadius = 120
+healAmount = 40
+healInterval = 3
 
 
 #projectile constants
@@ -53,58 +53,58 @@ def setDificulty(dificult: str) -> None:
     global classicEnemySpeed, classicEnemyHealth, classicEnemyLifes ,healerSpeed, healerHealth, healerLifes ,tankSpeed, tankHealth, tankLifes ,zapperSpeed, zapperHealth, zapperLifes, zapperDuration
     
     if dificult == "easy":
-        classicEnemySpeed = 2
-        classicEnemyHealth = 100
+        classicEnemySpeed = 1.7
+        classicEnemyHealth = 130
         classicEnemyLifes = 1
 
-        healerSpeed = 0.75
-        healerHealth = 150
+        healerSpeed = 1.5
+        healerHealth = 175
         healerLifes = 1
 
-        tankSpeed = 1.3
-        tankHealth = 500
+        tankSpeed = 1.5
+        tankHealth = 700
         tankLifes = 1
 
         zapperSpeed = 3
         zapperHealth = 40
         zapperLifes = 2
-        zapperDuration = 5
+        zapperDuration = 4
 
     elif dificult == "medium":
         classicEnemySpeed = 2.4
-        classicEnemyHealth = 120
-        classicEnemyLifes = 10
+        classicEnemyHealth = 140
+        classicEnemyLifes = 1
 
-        healerSpeed = 1
-        healerHealth = 175
+        healerSpeed = 1.8
+        healerHealth = 200
         healerLifes = 1
 
-        tankSpeed = 1.6
-        tankHealth = 650
-        tankLifes = 2
+        tankSpeed = 1.4
+        tankHealth = 1200
+        tankLifes = 5
 
         zapperSpeed = 4
-        zapperHealth = 50
+        zapperHealth = 70
         zapperLifes = 3
-        zapperDuration = 6
+        zapperDuration = 5
 
     elif dificult == "hard":
-        classicEnemySpeed = 2.7
-        classicEnemyHealth = 160
+        classicEnemySpeed = 2.8
+        classicEnemyHealth = 200
         classicEnemyLifes = 2
 
-        healerSpeed = 1.25
-        healerHealth = 250
+        healerSpeed = 2.2
+        healerHealth = 300
         healerLifes = 2
 
-        tankSpeed = 1.6
-        tankHealth = 1000
-        tankLifes = 3
+        tankSpeed = 1.4
+        tankHealth = 1500
+        tankLifes = 8
 
-        zapperSpeed = 5
-        zapperHealth = 60
+        zapperSpeed = 5.5
+        zapperHealth = 90
         zapperLifes = 4
-        zapperDuration = 7
+        zapperDuration = 6
 
 
 #constants animations

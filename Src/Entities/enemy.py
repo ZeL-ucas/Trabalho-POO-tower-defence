@@ -34,6 +34,7 @@ class Enemy(pygame.sprite.Sprite,InterfaceEnemy ):
 
         self.angle = 0
         self.max_health_ = self.health_
+        self.original_speed = self.speed
         self.original_image = image
         self.rect = self.original_image.get_rect() #self.rect é derivado da image. E, get_rect() é um método
         self.rect.center = self.position #posiciona os retângulos center na variável position
@@ -48,7 +49,10 @@ class Enemy(pygame.sprite.Sprite,InterfaceEnemy ):
         self.update_time = pygame.time.get_ticks()
         self.image_enemy = self.animation_list[self.frame_index]
         self.image = self.image_enemy
-        
+        self.slow = False
+        self.slow_timer = 0
+        self.slow_potential = 1
+
     def update(self) -> None:
         self.move()
         self.rotate()
@@ -58,6 +62,12 @@ class Enemy(pygame.sprite.Sprite,InterfaceEnemy ):
                 self.image = pygame.transform.rotate(self.animation_list[self.frame_index], self.angle)
         self.image, self.frame_index, self.update_time = playAnimation(self.animation_list, self.frame_index, self.angle, self.position, self.update_time, 100)
 
+        if self.slow:
+            if self.slow_timer > 0:
+                self.slow_timer -= 1
+                self.speed = self.original_speed * self.slow_potential
+            else:
+                self.speed =self.original_speed
     def move(self) -> None:
         # Target waypoint
         if self.target_waypoint < len(self.waypoints):
@@ -107,4 +117,8 @@ class Enemy(pygame.sprite.Sprite,InterfaceEnemy ):
 
     def getMaxHealth(self) -> int:
         return self.max_health_
-        
+    
+    def Slow(self, duration: int, potential:float)->None:
+        self.slow = True
+        self.slow_timer = duration
+        self.slow_potential = potential

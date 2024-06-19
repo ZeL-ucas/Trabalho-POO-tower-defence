@@ -31,8 +31,6 @@ class Tower(pygame.sprite.Sprite, InterfaceTower):
         self.zap = False
         self.zapper_timer = 0
         self.active = True
-        self.slow = False
-
     
         self.projectile_image_ = pygame.image.load("Assets/Sprites/Projectiles/TowerBase/base_projectile_1.png").convert_alpha()
         self.sprite_sheet = pygame.image.load("Assets/Sprites/Towers/TowerClassic/towerClassicTop.png").convert_alpha()
@@ -116,8 +114,6 @@ class Tower(pygame.sprite.Sprite, InterfaceTower):
         adjusted_pos = (self.rect.centerx, self.rect.centery)  
         projectile = Projectile(rotated_projectile, adjusted_pos, enemy, self.damage_)
         projectileGroup.add(projectile)
-        if self.slow:
-            print("fica friooo")
 
     def drawRange(self,surface: pygame.Surface)->None:
         surface.blit(self.image, self.rect)

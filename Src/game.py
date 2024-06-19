@@ -7,6 +7,7 @@ from Src.Utils.sideMenu import SideMenu
 from Entities.tower import Tower
 from Entities.Towers.towerDamage import TowerDamage
 from Entities.Towers.towerSplash import TowerSplash
+from Entities.Towers.towerSlow import TowerSlow
 from Entities.enemy import Enemy
 from Entities.Enemys.healer import Healer
 from Entities.Enemys.tank import Tank
@@ -30,7 +31,8 @@ class Game():
         self.tower_ = {
             "Classic": pygame.transform.scale(pygame.image.load("Assets/Sprites/Towers/TowerClassic/towerClassic.png").convert_alpha(), (48, 80)),
             "Damage": pygame.transform.scale(pygame.image.load("Assets/Sprites/Towers/TowerDamage/towerDamage.png").convert_alpha(), (48, 80)),
-            "Splash": pygame.image.load("Assets/Sprites/Towers/TowerSplash/towerSplashImage.png").convert_alpha()
+            "Splash": pygame.image.load("Assets/Sprites/Towers/TowerSplash/towerSplashImage.png").convert_alpha(),
+            "Slow": pygame.transform.scale(pygame.image.load("Assets/Sprites/Towers/TowerDamage/towerDamage.png").convert_alpha(), (48, 80))
         }
 
         self.enemyTypes = {
@@ -53,6 +55,7 @@ class Game():
         self.towerButton_ = SideMenu(constants.tileSize + 950, 20, self.tower_["Classic"], True)
         self.towerButtonDamage = SideMenu(constants.tileSize + 1070, 20, self.tower_["Damage"], True)
         self.towerButtonSplash = SideMenu(constants.tileSize + 950, 100, self.tower_["Splash"], True)
+        self.towerButtonSlow = SideMenu(constants.tileSize + 1070, 100, self.tower_["Slow"], True)
         self.cancelButton_ = SideMenu(constants.tileSize + 950, 240, self.cancelImage_, True)
 
         self.towerGroup_ = pygame.sprite.Group()
@@ -119,6 +122,9 @@ class Game():
             if self.towerButtonSplash.draw(self.screen_):
                 self.placing_tower = True
                 self.towerType = "Splash"
+            if self.towerButtonSlow.draw(self.screen_):
+                self.placing_tower = True
+                self.towerType = "Slow"
 
             if self.placing_tower:
                 tower_image = self.tower_[self.towerType]
@@ -167,7 +173,7 @@ class Game():
         mousePosY = pos[1] // constants.tileSize
 
         hasGold = True
-        if self.gold_ < 100:
+        if self.gold_ < constants.priceClassic:
             hasGold = False
         if hasGold:
             if self.towerType == "Classic":
@@ -176,6 +182,8 @@ class Game():
                 tower = TowerDamage(mousePosX, mousePosY)
             elif self.towerType == "Splash":
                 tower = TowerSplash( mousePosX, mousePosY)
+            elif self.towerType == "Slow":
+                tower = TowerSlow( mousePosX, mousePosY)
             self.towerGroup_.add(tower)
             self.gold_ -= tower.price
 

@@ -62,3 +62,11 @@ class TowerSplash(Tower):
 
     def isWithinRange(self, enemy) -> bool:
         return self.calculateDistance(enemy) <= self.range_
+    
+    def upgrade(self)->None:
+        self.upgrade_level_ += 1
+        self.range_ = towerSplash[self.upgrade_level_ - 1].get("range")
+        self.damage_ =towerSplash[self.upgrade_level_ -1].get("damage")
+        self.attackCD_ = towerSplash[self.upgrade_level_ - 1].get("cooldown")
+        self.upcost_ = towerSplash[self.upgrade_level_ - 1].get("upcost")
+    
