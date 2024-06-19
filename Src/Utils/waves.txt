@@ -1,3 +1,4 @@
 Wave 1
+5, Zapper, 0.5
 2, Classic, 0.5
 3, Healer, 0.2

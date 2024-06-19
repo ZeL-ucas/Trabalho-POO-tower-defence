@@ -41,6 +41,10 @@ class TowerSplash(Tower):
         self.rect.center = (self.X_, self.Y_ - 20)
         
         surface.blit(self.image, self.rect)
+        
+        # Se está paralisada, desenha os raios
+        if self.zap:
+            self.drawRays(surface, self.rect.centerx, self.rect.centery)
 
     def attack(self, enemyGroup: pygame.sprite.Group) -> None:
         for enemy in enemyGroup:
