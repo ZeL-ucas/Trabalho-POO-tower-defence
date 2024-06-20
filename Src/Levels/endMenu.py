@@ -7,7 +7,7 @@ class EndMenu(InterfaceEndMenu):
     def __init__(self, outcome: str, score: str):
         pygame.init()
         self.font_ = pygame.font.Font(None, 74)
-        self.button_font_ = pygame.font.Font(None, 40)
+        self.button_font_ = pygame.font.Font(None, 30)
         self.clock_ = pygame.time.Clock()
         self.screen_ = pygame.display.set_mode(constants.window)
         pygame.display.set_caption('Defesa Blaster')

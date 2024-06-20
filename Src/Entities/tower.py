@@ -32,7 +32,8 @@ class Tower(pygame.sprite.Sprite, InterfaceTower):
         self.zapper_timer = 0
         self.active = True
     
-        self.projectile_image_ = pygame.image.load("Assets/Sprites/Projectiles/TowerBase/base_projectile_1.png").convert_alpha()
+        self.projectile_image_ = pygame.image.load("Assets/Sprites/Projectiles/TowerBase/base_projectile.png").convert_alpha()
+        self.projectile_image_ = pygame.transform.scale(pygame.image.load("Assets/Sprites/Projectiles/TowerBase/base_projectile.png").convert_alpha(), (120, 120))
         self.sprite_sheet = pygame.image.load("Assets/Sprites/Towers/TowerClassic/towerClassicTop.png").convert_alpha()
         self.frames = constants.ANIMATION_STEPS_TOWER
         self.animation_list = loadAnimation(self.sprite_sheet, self.frames)

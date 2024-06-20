@@ -32,7 +32,7 @@ class Game(InterfaceGame):
             "Classic": pygame.transform.scale(pygame.image.load("Assets/Sprites/Towers/TowerClassic/towerClassic.png").convert_alpha(), (48, 80)),
             "Damage": pygame.transform.scale(pygame.image.load("Assets/Sprites/Towers/TowerDamage/towerDamage.png").convert_alpha(), (48, 80)),
             "Splash": pygame.image.load("Assets/Sprites/Towers/TowerSplash/towerSplashImage.png").convert_alpha(),
-            "Slow": pygame.transform.scale(pygame.image.load("Assets/Sprites/Towers/TowerDamage/towerDamage.png").convert_alpha(), (48, 80))
+            "Slow": pygame.transform.scale(pygame.image.load("Assets/Sprites/Towers/TowerSlow/towerSlow.png").convert_alpha(), (48, 80))
         }
 
         self.enemyTypes = {
