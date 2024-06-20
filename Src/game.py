@@ -172,18 +172,20 @@ class Game(InterfaceGame):
         mousePosX = pos[0] // constants.tileSize
         mousePosY = pos[1] // constants.tileSize
 
-        hasGold = True
-        if self.gold_ < constants.priceClassic:
-            hasGold = False
-        if hasGold:
-            if self.towerType == "Classic":
-                tower = Tower(self.tower_[self.towerType], mousePosX, mousePosY)
-            elif self.towerType == "Damage":
-                tower = TowerDamage(mousePosX, mousePosY)
-            elif self.towerType == "Splash":
-                tower = TowerSplash( mousePosX, mousePosY)
-            elif self.towerType == "Slow":
-                tower = TowerSlow( mousePosX, mousePosY)
+        if self.towerType == "Classic" and self.gold_ >= constants.priceClassic:
+            tower = Tower(self.tower_[self.towerType], mousePosX, mousePosY)
+            self.towerGroup_.add(tower)
+            self.gold_ -= tower.price
+        elif self.towerType == "Damage" and self.gold_ >= constants.priceDamage:
+            tower = TowerDamage(mousePosX, mousePosY)
+            self.towerGroup_.add(tower)
+            self.gold_ -= tower.price
+        elif self.towerType == "Splash" and self.gold_ >= constants.priceSplash:
+            tower = TowerSplash( mousePosX, mousePosY)
+            self.towerGroup_.add(tower)
+            self.gold_ -= tower.price
+        elif self.towerType == "Slow" and self.gold_ >= constants.priceSlow:
+            tower = TowerSlow( mousePosX, mousePosY)
             self.towerGroup_.add(tower)
             self.gold_ -= tower.price
 
@@ -220,7 +222,7 @@ class Game(InterfaceGame):
             self.score += bounty*0.8
         if not killed:
             self.remainingLifes-= lifes 
-        self.gold_ += bounty
+        self.gold_ += bounty 
         
 
 

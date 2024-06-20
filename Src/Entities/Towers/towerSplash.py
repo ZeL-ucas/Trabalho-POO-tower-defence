@@ -22,14 +22,17 @@ class TowerSplash(Tower,InterfaceTowerSplash):
         self.upcost_ = towerSplash[self.upgrade_level_ - 1].get("upcost")
         self.cdCounter_ = 0  # Cooldown counter
         self.price = constants.priceSplash
+        self.active = False
 
     def update(self, enemyGroup: pygame.sprite.Group, projectileGroup: pygame.sprite.Group, surface: pygame.Surface) -> None:
         if self.active:
             self.image, self.frame_index, self.update_time = playAnimation(
                 self.animation_list, self.frame_index, 0, (self.X_, self.Y_ - 20), self.update_time, 75
             )
-            if self.frame_index == self.frames:
+            if self.frame_index == self.frames - 1:
                 self.frame_index = 0
+                self.active = False
+                # self.image = self.animation_list[0]
 
         if self.zap:
             if self.zapper_timer > 0:
@@ -60,10 +63,8 @@ class TowerSplash(Tower,InterfaceTowerSplash):
         for enemy in enemyGroup:
             if self.isWithinRange(enemy):
                 enemy.takeDamage(self.damage_)
+                self.active = True
 
-    def isWithinRange(self, enemy) -> bool:
-        return self.calculateDistance(enemy) <= self.range_
-    
     def upgrade(self)->None:
         self.upgrade_level_ += 1
         self.range_ = towerSplash[self.upgrade_level_ - 1].get("range")

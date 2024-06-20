@@ -1,1 +1,1 @@
-Por enquanto o unico requerimento é a biblioteca Pygames
+Instalação da biblioteca pygame
