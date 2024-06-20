@@ -5,7 +5,7 @@ Temos como objetivo fazer um joguinho tower defence em Python, implementando con
 
 Link do diagrama UML:  
 https://lucid.app/lucidchart/3097f040-d0ea-4233-99ef-f98bffa1019a/edit?invitationId=inv_dbd2feee-4e0e-472c-a10a-8e98c4e371e5&page=0_0#  
-Será necessário criar uma conta gratuitamente no site para visualização. Por isso, também será anexado um PDF contendo o diagrama:  
+Será necessário criar uma conta no site para visualização. Por isso, também será anexado um PDF contendo o diagrama:  
 [Tower Defence UML.pdf](https://github.com/user-attachments/files/15906885/Tower.Defence.UML.pdf)
 
 ## Tutorial como jogar:
