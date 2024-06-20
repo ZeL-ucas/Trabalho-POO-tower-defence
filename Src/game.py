@@ -140,16 +140,10 @@ class Game(InterfaceGame):
             pygame.display.flip()
 
     def Quit(self) -> None:
-        """
-        Encerra o Pygame e fecha o jogo.
-        """
         pygame.quit()
 
 
     def Draw(self) -> None:
-        """
-        Desenha todos os elementos do jogo na tela.
-        """
         self.level_.draw(self.screen_)
         self.towerGroup_.draw(self.screen_)
         self.enemyGroup_.draw(self.screen_)
@@ -163,12 +157,9 @@ class Game(InterfaceGame):
         self.screen_.blit(life_text, (40, 50))
         self.screen_.blit(waves_text, (10, 100))
         
+        self.DrawTowerPrices()
+
     def CreateTurret(self, pos:tuple) -> None:
-        """
-        Cria uma torre na posição especificada se o jogador tiver ouro suficiente.
-        
-        Observação: A variável "pos" é a coordenada X,Y. 
-        """
         mousePosX = pos[0] // constants.tileSize
         mousePosY = pos[1] // constants.tileSize
 
@@ -190,13 +181,6 @@ class Game(InterfaceGame):
             self.gold_ -= tower.price
 
     def CheckSpace(self, pos:tuple) -> int:
-        """
-        Verifica se o espaço especificado está disponível para colocar uma torre.
-        Retorna:
-            1 se o espaço já está ocupado por uma torre.
-            2 se o espaço está disponível.
-            0 se o espaço não é válido.
-        """
         mousePosX = pos[0] // constants.tileSize
         mousePosY = pos[1] // constants.tileSize
         self.mouse_tile_num = (mousePosY * constants.cols) + mousePosX
@@ -211,9 +195,6 @@ class Game(InterfaceGame):
             return 0
         
     def menuTower(self, tower:Tower) -> None:
-        """
-        Mostra o menu de upgrade para a torre especificada.
-        """
         tower.drawRange(self.screen_)
         self.tower_menu = TowerMenu(tower, self.screen_)
 
@@ -274,12 +255,7 @@ class Game(InterfaceGame):
         self.projectileGroup_.update()
         self.towerGroup_.update(self.enemyGroup_,self.projectileGroup_,self.screen_) 
 
-        
-
     def isClickOutsideMenu(self, mouse_pos:tuple) -> bool:
-        """
-        Verifica se um clique do mouse está fora do menu de upgrade da torre.
-        """
         if self.tower_menu:
             tower_pos = self.tower_menu.tower.getPosition()
             radius = self.tower_menu.radius
@@ -288,9 +264,6 @@ class Game(InterfaceGame):
         return False
 
     def UpgradeTower(self, tower:Tower) -> None:
-        """
-        Realiza o upgrade da torre se o jogador tiver ouro suficiente.
-        """
         if self.gold_ >= self.tower_menu.tower.upcost_ and self.tower_menu.tower.upgrade_level_ < constants.levelMaxTower:
             self.gold_ -= self.tower_menu.tower.upcost_
             tower.upgrade()   
@@ -298,3 +271,21 @@ class Game(InterfaceGame):
         self.gold_ += (tower.price / 2) * tower.upgrade_level_ 
         tower.kill()
 
+    def DrawTowerPrices(self) -> None:
+        prices = {
+            "Classic": constants.priceClassic,
+            "Damage": constants.priceDamage,
+            "Splash": constants.priceSplash,
+            "Slow": constants.priceSlow
+        }
+
+        positions = {
+            "Classic": (constants.tileSize + 950, 110),
+            "Damage": (constants.tileSize + 1070, 110),
+            "Splash": (constants.tileSize + 940, 220),
+            "Slow": (constants.tileSize + 1070, 220)
+        }
+
+        for tower_type, price in prices.items():
+            price_text = self.font.render(f"${price}", True, constants.YELLOW)
+            self.screen_.blit(price_text, positions[tower_type])
