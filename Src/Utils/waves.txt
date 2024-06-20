@@ -3,6 +3,30 @@ Wave 1
 2, Healer, 1
 5, Classic, 1
 Wave 2
+2, Healer, 1
+10, Classic, 1
+1, Healer, 2
+Wave 3
+2, Zapper, 1
+2, Healer, 1
+10, Classic, 1
+Wave 4
+1, Healer, 1
+5, Zapper, 0.5
+1, Healer, 2
+8, Classic, 0.2
+1, Healer, 1 
+10, Classic, 0
+Wave 5
+20, Classic, 1
+5, Healer, 1
+20, Classic, 1
+Wave 6
 1, Tank, 0
 2, Healer, 1
-10, Classic, 0.5
+6, Zapper, 0.2
+2, Healer, 1
+1, Tank, 0
+15, Classic, 1
+
+
