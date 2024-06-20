@@ -6,4 +6,3 @@ Wave 2
 1, Tank, 0
 2, Healer, 1
 10, Classic, 0.5
-

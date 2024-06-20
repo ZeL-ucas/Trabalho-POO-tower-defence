@@ -7,7 +7,3 @@ class InterfaceTowerSplash(ABC):
     @abstractmethod
     def attack(self)->None:
         pass
-
-    @abstractmethod
-    def isWithinRange(self)->bool:
-        pass
