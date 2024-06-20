@@ -31,7 +31,7 @@ class Game(InterfaceGame):
         self.tower_ = {
             "Classic": pygame.transform.scale(pygame.image.load("Assets/Sprites/Towers/TowerClassic/towerClassic.png").convert_alpha(), (48, 80)),
             "Damage": pygame.transform.scale(pygame.image.load("Assets/Sprites/Towers/TowerDamage/towerDamage.png").convert_alpha(), (48, 80)),
-            "Splash": pygame.image.load("Assets/Sprites/Towers/TowerSplash/towerSplashImage.png").convert_alpha(),
+            "Splash": pygame.transform.scale(pygame.image.load("Assets/Sprites/Towers/TowerSplash/towerSplashImage.png").convert_alpha(), (80, 70)),
             "Slow": pygame.transform.scale(pygame.image.load("Assets/Sprites/Towers/TowerSlow/towerSlow.png").convert_alpha(), (48, 80))
         }
 
@@ -54,9 +54,9 @@ class Game(InterfaceGame):
 
         self.towerButton_ = SideMenu(constants.tileSize + 950, 20, self.tower_["Classic"], True)
         self.towerButtonDamage = SideMenu(constants.tileSize + 1070, 20, self.tower_["Damage"], True)
-        self.towerButtonSplash = SideMenu(constants.tileSize + 950, 100, self.tower_["Splash"], True)
-        self.towerButtonSlow = SideMenu(constants.tileSize + 1070, 100, self.tower_["Slow"], True)
-        self.cancelButton_ = SideMenu(constants.tileSize + 950, 240, self.cancelImage_, True)
+        self.towerButtonSplash = SideMenu(constants.tileSize + 930, 140, self.tower_["Splash"], True)
+        self.towerButtonSlow = SideMenu(constants.tileSize + 1070, 130, self.tower_["Slow"], True)
+        self.cancelButton_ = SideMenu(constants.tileSize + 950, 260, self.cancelImage_, True)
 
         self.towerGroup_ = pygame.sprite.Group()
         self.enemyGroup_ = pygame.sprite.Group()
