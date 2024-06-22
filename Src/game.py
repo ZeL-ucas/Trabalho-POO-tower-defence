@@ -264,7 +264,7 @@ class Game(InterfaceGame):
         return False
 
     def UpgradeTower(self, tower:Tower) -> None:
-        if self.gold_ >= self.tower_menu.tower.upcost_ and self.tower_menu.tower.upgrade_level_ < constants.levelMaxTower:
+        if self.tower_menu.tower.upcost_ is not None and self.gold_ >= self.tower_menu.tower.upcost_ and self.tower_menu.tower.upgrade_level_ < constants.levelMaxTower:
             self.gold_ -= self.tower_menu.tower.upcost_
             tower.upgrade()   
     def SellTower(self,tower:Tower)->None:
