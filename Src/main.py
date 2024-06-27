@@ -29,7 +29,7 @@ def main():
         if(score[0] == 'quit'):
             run = False
             sys.exit()
-        
+        scoreText = int(scoreText)
         gameEnd = EndMenu(score[0],str(scoreText))
         choice = gameEnd.run()
         data.AddHighScore(currentPlayerData[0],int(scoreText))
